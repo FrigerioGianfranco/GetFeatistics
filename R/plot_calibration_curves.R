@@ -36,7 +36,7 @@ plot_calibration_curves <- function(targeted_elaboration) {
     } 
     
     
-    if (!"weights"%in%names(TARGETED_ELABORATED$regression_models[[a]])) {
+    if (!"weights"%in%names(targeted_elaboration$regression_models[[a]])) {
       this_curve_plot <- ggplot(data = targeted_elaboration$regression_models[[a]]$model, aes(x = X, y = Y)) +
         geom_point() +
         geom_smooth(method = "lm", se=FALSE) +
