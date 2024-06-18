@@ -1,4 +1,4 @@
-# File: R/zzz.R
+# file zzz.R
 
 #' @import tidyverse
 #' @import ggpubr
@@ -10,4 +10,14 @@
 #' @import xlsx
 #' @import gridExtra
 
-NULL
+.onLoad <- function(libname, pkgname) {
+  library(tidyverse)
+  library(ggpubr)
+  library(ggrepel)
+  library(lmerTest)
+  library(AER)
+  library(MuMIn)
+  library(writexl)
+  library(xlsx)
+  library(gridExtra)
+}
