@@ -1,0 +1,73 @@
+# This CITATION.cff file was generated with cffinit.
+# Visit https://bit.ly/cffinit to generate yours today!
+
+cff-version: 1.2.0
+title: GetFeatistics
+message: >-
+  If you use this software, please cite it using the
+  metadata from this file.
+type: software
+authors:
+  - given-names: Gianfranco
+    family-names: Frigerio
+    email: frigerio.gianfranco@hsr.it
+    affiliation: >-
+      Center for Omics Sciences (COSR), IRCCS San Raffaele
+      Scientific Institute, Milan, Italy
+    orcid: 'https://orcid.org/0000-0002-3538-1443'
+identifiers:
+  - type: doi
+    value: 10.5281/zenodo.12143934
+repository-code: 'https://github.com/FrigerioGianfranco/GetFeatistics'
+abstract: >
+  Within the metabolomics community, tools such as MS-Dial
+  and R-based algorithms as XCMS are widely implemented to
+  convert raw data to feature tables.
+
+  As demonstrated in a previous work, while conducting
+  non-targeted metabolomics studies with defined groups of
+  subjects assessing variations of molecules present at low
+  concentrations (such as metabolites of exogenous
+  compounds) the use of separated pooled quality control
+  (QC) samples can be a promising strategy to both improve
+  the quality of the dataset and preserving potential
+  features deriving from low concentrated molecules.
+  Moreover, in observational epidemiologic studies,
+  controlling for confounding factors is crucial to assess
+  the association of metabolite variations with the
+  biological question of interest; also, for longitudinal
+  studies, linear models with mixed effects are great
+  statistical approach.
+
+  To streamline the data elaboration process of metabolomics
+  studies, the GetFeatistics R-package has been developed.
+  Starting from a table of features, this package
+  encompasses useful functions for the data elaboration of
+  targeted and non-targeted studies. For non-targeted
+  studies, the functions include the assignment to each
+  feature of the identification level given previously
+  defined cut-offs, the search for the presence of known
+  standards, the filtration of the dataset considering
+  pooled QC sample, and also considering separated QC
+  samples. For targeted studies, it calculates absolute
+  concentrations with the option of the use of weighted
+  linear regression curves.
+
+  For statistical analyses, after data transformation and
+  scaling, besides basic statistics such as ANOVA with or
+  without interactions, it performs multiple linear
+  regression models on the entire set of features with
+  multiple covariates that can be passed as fixed or random
+  effects variables. Finally, it generates some data
+  visualization of those models such as volcano plots.
+
+  In conclusion, the GetFeatistics is particularly helpful
+  for streamlining the metabolomics data elaboration of
+  epidemiological studies within the R environment.
+keywords:
+  - R-package
+  - quality controls
+  - multivariate statistics
+  - linear models with mixed effects
+  - epidemiology
+license: GPL-3.0
