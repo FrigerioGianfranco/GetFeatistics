@@ -18,14 +18,19 @@ devtools::install_github("FrigerioGianfranco/GetFeatistics", dependencies = TRUE
 
 ## Then, use it!
 
-An example of workflow is provided in the following picture. You can check the documentation of each function (for example typing in you console ?name_of_the_function) to know how to use each argument. If something is not clear, please contact me!
+Just type:
+```r
+library(GetFeatistics)
+```
+
+Then, an example of workflow is provided in the following picture. You can check the documentation of each function (for example: _?QCs_process_) to know how to use each argument. If something is not clear, please contact me!
 
 <img src="images/GetFeatisitcs_workflowGF.png" height="800">
 
 
 ## Lastly; Cite it!
 
-If you use the package, please cite:
+If you use the package, please cite it:
 
 _Frigerio Gianfranco, GetFeatistics R-pacakge, (2024), GitHub repository, https://github.com/FrigerioGianfranco/GetFeatistics_
 
