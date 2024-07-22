@@ -16,7 +16,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-<img src="GetFeatisitcs_logoGF.png" width="200">
+<img src="vignettes/GetFeatisitcs_workflowGF.png">
 
 ## Introduction
 
