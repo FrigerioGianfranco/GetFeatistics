@@ -92,22 +92,27 @@ gentab_P.t.test <- function(df, v, f, paired = FALSE, FDR = FALSE, cutPval = FAL
   df_fil2 <- select(df, all_of(v))
   
   if (paired == FALSE) {Pvalues_t.test <- map_dbl(df_fil2, gett.test.P, pull(df,f))} else if (paired == TRUE) {Pvalues_t.test <- map_dbl(df_fil2, gett.test.P_paired, pull(df,f))}
-  if (FDR == TRUE) {Pvalues_t.test <- p.adjust(Pvalues_t.test, method ="fdr")}
+  if (FDR) {Pvalues_t.test_FDR <- p.adjust(Pvalues_t.test, method ="fdr")}
   
   df_P <- as.data.frame(Pvalues_t.test)
-  df_P_final <- tibble(variables = rownames(df_P), P_values = df_P$Pvalues_t.test)
+  df_P_final <- tibble(variables = rownames(df_P), Pvalues = df_P$Pvalues_t.test)
+  P_to_consider <- "Pvalues"
+  if (FDR) {
+    df_P_final <- mutate(df_P_final, PvaluesFDR = Pvalues_t.test_FDR)
+    P_to_consider <- "PvaluesFDR"
+    }
   
   if(groupdiff == TRUE) {
     df_P_final <- mutate(df_P_final, group_diff = as.character(NA))
-    for(i in 1:length(df_P_final$P_values)) {
-      if (df_P_final$P_values[i] < pcutoff) {
+    for(i in 1:length(pull(df_P_final, P_to_consider))) {
+      if (pull(df_P_final, P_to_consider)[i] < pcutoff) {
         if (mean(pull(df_fil1_lev1, df_P_final$variables[i])) > mean(pull(df_fil1_lev2, df_P_final$variables[i]))) {
           df_P_final[i, "group_diff"] <- paste0(levels(pull(df_fil1, f))[1], " > ", levels(pull(df_fil1, f))[2])
         } else if (mean(pull(df_fil1_lev1, df_P_final$variables[i])) < mean(pull(df_fil1_lev2, df_P_final$variables[i]))) {
           df_P_final[i, "group_diff"] <- paste0(levels(pull(df_fil1, f))[2], " > ", levels(pull(df_fil1, f))[1])
         } else {
           df_P_final[i, "group_diff"] <- paste0(levels(pull(df_fil1, f))[1], " = ", levels(pull(df_fil1, f))[2])
-          warning("something wrong: it's wired if it's the same mean, if the p-value was significative")
+          warning(paste0("It's wired that it's the same mean, since the p-value is significative, for  ", df_P_final$variables[i]))
         }
       }
     }
@@ -115,10 +120,19 @@ gentab_P.t.test <- function(df, v, f, paired = FALSE, FDR = FALSE, cutPval = FAL
   
   
   if (filter_sign == TRUE) {
-    df_P_final <- filter(df_P_final, P_values < pcutoff)
+    if (FDR == FALSE) {
+      df_P_final <- filter(df_P_final, Pvalues < pcutoff)
+    } else if (FDR) {
+      df_P_final <- filter(df_P_final, PvaluesFDR < pcutoff)
+    }
   }
   
-  if (cutPval == TRUE) {df_P_final$P_values <- map_chr(df_P_final$P_values, cutP)}
+  if (cutPval == TRUE) {
+    df_P_final$Pvalues <- map_chr(df_P_final$Pvalues, cutP)
+    if (FDR) {
+      df_P_final$PvaluesFDR <- map_chr(df_P_final$PvaluesFDR, cutP)
+    }
+  }
   
   return(df_P_final)
 }

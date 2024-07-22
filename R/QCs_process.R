@@ -27,9 +27,9 @@
 #' @export
 QCs_process <- function(featmatrix, sampletype,
                         sep_QC = FALSE, QC_to_merge = NULL,
-                        step1 = TRUE, step1_cutoff = 30,
+                        step1 = TRUE, step1_cutoff = 50,
                         step2 = TRUE, step2_cutoff = 50,
-                        step3 = TRUE, step3_cutoff = 10,
+                        step3 = TRUE, step3_cutoff = 50,
                         step4 = FALSE, step4_cutoff = c(20, 80),
                         rtrn_filtered_table = TRUE, remove_results = FALSE, remove_QC_and_blanks = FALSE) {
   
@@ -179,16 +179,15 @@ QCs_process <- function(featmatrix, sampletype,
       
       n_features_after <- length(pull(featmatrix_fil_QC_processed, colnames(featmatrix_fil_QC_processed[1])))
       
-      print(paste0("After the QC processing, the feature table was reduced from ", n_features_before, " to ", n_features_after, " features"))
+      cat(paste0("After the QC processing, the feature table was reduced from ", n_features_before, " to ", n_features_after, " features"))
       
-      if (remove_results == FALSE) {
-        return(featmatrix_fil_QC_processed)
-      } else if (remove_results == TRUE) {
-        featmatrix_fil_QC_processed <- featmatrix_fil_QC_processed %>%
+      
+      final_tibble <- featmatrix_fil_QC_processed
+      
+      if (remove_results) {
+        final_tibble <- final_tibble %>%
           select(-Mean_QCs, -SD_QCs, -RSD_QCs, -COUNT_QCs, -BLANK_CONTR)
-        if ("DIL_EFF" %in% colnames(featmatrix_fil_QC_processed)) {featmatrix_fil_QC_processed <- select(featmatrix_fil_QC_processed, -DIL_EFF)}
-        
-        final_tibble <- featmatrix_fil_QC_processed
+        if ("DIL_EFF" %in% colnames(final_tibble)) {final_tibble <- select(final_tibble, -DIL_EFF)}
       }
       
     }
@@ -266,26 +265,35 @@ QCs_process <- function(featmatrix, sampletype,
     
     if (rtrn_filtered_table == FALSE) {
       final_tibble <- merged_feat_matrix
+      
+      if (remove_results) {
+        final_tibble <- final_tibble %>%
+          select(-Mean_QCs, -SD_QCs, -RSD_QCs, -COUNT_QCs, -BLANK_CONTR)
+        if ("DIL_EFF" %in% colnames(final_tibble)) {final_tibble <- select(final_tibble, -DIL_EFF)}
+      }
+      
+      
     } else if (rtrn_filtered_table == TRUE) {
-      merged_feat_matrix <- unique(merged_feat_matrix)
+      
+      features_to_keep <- unique(pull(merged_feat_matrix, 1))
+      
+      final_tibble <- featmatrix[which(pull(featmatrix, 1) %in% features_to_keep),]
+      
       
       text_to_print <- text_to_print[!is.na(text_to_print)]
-      print(text_to_print)
-      print(paste0("Furthermore, while considering the feature matrix combined of ", paste(QC_to_merge, collapse = " "), " the final table contained ", length(pull(merged_feat_matrix, colnames(merged_feat_matrix)[1])), " features"))
+      cat(paste0(text_to_print, collapse = "\n"))
+      cat("\n")
+      cat(paste0("Furthermore, while considering the feature matrix combined of ", paste(QC_to_merge, collapse = " "), " the final table contained ", length(pull(final_tibble, 1)), " features"))
       
-      final_tibble <- merged_feat_matrix
+      
       
     }
   }
   
-  if (remove_results) {
-    final_tibble <- final_tibble %>%
-      select(-Mean_QCs, -SD_QCs, -RSD_QCs, -COUNT_QCs, -BLANK_CONTR)
-    if ("DIL_EFF" %in% colnames(final_tibble)) {final_tibble <- select(final_tibble, -DIL_EFF)}
-  }
+  
   
   if (remove_QC_and_blanks) {
-    sample_to_remove <- pull(sampletype, 1)[which(pull(sampletype, 2) %in% c("QC", "QC_half", "blank"))]
+    sample_to_remove <- pull(sampletype, 1)[which(pull(sampletype, 2) %in% c("QC", "QC_half", "blank", "REMOVE"))]
     sample_to_keep <- colnames(final_tibble)[which(!colnames(final_tibble)%in%sample_to_remove)]
     
     final_tibble <- final_tibble[, sample_to_keep]

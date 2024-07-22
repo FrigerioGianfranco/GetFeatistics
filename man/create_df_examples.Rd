@@ -5,13 +5,27 @@
 \title{Create example datasets}
 \usage{
 create_df_examples(
-  datasets = c("all", "df_example", "df_example_targeted", "df_example_targeted_legend",
-    "df_example_targeted_compounds_legend", "grad_example", "features_data_example",
-    "featinfo_example", "melecule_to_search_example")
+  datasets = c("all", "df_example_generic", "df_example_targeted",
+    "df_example_targeted_legend", "df_example_targeted_compounds_legend",
+    "df_example_sample_data", "df_example_feat_intensities", "df_example_feat_info",
+    "df_example_qc_sampletype", "df_example_melecules_to_search", "df_example_gradient")
 )
 }
 \arguments{
-\item{datasets}{one of the following: "all", "df_example", "df_example_targeted", "df_example_targeted_legend", "df_example_targeted_compounds_legend", "grad_example", "features_data_example", "featinfo_example", "melecule_to_search_example". If "all", all of the following dataframes (tibble) will be created as different objects; df_example, generic dataframe useful for testing most statistical functions; df_example_targeted, example for the first argument of get_targeted_elaboration; df_example_targeted_legend, example for the second argument of get_targeted_elaboration; df_example_targeted_compounds_legend, example for the third argument of get_targeted_elaboration; grad_example, example for get_phase_amount; features_data_example, example of a feature data table; featinfo_example, example of a featINFO table; melecule_to_search_example, example of known standards to pass to the third argument of checkmolecules_in_feat_table.}
+\item{datasets}{one of the following: "all", "df_example_generic", "df_example_targeted", "df_example_targeted_legend", "df_example_targeted_compounds_legend", "df_example_sample_data", "df_example_feat_intensities", "df_example_feat_info", "df_example_qc_sampletype", "df_example_melecules_to_search", "df_example_gradient".
+\itemize{
+\item If "all", all of the following dataframes (tibble) will be created as different objects.
+\item df_example_generic: generic dataframe useful for testing some statistical functions.
+\item df_example_targeted: example for the first argument of get_targeted_elaboration.
+\item df_example_targeted_legend: example for the second argument of get_targeted_elaboration.
+\item df_example_targeted_compounds_legend: example for the third argument of get_targeted_elaboration.
+\item df_example_sample_data: example of the metadata (additional variables besides molecular data, in real life they could be age, sex, BMI) that can be used to test statistical functions.
+\item df_example_feat_intensities: example of featTable, with feature intensities.
+\item df_example_feat_info: example of featINFO, with retention times and m/z.
+\item df_example_qc_sampletype: example of a table to pass in the sampletype argument of the QCs_process function.
+\item df_example_melecules_to_search; example of known standards to pass to the third argument of checkmolecules_in_feat_table.
+\item df_example_gradient: example for get_phase_amount; features_data_example, example of a feature data table.
+}}
 }
 \value{
 it directly creates the object(s) in the current environment.

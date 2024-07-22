@@ -10,10 +10,10 @@
 #' @param cutpval logical. Do you want to cut the P-value using the function cutP of the present package?
 #'
 #'
-#' @return A tibble with a number of rows equal to elements specified in v. For each of those, it reports the results of the Saphiro test and whether those data are normally distributed considering the given p-value cutoff.
+#' @return A tibble with a number of rows equal to elements specified in v. For each of those, it reports the results of the Shapiro test and whether those data are normally distributed considering the given p-value cutoff.
 #'
 #' @export
-test_normality_saphiro_table <- function(df, v, pvalcutoff = 0.05, cutpval = FALSE) {
+test_normality_Shapiro_table <- function(df, v, pvalcutoff = 0.05, cutpval = FALSE) {
   if (!is.data.frame(df)) {stop("df must be a data frame!")}
   if (mean(v %in% colnames(df)) != 1) {stop("v must be a vector containing the names of the coloumns of df that you want to apply the descriptive statistics")}
   if (mean(map_lgl(select(df, all_of(v)), is.numeric)) != 1) {stop("all coloumn passed in v must be numeric!")}

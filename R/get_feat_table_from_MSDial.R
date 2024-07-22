@@ -44,10 +44,10 @@ get_feat_table_from_MSDial <- function(MSDIAL_raw_table, n_last_coloums_to_delet
     
     x_final <- as.character(rep(NA, length(x)))
     
+    if (length(x) > 10000000) {stop("too many features!! More than 10 milions!!! XD")}
+    
     for (i in 1:length(x)) {
-      zeros <- if (x[i] > 10000000) {
-        stop("too many features!! More than 10 milions!!! XD")
-      } else if (x[i] >= 1000000) {
+      zeros <- if (x[i] >= 1000000) {
         ""
       } else if (x[i] >= 100000) {
         "0"

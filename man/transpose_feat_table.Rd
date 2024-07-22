@@ -7,9 +7,9 @@
 transpose_feat_table(feat_table, name_first_column = "samples")
 }
 \arguments{
-\item{name_first_column}{character of length 1. You can specify here the name of the first column, which will be referred to the column of samples.}
+\item{feat_table}{a dataframe: first column the featname, each other column is a sample with feature intensities. Each row is a feature. It can be obtained with the get_feat_table_from_MSDial function of the present package, but ideally it underwent the cleaning with QCs using the QCs_process function.}
 
-\item{featmatrix}{a dataframe: first column the featname, each other column is a sample with feature intensities. Each row is a feature. It can be obtained with the get_feat_table_from_MSDial function of the present package, but ideally it underwent the cleaning with QCs using the QCs_process function.}
+\item{name_first_column}{character of length 1. You can specify here the name of the first column, which will be referred to the column of samples.}
 }
 \value{
 A tibble with samples as rows and features as columns.

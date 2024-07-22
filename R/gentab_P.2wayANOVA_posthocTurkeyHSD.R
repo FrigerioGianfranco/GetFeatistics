@@ -75,6 +75,13 @@ gentab_P.2wayANOVA_posthocTurkeyHSD <- function(DF, v, f, interact = FALSE, FDR 
     col_Pvalues <- colnames(final_tab)[which(grepl("_Pvalue", colnames(final_tab)))]
     col_Pvalues_comparisons <- colnames(final_tab)[which(grepl("_Pvalue", colnames(final_tab)) & grepl("_vs_", colnames(final_tab)))]
     
+    if (FDR == TRUE) {
+      col_PvaluesFDR <- paste0(col_Pvalues, "FDR")
+      col_Pvalues_comparisonsFDR <- paste0(col_Pvalues_comparisons, "FDR")
+      final_tab[, col_PvaluesFDR] <- as.character(NA)
+    }
+    
+    
     if (groupdiff == TRUE) {
       groupdiff_colnames <- str_remove_all(col_Pvalues_comparisons, "_Pvalue")
       final_tab[, groupdiff_colnames] <- as.character(NA)
@@ -129,15 +136,23 @@ gentab_P.2wayANOVA_posthocTurkeyHSD <- function(DF, v, f, interact = FALSE, FDR 
     
     if (FDR == TRUE) {
       for (pv in col_Pvalues) {
-        final_tab[,pv] <- p.adjust(pull(final_tab, pv), method ="fdr")
+        final_tab[, paste0(pv, "FDR")] <- p.adjust(pull(final_tab, pv), method ="fdr")
       }
     }
     
     significant_v <- character()
     
-    for (a in v) {
-      if (sum(map_lgl(filter(final_tab, Dependent == a)[, col_Pvalues], ~ . < pcutoff), na.rm = TRUE) >0) {
-        significant_v <- c(significant_v, a)
+    if (FDR == FALSE) {
+      for (a in v) {
+        if (sum(map_lgl(filter(final_tab, Dependent == a)[, col_Pvalues], ~ . < pcutoff), na.rm = TRUE) >0) {
+          significant_v <- c(significant_v, a)
+        }
+      }
+    } else if (FDR == TRUE) {
+      for (a in v) {
+        if (sum(map_lgl(filter(final_tab, Dependent == a)[, col_PvaluesFDR], ~ . < pcutoff), na.rm = TRUE) >0) {
+          significant_v <- c(significant_v, a)
+        }
       }
     }
     
@@ -150,19 +165,19 @@ gentab_P.2wayANOVA_posthocTurkeyHSD <- function(DF, v, f, interact = FALSE, FDR 
         tab_TURKEY_matrix <- rbind(TURKEY[[f[1]]], TURKEY[[f[2]]])
         tab_TURKEY_df <- bind_cols(tibble(comparisons = rownames(tab_TURKEY_matrix)),
                                    as_tibble(tab_TURKEY_matrix))
-        for (m in col_Pvalues_comparisons) {
+        for (m in col_Pvalues_comparisonsFDR) {
           
           if (!is.na(pull(final_tab, m)[which(final_tab$Dependent == s)])) {
             if (pull(final_tab, m)[which(final_tab$Dependent == s)] < pcutoff) {
               
-              elem1 <- strsplit(str_remove_all(m, "_Pvalue"), "_vs_")[[1]][1]
-              elem2 <- strsplit(str_remove_all(m, "_Pvalue"), "_vs_")[[1]][2]
+              elem1 <- strsplit(str_remove_all(m, "_PvalueFDR"), "_vs_")[[1]][1]
+              elem2 <- strsplit(str_remove_all(m, "_PvalueFDR"), "_vs_")[[1]][2]
               
-              if (length(which(pull(tab_TURKEY_df, comparisons) == str_remove_all(str_replace_all(m, "_vs_", "-"), "_Pvalue"))) != 1) { stop("something wrong")}
+              if (length(which(pull(tab_TURKEY_df, "comparisons") == str_remove_all(str_replace_all(m, "_vs_", "-"), "_PvalueFDR"))) != 1) { stop("something wrong")}
               
-              if (pull(tab_TURKEY_df, "diff")[which(pull(tab_TURKEY_df, comparisons) == str_remove_all(str_replace_all(m, "_vs_", "-"), "_Pvalue"))] > 0) {
+              if (pull(tab_TURKEY_df, "diff")[which(pull(tab_TURKEY_df, "comparisons") == str_remove_all(str_replace_all(m, "_vs_", "-"), "_PvalueFDR"))] > 0) {
                 final_tab[which(final_tab$Dependent == s), paste0(elem1, "_vs_", elem2)] <- paste0(elem1, " > ", elem2)
-              } else if (pull(tab_TURKEY_df, "diff")[which(pull(tab_TURKEY_df, comparisons) == str_remove_all(str_replace_all(m, "_vs_", "-"), "_Pvalue"))] < 0) {
+              } else if (pull(tab_TURKEY_df, "diff")[which(pull(tab_TURKEY_df, "comparisons") == str_remove_all(str_replace_all(m, "_vs_", "-"), "_PvalueFDR"))] < 0) {
                 final_tab[which(final_tab$Dependent == s), paste0(elem1, "_vs_", elem2)] <- paste0(elem2, " > ", elem1)
               } else {
                 final_tab[which(final_tab$Dependent == s), paste0(elem1, "_vs_", elem2)] <- paste0(elem1, " = ", elem2)
@@ -187,7 +202,9 @@ gentab_P.2wayANOVA_posthocTurkeyHSD <- function(DF, v, f, interact = FALSE, FDR 
     
     final_tab_colnames <- c("Dependent", paste0(f, "_Pvalue"), paste0(paste0(f, collapse = ":"), "_Pvalue"))
     for (ind in c(f, paste0(f, collapse = ":"))) {
-      final_tab_colnames <- c(final_tab_colnames, paste0(str_replace_all(rownames(TURKEY_first[[ind]]), "-", "_vs_"), "_Pvalue"))
+      if(!is.null(TURKEY_first[[ind]])) {
+        final_tab_colnames <- c(final_tab_colnames, paste0(str_replace_all(rownames(TURKEY_first[[ind]]), "-", "_vs_"), "_Pvalue"))
+      }
     }
     
     
@@ -197,6 +214,12 @@ gentab_P.2wayANOVA_posthocTurkeyHSD <- function(DF, v, f, interact = FALSE, FDR 
     
     col_Pvalues <- colnames(final_tab)[which(grepl("_Pvalue", colnames(final_tab)))]
     col_Pvalues_comparisons <- colnames(final_tab)[which(grepl("_Pvalue", colnames(final_tab)) & grepl("_vs_", colnames(final_tab)))]
+    
+    if (FDR == TRUE) {
+      col_PvaluesFDR <- paste0(col_Pvalues, "FDR")
+      col_Pvalues_comparisonsFDR <- paste0(col_Pvalues_comparisons, "FDR")
+      final_tab[, col_PvaluesFDR] <- as.character(NA)
+    }
     
     if (groupdiff == TRUE) {
       groupdiff_colnames <- str_remove_all(col_Pvalues_comparisons, "_Pvalue")
@@ -254,17 +277,26 @@ gentab_P.2wayANOVA_posthocTurkeyHSD <- function(DF, v, f, interact = FALSE, FDR 
     
     if (FDR == TRUE) {
       for (pv in col_Pvalues) {
-        final_tab[,pv] <- p.adjust(pull(final_tab, pv), method ="fdr")
+        final_tab[, paste0(pv, "FDR")] <- p.adjust(pull(final_tab, pv), method ="fdr")
       }
     }
     
     significant_v <- character()
     
-    for (a in v) {
-      if (sum(map_lgl(filter(final_tab, Dependent == a)[, col_Pvalues], ~ . < pcutoff), na.rm = TRUE) >0) {
-        significant_v <- c(significant_v, a)
+    if (FDR == FALSE) {
+      for (a in v) {
+        if (sum(map_lgl(filter(final_tab, Dependent == a)[, col_Pvalues], ~ . < pcutoff), na.rm = TRUE) >0) {
+          significant_v <- c(significant_v, a)
+        }
+      }
+    } else if (FDR == TRUE) {
+      for (a in v) {
+        if (sum(map_lgl(filter(final_tab, Dependent == a)[, col_PvaluesFDR], ~ . < pcutoff), na.rm = TRUE) >0) {
+          significant_v <- c(significant_v, a)
+        }
       }
     }
+    
     
     
     if (groupdiff == TRUE & FDR == TRUE) {
@@ -277,19 +309,19 @@ gentab_P.2wayANOVA_posthocTurkeyHSD <- function(DF, v, f, interact = FALSE, FDR 
         tab_TURKEY_matrix <- rbind(TURKEY[[f[1]]], TURKEY[[f[2]]], TURKEY[[paste0(f, collapse = ":")]])
         tab_TURKEY_df <- bind_cols(tibble(comparisons = rownames(tab_TURKEY_matrix)),
                                    as_tibble(tab_TURKEY_matrix))
-        for (m in col_Pvalues_comparisons) {
+        for (m in col_Pvalues_comparisonsFDR) {
           
           if (!is.na(pull(final_tab, m)[which(final_tab$Dependent == s)])) {
             if (pull(final_tab, m)[which(final_tab$Dependent == s)] < pcutoff) {
               
-              elem1 <- strsplit(str_remove_all(m, "_Pvalue"), "_vs_")[[1]][1]
-              elem2 <- strsplit(str_remove_all(m, "_Pvalue"), "_vs_")[[1]][2]
+              elem1 <- strsplit(str_remove_all(m, "_PvalueFDR"), "_vs_")[[1]][1]
+              elem2 <- strsplit(str_remove_all(m, "_PvalueFDR"), "_vs_")[[1]][2]
               
-              if (length(which(pull(tab_TURKEY_df, comparisons) == str_remove_all(str_replace_all(m, "_vs_", "-"), "_Pvalue"))) != 1) { stop("something wrong")}
+              if (length(which(pull(tab_TURKEY_df, "comparisons") == str_remove_all(str_replace_all(m, "_vs_", "-"), "_PvalueFDR"))) != 1) { stop("something wrong")}
               
-              if (pull(tab_TURKEY_df, "diff")[which(pull(tab_TURKEY_df, comparisons) == str_remove_all(str_replace_all(m, "_vs_", "-"), "_Pvalue"))] > 0) {
+              if (pull(tab_TURKEY_df, "diff")[which(pull(tab_TURKEY_df, "comparisons") == str_remove_all(str_replace_all(m, "_vs_", "-"), "_PvalueFDR"))] > 0) {
                 final_tab[which(final_tab$Dependent == s), paste0(elem1, "_vs_", elem2)] <- paste0(elem1, " > ", elem2)
-              } else if (pull(tab_TURKEY_df, "diff")[which(pull(tab_TURKEY_df, comparisons) == str_remove_all(str_replace_all(m, "_vs_", "-"), "_Pvalue"))] < 0) {
+              } else if (pull(tab_TURKEY_df, "diff")[which(pull(tab_TURKEY_df, "comparisons") == str_remove_all(str_replace_all(m, "_vs_", "-"), "_PvalueFDR"))] < 0) {
                 final_tab[which(final_tab$Dependent == s), paste0(elem1, "_vs_", elem2)] <- paste0(elem2, " > ", elem1)
               } else {
                 final_tab[which(final_tab$Dependent == s), paste0(elem1, "_vs_", elem2)] <- paste0(elem1, " = ", elem2)
@@ -309,6 +341,12 @@ gentab_P.2wayANOVA_posthocTurkeyHSD <- function(DF, v, f, interact = FALSE, FDR 
   if (cutPval == TRUE) {
     for (cln in col_Pvalues) {
       final_tab[, cln] <- map_chr(pull(final_tab, cln), cutP)
+    }
+    
+    if (FDR == TRUE) {
+      for (cln in col_PvaluesFDR) {
+        final_tab[, cln] <- map_chr(pull(final_tab, cln), cutP)
+      }
     }
   }
   

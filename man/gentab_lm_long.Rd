@@ -32,7 +32,7 @@ gentab_lm_long(
 
 \item{right_cens}{NULL or a named numeric vector. If mdl is "tobit", indicate here the right-censored values (e.g.: the upper limit of detection values). In particular, this argument should be set to NULL (no right-censored values) or a named numeric vector whose names must correspond to variables passed in dep.}
 
-\item{var_perc}{logical. Besides the beta slopes, do you also want to know the variation percentage? (if so, please, ensure your data are log-transformormed and scaled; consider using the function data_transf of the present package to do this)}
+\item{var_perc}{logical. Besides the beta slopes, do you also want to know the variation percentage? (if so, please, ensure your data are log-transformormed and scaled; consider using the function data_transf of the present package to do this). The variation percentage is calculated as follow: (((base^beta)-1)*100).}
 
 \item{base}{numerical of length one. If var_perc is TRUE, it is the base of the logarithm used to log-transform the dependent variables.}
 
