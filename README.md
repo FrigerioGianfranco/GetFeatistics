@@ -26,10 +26,13 @@ library(GetFeatistics)
 Then, an example of workflow is provided in the following picture.
 
 Check also the vignette guiding you through the workflow step by step:
+
 https://frigeriogianfranco.github.io/GetFeatistics/articles/GF_vignette.html
 
 For more details, here the full documentation for all functions:
-https://frigeriogianfranco.github.io/GetFeatistics/
+
+https://frigeriogianfranco.github.io/GetFeatistics/reference/
+
 
 If something is not clear, please contact me!
 
