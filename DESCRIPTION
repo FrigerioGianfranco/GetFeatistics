@@ -1,6 +1,6 @@
 Package: GetFeatistics
 Title: Getting streamlined elaboration of metabolomics data.
-Version: 0.2.4
+Version: 0.2.5
 Authors@R: 
     person("Gianfranco", "Frigerio", email = "frigerio.gianfranco@hsr.it", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0002-3538-1443"))
@@ -8,7 +8,7 @@ Description: Getting streamlined elaboration of targeted and non-targeted metabo
 License: GPL (>= 3)
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.1
+RoxygenNote: 7.3.2
 Depends: R (>= 4.3.1)
 Imports: tidyverse, ggpubr, ggrepel, lmerTest, AER, MuMIn, writexl, xlsx, gridExtra
 Suggests: 

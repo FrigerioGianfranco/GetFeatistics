@@ -4,7 +4,7 @@
 #' It removes special characters from a character vector, useful to modify column names. Spaces and hyphens will be replaced with the underscore,
 #'
 #' @param x a character vector.
-#' @param if_start_with_number_add character of length 1. If the name start with a numner, a character indicated in this argument will be added at the beginning.
+#' @param if_start_with_number_add character of length 1. If the name start with a number, a character indicated in this argument will be added at the beginning.
 #'
 #' @return a single character with special character replaced.
 #'
@@ -28,6 +28,10 @@ fix_names <- function(x, if_start_with_number_add = "m") {
   if (length(x_mod) > 0) {
     for (i in which(grepl("^\\d", x_mod))) {
       x_mod[i] <- paste0(if_start_with_number_add, x_mod[i])
+    }
+    
+    for (i in which(grepl("^[[:punct:]][0-9]", x_mod))) {
+      x_mod[i] <- paste0(substr(x_mod[i], start = 1, stop = 1), if_start_with_number_add, substr(x_mod[i], start = 2, stop = nchar(x_mod[i])))
     }
   }
   
