@@ -9,7 +9,7 @@ fix_names(x, if_start_with_number_add = "m")
 \arguments{
 \item{x}{a character vector.}
 
-\item{if_start_with_number_add}{character of length 1. If the name start with a numner, a character indicated in this argument will be added at the beginning.}
+\item{if_start_with_number_add}{character of length 1. If the name start with a number, a character indicated in this argument will be added at the beginning.}
 }
 \value{
 a single character with special character replaced.
