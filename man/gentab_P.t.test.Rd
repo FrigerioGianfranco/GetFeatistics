@@ -21,7 +21,7 @@ gentab_P.t.test(
 
 \item{v}{a character vector. Each element must correspond to a column name of the df, each of which must contain numeric values. Moreover, missing values are not allowed (if any, consider before replacing them using the function transf_data of the present package).}
 
-\item{f}{character vector of length 1. Name of the column of df containing the factor variable (that must have exactly 2 levels) considered for performing th t-tests.}
+\item{f}{character vector of length 1. Name of the column of df containing the factor variable (that must have exactly 2 levels) considered for performing the t-tests.}
 
 \item{paired}{logical. If FALSE it performs non-paired t-tests. If TRUE it performs paired t-tests.}
 

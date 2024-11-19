@@ -6,7 +6,7 @@
 #'
 #' @param df a dataframe.
 #' @param v a character vector. Each element must correspond to a column name of the df, each of which must contain numeric values. Moreover, missing values are not allowed (if any, consider before replacing them using the function transf_data of the present package).
-#' @param f character vector of length 1. Name of the column of df containing the factor variable (that must have exactly 2 levels) considered for performing th t-tests.
+#' @param f character vector of length 1. Name of the column of df containing the factor variable (that must have exactly 2 levels) considered for performing the t-tests.
 #' @param paired logical. If FALSE it performs non-paired t-tests. If TRUE it performs paired t-tests.
 #' @param FDR logical. If TRUE, after performing the t-tests, it also correct p-values across the different variables with a false discovery rate multiple comparison correction (method "fdr" of the function p.adjust).
 #' @param cutPval logical. If TRUE, it cut the p-values using the cutP function of the present package.
@@ -100,7 +100,7 @@ gentab_P.t.test <- function(df, v, f, paired = FALSE, FDR = FALSE, cutPval = FAL
   if (FDR) {
     df_P_final <- mutate(df_P_final, PvaluesFDR = Pvalues_t.test_FDR)
     P_to_consider <- "PvaluesFDR"
-    }
+  }
   
   if(groupdiff == TRUE) {
     df_P_final <- mutate(df_P_final, group_diff = as.character(NA))
@@ -136,5 +136,4 @@ gentab_P.t.test <- function(df, v, f, paired = FALSE, FDR = FALSE, cutPval = FAL
   
   return(df_P_final)
 }
-
 
