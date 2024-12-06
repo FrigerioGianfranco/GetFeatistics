@@ -9,6 +9,8 @@
 #' @import writexl
 #' @import xlsx
 #' @import gridExtra
+#' @import FELLA
+#' @import igraph
 
 .onLoad <- function(libname, pkgname) {
   library(tidyverse)
@@ -20,4 +22,6 @@
   library(writexl)
   library(xlsx)
   library(gridExtra)
+  library(FELLA)
+  library(igraph)
 }
