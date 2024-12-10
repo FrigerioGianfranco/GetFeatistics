@@ -43,7 +43,7 @@ If something is not clear, please contact me!
 
 If you use the package, please cite it:
 
-Frigerio Gianfranco, GetFeatistics R-pacakge, (2024), GitHub repository, https://github.com/FrigerioGianfranco/GetFeatistics_
+Frigerio Gianfranco, GetFeatistics R-pacakge, (2024), GitHub repository, https://github.com/FrigerioGianfranco/GetFeatistics
 
 
 
