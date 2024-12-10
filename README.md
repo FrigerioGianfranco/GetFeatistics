@@ -2,7 +2,7 @@
 
 Getting streamlined elaboration of targeted and non-targeted metabolomics data, including elaboration of feature tables, separate QC processing, advanced statistics such as multiple regression linear models with mixed effects, and more! This is the GetFeatistics (GF) package!
 
-<img src="vignettes/GetFeatisitcs_logoGF.png">
+<img src="readme/GetFeatisitcs_logoGF.png">
 
 ## First: Install it!
 
@@ -36,14 +36,14 @@ https://frigeriogianfranco.github.io/GetFeatistics/reference/
 
 If something is not clear, please contact me!
 
-<img src="vignettes/GetFeatisitcs_workflowGF.png">
+<img src="readme/GetFeatisitcs_workflowGF.png">
 
 
 ## Lastly; Cite it!
 
 If you use the package, please cite it:
 
-_Frigerio Gianfranco, GetFeatistics R-pacakge, (2024), GitHub repository, https://github.com/FrigerioGianfranco/GetFeatistics_
+Frigerio Gianfranco, GetFeatistics R-pacakge, (2024), GitHub repository, https://github.com/FrigerioGianfranco/GetFeatistics_
 
 
 

@@ -2,7 +2,7 @@
 
 #' Generate a Table with Fold Change
 #'
-#' Given a dataframe and a set of numerical variables of that dataframe, it performs fold changes analysis to each desired variable and creates a new table with the p-values. Please, use data before log-transformation and scaling for this analysis!
+#' Given a dataframe and a set of numerical variables of that dataframe, it performs fold changes analysis to each desired variable and creates a new table.
 #'
 #' @param df a dataframe.
 #' @param v a character vector. Each element must correspond to a column name of the df, each of which must contain numeric values.
@@ -61,8 +61,13 @@ gentab_FC <- function(df, v, f, second_to_first_ratio = TRUE, paired = FALSE, ar
   if (is.na(are_log_transf)) {stop("are_log_transf must be exclusively TRUE or FALSE")}
     
   if (are_log_transf== FALSE) {
-    if (any(map_lgl(df[,v], ~ any(.x <= 0)))) {warning("There are some negative values in the data, this will give you wired results, not suitable for a FC analysis!!")}
-    if (any(map_lgl(df[,v], ~ any(.x == 0)))) {warning("There are some zeros in the data")}
+    if (paired) {
+      if (any(map_lgl(df[,v], ~ any(.x < 0)))) {warning("There are some negative values in the data, this will give you wired results, not suitable for a FC analysis!!")}
+      if (any(map_lgl(df[,v], ~ any(.x == 0)))) {warning("There are some zeros in the data")}
+    } else {
+      if (any(map_lgl(df[,v], ~ any(.x == 0)))) {warning("There are some zeros in the data")}
+      if (any(map_lgl(df[pull(df, f) == levels(pull(df, f))[1], v], ~ mean(.x, na.rm = TRUE) < 0 )) | any(map_lgl(df[pull(df, f) == levels(pull(df, f))[2], v], ~ mean(.x, na.rm = TRUE) < 0 ))) {warning("There are some negative values in the data, this will give you wired results, not suitable for a FC analysis!!")}
+    }
   }
   
   if (length(log_base)!=1) {stop("log_base must be a number")}
