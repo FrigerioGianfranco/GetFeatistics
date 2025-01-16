@@ -20,7 +20,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">GetFeatistics</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.9.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.9.2</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -58,7 +58,7 @@
                         <h4 data-toc-skip class="author">Gianfranco
 Frigerio</h4>
             
-            <h4 data-toc-skip class="date">2024-07-22</h4>
+            <h4 data-toc-skip class="date">2025-01-16</h4>
       
 
       <div class="d-none name"><code>GF_vignette.Rmd</code></div>
@@ -280,7 +280,7 @@ a list of ggplots that you can either print on R or export using the
 <span><span class="co">#&gt; `geom_smooth()` using formula = 'y ~ x'</span></span></code></pre></div>
 <p><img src="GF_vignette_files/figure-html/unnamed-chunk-11-1.png" width="700"></p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/export_figures.html">export_figures</a></span><span class="op">(</span><span class="va">TARGETED_EXAMPLE_CALIBRATION_CURVES</span>, <span class="st">"TARGETED_EXAMPLE_CALIBRATION_CURVES"</span>, exprt_fig_type <span class="op">=</span> <span class="st">"pdf"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/export_figures.html">export_figures</a></span><span class="op">(</span><span class="va">TARGETED_EXAMPLE_CALIBRATION_CURVES</span>, exprt_fig_type <span class="op">=</span> <span class="st">"pdf"</span><span class="op">)</span></span></code></pre></div>
 <p>Last step before moving to the next chapter: let’s store separately
 just what we will need later for the statistics. Two easy steps.</p>
 <ol style="list-style-type: decimal">
@@ -509,7 +509,7 @@ to consider missing values.</p>
 <em>export_the_table</em> function and it will be ready to be used as a
 table of your next publication!</p>
 <div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/export_the_table.html">export_the_table</a></span><span class="op">(</span><span class="va">EXAMPLE_DESCRIPTIVE_STATISTICS_RESULTS</span>, <span class="st">"EXAMPLE_DESCRIPTIVE_STATISTICS_RESULTS"</span>, <span class="st">"txt"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/export_the_table.html">export_the_table</a></span><span class="op">(</span><span class="va">EXAMPLE_DESCRIPTIVE_STATISTICS_RESULTS</span>, exprtname <span class="op">=</span> <span class="st">"The_results_of_statistics"</span>, exprt_type <span class="op">=</span> <span class="st">"csv"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="data-normalisation">Data normalisation<a class="anchor" aria-label="anchor" href="#data-normalisation"></a>
@@ -758,9 +758,9 @@ categorical variable with three or more levels:</p>
 <span><span class="co">#&gt; $ F3B_vs_F3A_PvalueFDR           <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 2.706096e-01, 3.394457e-01, 0.000000e+0…</span></span>
 <span><span class="co">#&gt; $ F3C_vs_F3A_PvalueFDR           <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 0.001536749, 0.774709528, 0.000000000, …</span></span>
 <span><span class="co">#&gt; $ F3C_vs_F3B_PvalueFDR           <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 1.889930e-01, 9.841331e-01, 6.810215e-0…</span></span>
-<span><span class="co">#&gt; $ F3B_vs_F3A                     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> NA, NA, "F3B &gt; F3A", NA, "F3B &gt; F3A", "…</span></span>
-<span><span class="co">#&gt; $ F3C_vs_F3A                     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "F3A &gt; F3C", NA, "F3C &gt; F3A", NA, "F3C …</span></span>
-<span><span class="co">#&gt; $ F3C_vs_F3B                     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> NA, NA, "F3C &gt; F3B", NA, "F3C &gt; F3B", "…</span></span></code></pre></div>
+<span><span class="co">#&gt; $ F3B_vs_F3A                     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #BB0000;">NA</span>, <span style="color: #BB0000;">NA</span>, "F3B &gt; F3A", <span style="color: #BB0000;">NA</span>, "F3B &gt; F3A", "…</span></span>
+<span><span class="co">#&gt; $ F3C_vs_F3A                     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "F3A &gt; F3C", <span style="color: #BB0000;">NA</span>, "F3C &gt; F3A", <span style="color: #BB0000;">NA</span>, "F3C …</span></span>
+<span><span class="co">#&gt; $ F3C_vs_F3B                     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #BB0000;">NA</span>, <span style="color: #BB0000;">NA</span>, "F3C &gt; F3B", <span style="color: #BB0000;">NA</span>, "F3C &gt; F3B", "…</span></span></code></pre></div>
 <p>A nice graphical visualisation of the distribution of the data can be
 obtained with the following function that generate some boxplots:</p>
 <div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
@@ -773,7 +773,7 @@ obtained with the following function that generate some boxplots:</p>
 interest. We could use the <em>export_figures</em> to export them all in
 a single pdf file:</p>
 <div class="sourceCode" id="cb36"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/export_figures.html">export_figures</a></span><span class="op">(</span><span class="va">EXAMPLE_BOX_PLOTS</span>, <span class="st">"EXAMPLE_BOX_PLOTS"</span>, exprt_fig_type <span class="op">=</span> <span class="st">"pdf"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/export_figures.html">export_figures</a></span><span class="op">(</span><span class="va">EXAMPLE_BOX_PLOTS</span>, exprtname_figures <span class="op">=</span> <span class="st">"Amazing_boxplots"</span>, exprt_fig_type <span class="op">=</span> <span class="st">"pdf"</span><span class="op">)</span></span></code></pre></div>
 <p>Ah! …and why, just one-way? Two-ways ANOVA are also an option and can
 be obtained with the following function, specifying the two categorical
 factor in the third argument and if we want interactions in the
@@ -846,21 +846,21 @@ of course!</p>
 <span><span class="co">#&gt; $ F4C_vs_F4B_PvalueFDR           <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 0.0088129161, 0.9999351962, 0.999935196…</span></span>
 <span><span class="co">#&gt; $ F4D_vs_F4B_PvalueFDR           <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 0.9986349, 0.9986349, 0.9986349, 0.9986…</span></span>
 <span><span class="co">#&gt; $ F4D_vs_F4C_PvalueFDR           <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 4.994418e-01, 9.999897e-01, 9.999897e-0…</span></span>
-<span><span class="co">#&gt; $ F3B_vs_F3A                     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> NA, NA, "F3B &gt; F3A", NA, "F3B &gt; F3A", "…</span></span>
-<span><span class="co">#&gt; $ F3C_vs_F3A                     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "F3A &gt; F3C", NA, "F3C &gt; F3A", NA, "F3C …</span></span>
-<span><span class="co">#&gt; $ F3C_vs_F3B                     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> NA, NA, "F3C &gt; F3B", NA, "F3C &gt; F3B", "…</span></span>
-<span><span class="co">#&gt; $ F4B_vs_F4A                     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> NA, NA, NA, NA, "F4A &gt; F4B", NA, "F4B &gt;…</span></span>
-<span><span class="co">#&gt; $ F4C_vs_F4A                     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> NA, NA, NA, NA, "F4C &gt; F4A", NA, "F4C &gt;…</span></span>
-<span><span class="co">#&gt; $ F4D_vs_F4A                     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> NA, NA, NA, NA, NA, NA, "F4D &gt; F4A", NA…</span></span>
-<span><span class="co">#&gt; $ F4C_vs_F4B                     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "F4B &gt; F4C", NA, NA, NA, "F4C &gt; F4B", N…</span></span>
-<span><span class="co">#&gt; $ F4D_vs_F4B                     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> NA, NA, NA, NA, "F4D &gt; F4B", NA, "F4D &gt;…</span></span>
-<span><span class="co">#&gt; $ F4D_vs_F4C                     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> NA, NA, NA, NA, "F4C &gt; F4D", NA, "F4D &gt;…</span></span>
-<span><span class="co">#&gt; $ featname                       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> NA, NA, NA, NA, "feature002", "feature0…</span></span>
-<span><span class="co">#&gt; $ rt                             <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> NA, NA, NA, NA, 288, 408, 528, 465, 342…</span></span>
-<span><span class="co">#&gt; $ mz                             <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> NA, NA, NA, NA, 146.0451, 203.0822, 148…</span></span></code></pre></div>
+<span><span class="co">#&gt; $ F3B_vs_F3A                     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #BB0000;">NA</span>, <span style="color: #BB0000;">NA</span>, "F3B &gt; F3A", <span style="color: #BB0000;">NA</span>, "F3B &gt; F3A", "…</span></span>
+<span><span class="co">#&gt; $ F3C_vs_F3A                     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "F3A &gt; F3C", <span style="color: #BB0000;">NA</span>, "F3C &gt; F3A", <span style="color: #BB0000;">NA</span>, "F3C …</span></span>
+<span><span class="co">#&gt; $ F3C_vs_F3B                     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #BB0000;">NA</span>, <span style="color: #BB0000;">NA</span>, "F3C &gt; F3B", <span style="color: #BB0000;">NA</span>, "F3C &gt; F3B", "…</span></span>
+<span><span class="co">#&gt; $ F4B_vs_F4A                     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #BB0000;">NA</span>, <span style="color: #BB0000;">NA</span>, <span style="color: #BB0000;">NA</span>, <span style="color: #BB0000;">NA</span>, "F4A &gt; F4B", <span style="color: #BB0000;">NA</span>, "F4B &gt;…</span></span>
+<span><span class="co">#&gt; $ F4C_vs_F4A                     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #BB0000;">NA</span>, <span style="color: #BB0000;">NA</span>, <span style="color: #BB0000;">NA</span>, <span style="color: #BB0000;">NA</span>, "F4C &gt; F4A", <span style="color: #BB0000;">NA</span>, "F4C &gt;…</span></span>
+<span><span class="co">#&gt; $ F4D_vs_F4A                     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #BB0000;">NA</span>, <span style="color: #BB0000;">NA</span>, <span style="color: #BB0000;">NA</span>, <span style="color: #BB0000;">NA</span>, <span style="color: #BB0000;">NA</span>, <span style="color: #BB0000;">NA</span>, "F4D &gt; F4A", <span style="color: #BB0000;">NA</span>…</span></span>
+<span><span class="co">#&gt; $ F4C_vs_F4B                     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "F4B &gt; F4C", <span style="color: #BB0000;">NA</span>, <span style="color: #BB0000;">NA</span>, <span style="color: #BB0000;">NA</span>, "F4C &gt; F4B", <span style="color: #BB0000;">N</span>…</span></span>
+<span><span class="co">#&gt; $ F4D_vs_F4B                     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #BB0000;">NA</span>, <span style="color: #BB0000;">NA</span>, <span style="color: #BB0000;">NA</span>, <span style="color: #BB0000;">NA</span>, "F4D &gt; F4B", <span style="color: #BB0000;">NA</span>, "F4D &gt;…</span></span>
+<span><span class="co">#&gt; $ F4D_vs_F4C                     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #BB0000;">NA</span>, <span style="color: #BB0000;">NA</span>, <span style="color: #BB0000;">NA</span>, <span style="color: #BB0000;">NA</span>, "F4C &gt; F4D", <span style="color: #BB0000;">NA</span>, "F4D &gt;…</span></span>
+<span><span class="co">#&gt; $ featname                       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #BB0000;">NA</span>, <span style="color: #BB0000;">NA</span>, <span style="color: #BB0000;">NA</span>, <span style="color: #BB0000;">NA</span>, "feature002", "feature0…</span></span>
+<span><span class="co">#&gt; $ rt                             <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #BB0000;">NA</span>, <span style="color: #BB0000;">NA</span>, <span style="color: #BB0000;">NA</span>, <span style="color: #BB0000;">NA</span>, 288, 408, 528, 465, 342…</span></span>
+<span><span class="co">#&gt; $ mz                             <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #BB0000;">NA</span>, <span style="color: #BB0000;">NA</span>, <span style="color: #BB0000;">NA</span>, <span style="color: #BB0000;">NA</span>, 146.0451, 203.0822, 148…</span></span></code></pre></div>
 <p>Which we can finally export it this way:</p>
 <div class="sourceCode" id="cb40"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/export_the_table.html">export_the_table</a></span><span class="op">(</span><span class="va">FINAL_FEAT_INFO_COMBINED_WITH_STATISTICS</span>, <span class="st">"FINAL_FEAT_INFO_COMBINED_WITH_STATISTICS"</span>, <span class="st">"txt"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/export_the_table.html">export_the_table</a></span><span class="op">(</span><span class="va">FINAL_FEAT_INFO_COMBINED_WITH_STATISTICS</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="linear-models">Linear models<a class="anchor" aria-label="anchor" href="#linear-models"></a>
@@ -987,7 +987,7 @@ and/or <em>line2_position</em>.</li>
 <p><img src="GF_vignette_files/figure-html/unnamed-chunk-44-1.png" width="700"></p>
 <p>As usual, we can easily export it in this way:</p>
 <div class="sourceCode" id="cb44"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/export_figures.html">export_figures</a></span><span class="op">(</span><span class="va">EXAMPLE_VOLCANO_PLOT_1</span>, <span class="st">"EXAMPLE_VOLCANO_PLOT_1"</span>, exprt_fig_type <span class="op">=</span> <span class="st">"png"</span>, plot_sizes <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">14</span>, <span class="fl">14</span><span class="op">)</span>, plot_unit <span class="op">=</span> <span class="st">"in"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/export_figures.html">export_figures</a></span><span class="op">(</span><span class="va">EXAMPLE_VOLCANO_PLOT_1</span>, exprt_fig_type <span class="op">=</span> <span class="st">"png"</span>, plot_sizes <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">14</span>, <span class="fl">14</span><span class="op">)</span>, plot_unit <span class="op">=</span> <span class="st">"in"</span><span class="op">)</span></span></code></pre></div>
 <p>Pay attention: if we want to generate a Volcano plot to appreciate
 the association with a categorical variable, remember that the name of
 the independent variables includes also the group we want to check
