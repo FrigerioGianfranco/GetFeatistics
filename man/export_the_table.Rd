@@ -4,12 +4,12 @@
 \alias{export_the_table}
 \title{Export the table}
 \usage{
-export_the_table(tab, exprtname = "Table_name", exprt_type = "txt")
+export_the_table(tab, exprtname = NULL, exprt_type = "txt")
 }
 \arguments{
 \item{tab}{a dataframe or a matrix.}
 
-\item{exprtname}{character of length 1. The desired name for the file to create (do not add here the file extension as it will be added automatically based on the next argument).}
+\item{exprtname}{NULL or a character of length 1. The desired name for the file to create (do not add here the file extension as it will be added automatically based on the next argument). If NULL, the name of the object passed to the argument tab will be used.}
 
 \item{exprt_type}{one of the following: "txt", "csv", "xlsx". The desired type of file to create: a text file with the values tab_separated (txt), a text file with the values comma separated (csv), or an Excel file (xlsx).}
 }

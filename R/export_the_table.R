@@ -6,18 +6,23 @@
 #' Do not use row names, as they will not be exported (but do use column names!).
 #'
 #' @param tab a dataframe or a matrix.
-#' @param exprtname character of length 1. The desired name for the file to create (do not add here the file extension as it will be added automatically based on the next argument).
+#' @param exprtname NULL or a character of length 1. The desired name for the file to create (do not add here the file extension as it will be added automatically based on the next argument). If NULL, the name of the object passed to the argument tab will be used.
 #' @param exprt_type one of the following: "txt", "csv", "xlsx". The desired type of file to create: a text file with the values tab_separated (txt), a text file with the values comma separated (csv), or an Excel file (xlsx).
 #'
 #' @return It creates a file in the current working director.
 #'
 #' @export
-export_the_table <- function(tab, exprtname = "Table_name", exprt_type = "txt") {
+export_the_table <- function(tab, exprtname = NULL, exprt_type = "txt") {
   if (!(is.data.frame(tab) | is.matrix(tab))) {stop("tab must be a data-frame or a matrix")}
   
-  if (length(exprtname) != 1) {stop('exprtname must be a character of length 1')}
-  if (!is.character(exprtname)) {stop('exprtname must be a character of length 1, and not a missing value!')}
-  if (is.na(exprtname)) {stop('exprtname must be a character of length 1, and not a missing value!')}
+  if (is.null(exprtname)) {
+    exprtname <- deparse(substitute(tab))
+  } else {
+    if (length(exprtname) != 1) {stop('exprtname must be a character of length 1')}
+    if (!is.character(exprtname)) {stop('exprtname must be a character of length 1, and not a missing value!')}
+    if (is.na(exprtname)) {stop('exprtname must be a character of length 1, and not a missing value!')}
+  }
+  
   
   if (!is.character(exprt_type)) {stop('exprt_type must be a character of length 1 containing one of the following: "txt", "csv", or "xlsx"')}
   if (length(exprt_type) != 1) {stop('exprt_type must be a character of length 1 containing one of the following: "txt", "csv", or "xlsx"')}

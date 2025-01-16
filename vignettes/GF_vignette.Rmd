@@ -1,7 +1,7 @@
 ---
 title: "Vignette of the GetFeatistics package"
 author: "Gianfranco Frigerio"
-date: "2024-07-22"
+date: "2025-01-16"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{GF_vignette}
@@ -131,7 +131,7 @@ TARGETED_EXAMPLE_CALIBRATION_CURVES$molecule01
 ```
 
 ```{r, eval=FALSE}
-export_figures(TARGETED_EXAMPLE_CALIBRATION_CURVES, "TARGETED_EXAMPLE_CALIBRATION_CURVES", exprt_fig_type = "pdf")
+export_figures(TARGETED_EXAMPLE_CALIBRATION_CURVES, exprt_fig_type = "pdf")
 ```
 
 
@@ -287,7 +287,7 @@ EXAMPLE_DESCRIPTIVE_STATISTICS_RESULTS <- gentab_descr(df = EXAMPLE_TABLE_FOR_ST
 Don't forget to export it as an external table with the _export_the_table_ function and it will be ready to be used as a table of your next publication!
  
 ```{r, eval=FALSE}
-export_the_table(EXAMPLE_DESCRIPTIVE_STATISTICS_RESULTS, "EXAMPLE_DESCRIPTIVE_STATISTICS_RESULTS", "txt")
+export_the_table(EXAMPLE_DESCRIPTIVE_STATISTICS_RESULTS, exprtname = "The_results_of_statistics", exprt_type = "csv")
 ``` 
 
  
@@ -424,7 +424,7 @@ EXAMPLE_BOX_PLOTS[[1]]
 Since it generates a list with a box plot for each variable of interest. We could use the _export_figures_ to export them all in a single pdf file:
 
 ```{r, eval=FALSE}
-export_figures(EXAMPLE_BOX_PLOTS, "EXAMPLE_BOX_PLOTS", exprt_fig_type = "pdf")
+export_figures(EXAMPLE_BOX_PLOTS, exprtname_figures = "Amazing_boxplots", exprt_fig_type = "pdf")
 ```
 
 
@@ -471,7 +471,7 @@ glimpse(FINAL_FEAT_INFO_COMBINED_WITH_STATISTICS)
 Which we can finally export it this way:
 
 ```{r, eval=FALSE}
-export_the_table(FINAL_FEAT_INFO_COMBINED_WITH_STATISTICS, "FINAL_FEAT_INFO_COMBINED_WITH_STATISTICS", "txt")
+export_the_table(FINAL_FEAT_INFO_COMBINED_WITH_STATISTICS)
 ```
 
 
@@ -552,7 +552,7 @@ EXAMPLE_VOLCANO_PLOT_1
 As usual, we can easily export it in this way:
 
 ```{r, eval=FALSE}
-export_figures(EXAMPLE_VOLCANO_PLOT_1, "EXAMPLE_VOLCANO_PLOT_1", exprt_fig_type = "png", plot_sizes = c(14, 14), plot_unit = "in")
+export_figures(EXAMPLE_VOLCANO_PLOT_1, exprt_fig_type = "png", plot_sizes = c(14, 14), plot_unit = "in")
 ``` 
 
 Pay attention: if we want to generate a Volcano plot to appreciate the association with a categorical variable, remember that the name of the independent variables includes also the group we want to check (compared to the reference group):
