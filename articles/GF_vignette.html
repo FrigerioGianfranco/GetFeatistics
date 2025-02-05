@@ -20,7 +20,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">GetFeatistics</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.9.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.9.3.2</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -823,6 +823,9 @@ of course!</p>
 <code class="sourceCode R"><span><span class="fu">glimpse</span><span class="op">(</span><span class="va">FINAL_FEAT_INFO_COMBINED_WITH_STATISTICS</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Rows: 10</span></span>
 <span><span class="co">#&gt; Columns: 35</span></span>
+<span><span class="co">#&gt; $ featname                       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #BB0000;">NA</span>, <span style="color: #BB0000;">NA</span>, <span style="color: #BB0000;">NA</span>, <span style="color: #BB0000;">NA</span>, "feature002", "feature0…</span></span>
+<span><span class="co">#&gt; $ rt                             <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #BB0000;">NA</span>, <span style="color: #BB0000;">NA</span>, <span style="color: #BB0000;">NA</span>, <span style="color: #BB0000;">NA</span>, 288, 408, 528, 465, 342…</span></span>
+<span><span class="co">#&gt; $ mz                             <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #BB0000;">NA</span>, <span style="color: #BB0000;">NA</span>, <span style="color: #BB0000;">NA</span>, <span style="color: #BB0000;">NA</span>, 146.0451, 203.0822, 148…</span></span>
 <span><span class="co">#&gt; $ Dependent                      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "molecule01", "molecule02", "molecule03…</span></span>
 <span><span class="co">#&gt; $ factor_condition3lev_Pvalue    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 2.903638e-04, 2.663669e-01, 7.957449e-2…</span></span>
 <span><span class="co">#&gt; $ factor_condition4lev_Pvalue    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 3.064275e-03, 6.145504e-01, 7.452104e-0…</span></span>
@@ -854,10 +857,7 @@ of course!</p>
 <span><span class="co">#&gt; $ F4D_vs_F4A                     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #BB0000;">NA</span>, <span style="color: #BB0000;">NA</span>, <span style="color: #BB0000;">NA</span>, <span style="color: #BB0000;">NA</span>, <span style="color: #BB0000;">NA</span>, <span style="color: #BB0000;">NA</span>, "F4D &gt; F4A", <span style="color: #BB0000;">NA</span>…</span></span>
 <span><span class="co">#&gt; $ F4C_vs_F4B                     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "F4B &gt; F4C", <span style="color: #BB0000;">NA</span>, <span style="color: #BB0000;">NA</span>, <span style="color: #BB0000;">NA</span>, "F4C &gt; F4B", <span style="color: #BB0000;">N</span>…</span></span>
 <span><span class="co">#&gt; $ F4D_vs_F4B                     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #BB0000;">NA</span>, <span style="color: #BB0000;">NA</span>, <span style="color: #BB0000;">NA</span>, <span style="color: #BB0000;">NA</span>, "F4D &gt; F4B", <span style="color: #BB0000;">NA</span>, "F4D &gt;…</span></span>
-<span><span class="co">#&gt; $ F4D_vs_F4C                     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #BB0000;">NA</span>, <span style="color: #BB0000;">NA</span>, <span style="color: #BB0000;">NA</span>, <span style="color: #BB0000;">NA</span>, "F4C &gt; F4D", <span style="color: #BB0000;">NA</span>, "F4D &gt;…</span></span>
-<span><span class="co">#&gt; $ featname                       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #BB0000;">NA</span>, <span style="color: #BB0000;">NA</span>, <span style="color: #BB0000;">NA</span>, <span style="color: #BB0000;">NA</span>, "feature002", "feature0…</span></span>
-<span><span class="co">#&gt; $ rt                             <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #BB0000;">NA</span>, <span style="color: #BB0000;">NA</span>, <span style="color: #BB0000;">NA</span>, <span style="color: #BB0000;">NA</span>, 288, 408, 528, 465, 342…</span></span>
-<span><span class="co">#&gt; $ mz                             <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #BB0000;">NA</span>, <span style="color: #BB0000;">NA</span>, <span style="color: #BB0000;">NA</span>, <span style="color: #BB0000;">NA</span>, 146.0451, 203.0822, 148…</span></span></code></pre></div>
+<span><span class="co">#&gt; $ F4D_vs_F4C                     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #BB0000;">NA</span>, <span style="color: #BB0000;">NA</span>, <span style="color: #BB0000;">NA</span>, <span style="color: #BB0000;">NA</span>, "F4C &gt; F4D", <span style="color: #BB0000;">NA</span>, "F4D &gt;…</span></span></code></pre></div>
 <p>Which we can finally export it this way:</p>
 <div class="sourceCode" id="cb40"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/export_the_table.html">export_the_table</a></span><span class="op">(</span><span class="va">FINAL_FEAT_INFO_COMBINED_WITH_STATISTICS</span><span class="op">)</span></span></code></pre></div>

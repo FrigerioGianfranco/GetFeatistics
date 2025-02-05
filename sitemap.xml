@@ -11,8 +11,10 @@
 <url><loc>https://frigeriogianfranco.github.io/GetFeatistics/reference/Volcano_lm.html</loc></url>
 <url><loc>https://frigeriogianfranco.github.io/GetFeatistics/reference/addINFO_to_table.html</loc></url>
 <url><loc>https://frigeriogianfranco.github.io/GetFeatistics/reference/auto_scale.html</loc></url>
+<url><loc>https://frigeriogianfranco.github.io/GetFeatistics/reference/build_long_vector_of_colors.html</loc></url>
 <url><loc>https://frigeriogianfranco.github.io/GetFeatistics/reference/check_if_fix_names_needed.html</loc></url>
 <url><loc>https://frigeriogianfranco.github.io/GetFeatistics/reference/checkmolecules_in_feat_table.html</loc></url>
+<url><loc>https://frigeriogianfranco.github.io/GetFeatistics/reference/clean_transf_colnames.html</loc></url>
 <url><loc>https://frigeriogianfranco.github.io/GetFeatistics/reference/create_df_examples.html</loc></url>
 <url><loc>https://frigeriogianfranco.github.io/GetFeatistics/reference/cutP.html</loc></url>
 <url><loc>https://frigeriogianfranco.github.io/GetFeatistics/reference/do_FELLA_enrichment_analysis.html</loc></url>
@@ -30,6 +32,8 @@
 <url><loc>https://frigeriogianfranco.github.io/GetFeatistics/reference/gentab_descr.html</loc></url>
 <url><loc>https://frigeriogianfranco.github.io/GetFeatistics/reference/gentab_lm_long.html</loc></url>
 <url><loc>https://frigeriogianfranco.github.io/GetFeatistics/reference/getBoxplots.html</loc></url>
+<url><loc>https://frigeriogianfranco.github.io/GetFeatistics/reference/getHeatMap.html</loc></url>
+<url><loc>https://frigeriogianfranco.github.io/GetFeatistics/reference/getPCA.html</loc></url>
 <url><loc>https://frigeriogianfranco.github.io/GetFeatistics/reference/get_AnnoLevels_MSDial.html</loc></url>
 <url><loc>https://frigeriogianfranco.github.io/GetFeatistics/reference/get_feat_info_from_MSDial.html</loc></url>
 <url><loc>https://frigeriogianfranco.github.io/GetFeatistics/reference/get_feat_info_from_patRoon.html</loc></url>
