@@ -22,7 +22,7 @@ addINFO_to_table(
 
 \item{colfeat_dfINFO}{character of length 1. It is the name of the column in dfINFO that contains the unique names of features.}
 
-\item{add_char_to_INFO}{logical. Shoudl a string of character to be added to each column from the dfINFO?}
+\item{add_char_to_INFO}{logical. Should a string of character to be added to each column from the dfINFO?}
 
 \item{char_to_add_to_INFO}{character of length 1. If add_char_to_INFO is TRUE, pass here the string of character that will be added to each column from dfINFO.}
 }

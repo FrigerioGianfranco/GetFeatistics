@@ -8,7 +8,7 @@
 #' @param colfeat_df1 character of length 1. It is the name of the column in df1 that contains the unique names of features.
 #' @param dfINFO dataframe. The featINFO table.
 #' @param colfeat_dfINFO character of length 1. It is the name of the column in dfINFO that contains the unique names of features.
-#' @param add_char_to_INFO logical. Shoudl a string of character to be added to each column from the dfINFO?
+#' @param add_char_to_INFO logical. Should a string of character to be added to each column from the dfINFO?
 #' @param char_to_add_to_INFO character of length 1. If add_char_to_INFO is TRUE, pass here the string of character that will be added to each column from dfINFO.
 #'
 #'
@@ -54,7 +54,7 @@ addINFO_to_table <- function(df1, colfeat_df1, dfINFO, colfeat_dfINFO, add_char_
     dfINFO_empty_withNA[1:length(pull(df1, colfeat_df1)),] <- NA
   }
   
-  df_final <- cbind(df1, dfINFO_empty_withNA)
+  df_final <- cbind(dfINFO_empty_withNA, df1)
   
   if (length(pull(df_final, 1)) > 0) {
     for (i in 1:length(pull(df_final, 1))) {

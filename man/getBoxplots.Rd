@@ -4,7 +4,7 @@
 \alias{getBoxplots}
 \title{Create some simple boxplots.}
 \usage{
-getBoxplots(df, v, f)
+getBoxplots(df, v, f, col_pal = NULL)
 }
 \arguments{
 \item{df}{dataframe. Containing data to plot.}
@@ -12,6 +12,8 @@ getBoxplots(df, v, f)
 \item{v}{character. The names of the columns of df containing numerical data to plot}
 
 \item{f}{character of length 1. The names of the factor variable used to group the boxplots.}
+
+\item{col_pal}{a character vector containing colors. If NULL, colors from the pals package will be used (see function build_long_vector_of_colors).}
 }
 \value{
 A ggplot object (if v is only 1), or a list of ggplots (if v contains 2 or more elements).

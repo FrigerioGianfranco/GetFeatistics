@@ -11,6 +11,10 @@
 #' @import gridExtra
 #' @import FELLA
 #' @import igraph
+#' @import pals
+#' @import ggdendro
+#' @import ggdendroplot
+#' @import ggnewscale
 
 .onLoad <- function(libname, pkgname) {
   library(tidyverse)
@@ -24,4 +28,8 @@
   library(gridExtra)
   library(FELLA)
   library(igraph)
+  library(pals)
+  library(ggdendro)
+  library(ggdendroplot)
+  library(ggnewscale)
 }

@@ -244,16 +244,16 @@ transf_data <- function(df, v, missing_replace = TRUE, missing_repl_type = "divi
       }
       
       if (log_transf == FALSE & scaling == TRUE) {
-        assign(paste0(name_vect_names, "_mr", ifelse(scaling_type == "mean_scale", "_meansc", ifelse(scaling_type == "auto_scale", "_autosc", ifelse(scaling_type == "pareto_scale", "_paretosc" , ifelse(scaling_type == "range_scale", "rangesc", "_"))))),
-               paste0(col_names_missing_replaced, ifelse(scaling_type == "mean_scale", "_meansc", ifelse(scaling_type == "auto_scale", "_autosc", ifelse(scaling_type == "pareto_scale", "_paretosc" , ifelse(scaling_type == "range_scale", "rangesc", "_"))))),
+        assign(paste0(name_vect_names, "_mr", ifelse(scaling_type == "mean_scale", "_meansc", ifelse(scaling_type == "auto_scale", "_autosc", ifelse(scaling_type == "pareto_scale", "_paretosc" , ifelse(scaling_type == "range_scale", "_rangesc", "_"))))),
+               paste0(col_names_missing_replaced, ifelse(scaling_type == "mean_scale", "_meansc", ifelse(scaling_type == "auto_scale", "_autosc", ifelse(scaling_type == "pareto_scale", "_paretosc" , ifelse(scaling_type == "range_scale", "_rangesc", "_"))))),
                envir = .GlobalEnv)
         
       }
       
       if (log_transf == TRUE & scaling == TRUE) {
         
-        assign(paste0(name_vect_names, "_mr", ifelse(log_base == exp(1), "_ln", ifelse(log_base == 10, "_Log", paste0("_log", log_base))), ifelse(scaling_type == "mean_scale", "_meansc", ifelse(scaling_type == "auto_scale", "_autosc", ifelse(scaling_type == "pareto_scale", "_paretosc" , ifelse(scaling_type == "range_scale", "rangesc", "_"))))),
-               paste0(col_names_missing_replaced, ifelse(log_base == exp(1), "_ln", ifelse(log_base == 10, "_Log", paste0("_log", log_base))), ifelse(scaling_type == "mean_scale", "_meansc", ifelse(scaling_type == "auto_scale", "_autosc", ifelse(scaling_type == "pareto_scale", "_paretosc" , ifelse(scaling_type == "range_scale", "rangesc", "_"))))),
+        assign(paste0(name_vect_names, "_mr", ifelse(log_base == exp(1), "_ln", ifelse(log_base == 10, "_Log", paste0("_log", log_base))), ifelse(scaling_type == "mean_scale", "_meansc", ifelse(scaling_type == "auto_scale", "_autosc", ifelse(scaling_type == "pareto_scale", "_paretosc" , ifelse(scaling_type == "range_scale", "_rangesc", "_"))))),
+               paste0(col_names_missing_replaced, ifelse(log_base == exp(1), "_ln", ifelse(log_base == 10, "_Log", paste0("_log", log_base))), ifelse(scaling_type == "mean_scale", "_meansc", ifelse(scaling_type == "auto_scale", "_autosc", ifelse(scaling_type == "pareto_scale", "_paretosc" , ifelse(scaling_type == "range_scale", "_rangesc", "_"))))),
                envir = .GlobalEnv)
       }
     } else {
@@ -264,15 +264,15 @@ transf_data <- function(df, v, missing_replace = TRUE, missing_repl_type = "divi
       }
       
       if (log_transf == FALSE & scaling == TRUE) {
-        assign(paste0(name_vect_names, ifelse(scaling_type == "mean_scale", "_meansc", ifelse(scaling_type == "auto_scale", "_autosc", ifelse(scaling_type == "pareto_scale", "_paretosc" , ifelse(scaling_type == "range_scale", "rangesc", "_"))))),
-               paste0(var_to_normalise, ifelse(scaling_type == "mean_scale", "_meansc", ifelse(scaling_type == "auto_scale", "_autosc", ifelse(scaling_type == "pareto_scale", "_paretosc" , ifelse(scaling_type == "range_scale", "rangesc", "_"))))),
+        assign(paste0(name_vect_names, ifelse(scaling_type == "mean_scale", "_meansc", ifelse(scaling_type == "auto_scale", "_autosc", ifelse(scaling_type == "pareto_scale", "_paretosc" , ifelse(scaling_type == "range_scale", "_rangesc", "_"))))),
+               paste0(var_to_normalise, ifelse(scaling_type == "mean_scale", "_meansc", ifelse(scaling_type == "auto_scale", "_autosc", ifelse(scaling_type == "pareto_scale", "_paretosc" , ifelse(scaling_type == "range_scale", "_rangesc", "_"))))),
                envir = .GlobalEnv)
       }
       
       if (log_transf == TRUE & scaling == TRUE) {
         
-        assign(paste0(name_vect_names, ifelse(log_base == exp(1), "_ln", ifelse(log_base == 10, "_Log", paste0("_log", log_base))), ifelse(scaling_type == "mean_scale", "_meansc", ifelse(scaling_type == "auto_scale", "_autosc", ifelse(scaling_type == "pareto_scale", "_paretosc" , ifelse(scaling_type == "range_scale", "rangesc", "_"))))),
-               paste0(var_to_normalise, ifelse(log_base == exp(1), "_ln", ifelse(log_base == 10, "_Log", paste0("_log", log_base))), ifelse(scaling_type == "mean_scale", "_meansc", ifelse(scaling_type == "auto_scale", "_autosc", ifelse(scaling_type == "pareto_scale", "_paretosc" , ifelse(scaling_type == "range_scale", "rangesc", "_"))))),
+        assign(paste0(name_vect_names, ifelse(log_base == exp(1), "_ln", ifelse(log_base == 10, "_Log", paste0("_log", log_base))), ifelse(scaling_type == "mean_scale", "_meansc", ifelse(scaling_type == "auto_scale", "_autosc", ifelse(scaling_type == "pareto_scale", "_paretosc" , ifelse(scaling_type == "range_scale", "_rangesc", "_"))))),
+               paste0(var_to_normalise, ifelse(log_base == exp(1), "_ln", ifelse(log_base == 10, "_Log", paste0("_log", log_base))), ifelse(scaling_type == "mean_scale", "_meansc", ifelse(scaling_type == "auto_scale", "_autosc", ifelse(scaling_type == "pareto_scale", "_paretosc" , ifelse(scaling_type == "range_scale", "_rangesc", "_"))))),
                envir = .GlobalEnv)
       }
     }
