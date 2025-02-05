@@ -1,6 +1,6 @@
 Package: GetFeatistics
 Title: Getting streamlined elaboration of metabolomics data.
-Version: 0.2.9.3.1
+Version: 0.2.9.3.2
 Authors@R: 
     person("Gianfranco", "Frigerio", email = "frigerio.gianfranco@hsr.it", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0002-3538-1443"))
@@ -12,7 +12,6 @@ RoxygenNote: 7.3.2
 Depends: R (>= 4.3.1)
 Imports: tidyverse, ggpubr, ggrepel, lmerTest, AER, MuMIn, writexl, xlsx, gridExtra, FELLA, igraph, pals, ggdendro, ggdendroplot, ggnewscale
 Remotes: github::nicolash2/ggdendroplot
-
 Suggests: 
     knitr,
     rmarkdown
