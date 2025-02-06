@@ -221,6 +221,13 @@ getHeatMap <- function(df, v, s = NULL, f = NULL, dfv = NULL, fv = NULL, order_d
       
       colnames(df_to_join)[1] <- "variable"
       
+      if (is.character(pull(hm, "variable")) & !is.character(pull(df_to_join, "variable"))) {
+        df_to_join[, "variable"] <- as.character(pull(df_to_join, "variable"))
+      }
+      if (is.factor(pull(hm, "variable")) & !is.factor(pull(df_to_join, "variable"))) {
+        df_to_join[, "variable"] <- as.factor(pull(df_to_join, "variable"))
+      }
+      
       hm <- left_join(hm, df_to_join, by = "variable")
       
       bar_col_names <- f
@@ -228,6 +235,14 @@ getHeatMap <- function(df, v, s = NULL, f = NULL, dfv = NULL, fv = NULL, order_d
     } else {
       
       colnames(df_to_join)[1] <- "rowid"
+      
+      if (is.character(pull(hm, "rowid")) & !is.character(pull(df_to_join, "rowid"))) {
+        df_to_join[, "rowid"] <- as.character(pull(df_to_join, "rowid"))
+      }
+      if (is.factor(pull(hm, "rowid")) & !is.factor(pull(df_to_join, "rowid"))) {
+        df_to_join[, "rowid"] <- as.factor(pull(df_to_join, "rowid"))
+      }
+      
       
       hm <- left_join(hm, df_to_join, by = "rowid")
       
@@ -248,13 +263,29 @@ getHeatMap <- function(df, v, s = NULL, f = NULL, dfv = NULL, fv = NULL, order_d
       
       colnames(dfv_to_join)[1] <- "rowid"
       
+      if (is.character(pull(hm, "rowid")) & !is.character(pull(dfv_to_join, "rowid"))) {
+        dfv_to_join[, "rowid"] <- as.character(pull(dfv_to_join, "rowid"))
+      }
+      if (is.factor(pull(hm, "rowid")) & !is.factor(pull(dfv_to_join, "rowid"))) {
+        dfv_to_join[, "rowid"] <- as.factor(pull(dfv_to_join, "rowid"))
+      }
+      
+      
       hm <- left_join(hm, dfv_to_join, by = "rowid")
       
       bar_row_names <- fv
       
     } else {
       
-      colnames(df_to_join)[1] <- "variable"
+      colnames(dfv_to_join)[1] <- "variable"
+      
+      if (is.character(pull(hm, "variable")) & !is.character(pull(dfv_to_join, "variable"))) {
+        dfv_to_join[, "variable"] <- as.character(pull(dfv_to_join, "variable"))
+      }
+      if (is.factor(pull(hm, "variable")) & !is.factor(pull(dfv_to_join, "variable"))) {
+        dfv_to_join[, "variable"] <- as.factor(pull(dfv_to_join, "variable"))
+      }
+      
       
       hm <- left_join(hm, dfv_to_join, by = "variable")
       
