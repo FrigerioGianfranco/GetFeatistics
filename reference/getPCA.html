@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">GetFeatistics</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.9.3.3</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.9.3.4</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -46,8 +46,12 @@
 <span>  <span class="va">v</span>,</span>
 <span>  s <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  f <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  col_pal <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  dfv <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  sv <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  fv <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  labels_on_loading <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  col_pal <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  col_pal_fv <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  PC_to_plot <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"PC1"</span>, <span class="st">"PC2"</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -72,12 +76,28 @@
 <dd><p>NULL or character of length 1. The name of the column of df containing the factor variable. Pass it only if you want colored points and ellipses on the score plot.</p></dd>
 
 
-<dt id="arg-col-pal">col_pal<a class="anchor" aria-label="anchor" href="#arg-col-pal"></a></dt>
-<dd><p>a character vector containing colors. If NULL, colors from the pals package will be used (see function build_long_vector_of_colors).</p></dd>
+<dt id="arg-dfv">dfv<a class="anchor" aria-label="anchor" href="#arg-dfv"></a></dt>
+<dd><p>NULL or a dataframe. The first column must contain v. To this dataframe the lodgings table will be added.</p></dd>
+
+
+<dt id="arg-sv">sv<a class="anchor" aria-label="anchor" href="#arg-sv"></a></dt>
+<dd><p>NULL or character. The name of the column of dfv containing the names you want to put on the loading plot. Pass it only if you want those names on the loading plot.</p></dd>
+
+
+<dt id="arg-fv">fv<a class="anchor" aria-label="anchor" href="#arg-fv"></a></dt>
+<dd><p>NULL or character. The name of the column of dfv containing the factor variable. Pass it only if you want colored points and ellipses on the loading plot.</p></dd>
 
 
 <dt id="arg-labels-on-loading">labels_on_loading<a class="anchor" aria-label="anchor" href="#arg-labels-on-loading"></a></dt>
-<dd><p>logical. If TRUE, it will report the names of features the loading plot.</p></dd>
+<dd><p>logical. Even if dfv and/or sv are NULL, if this argument is set to TRUE, the loading plot will report v as labels.</p></dd>
+
+
+<dt id="arg-col-pal">col_pal<a class="anchor" aria-label="anchor" href="#arg-col-pal"></a></dt>
+<dd><p>a character vector containing colors for f. If NULL, colors from the pals package will be used (see function build_long_vector_of_colors).</p></dd>
+
+
+<dt id="arg-col-pal-fv">col_pal_fv<a class="anchor" aria-label="anchor" href="#arg-col-pal-fv"></a></dt>
+<dd><p>a character vector containing colors for fv. If NULL, colors from the pals package will be used (see function build_long_vector_of_colors).</p></dd>
 
 
 <dt id="arg-pc-to-plot">PC_to_plot<a class="anchor" aria-label="anchor" href="#arg-pc-to-plot"></a></dt>
@@ -87,7 +107,7 @@
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     <p>A list with 4 objects:</p><ul><li><p><code>df_with_scores_table</code>: the df with additional columns containing the scores.</p></li>
-<li><p><code>loadings_table</code>: the tibble containing the loadings.</p></li>
+<li><p><code>dfv_with_loadings_table</code>: the dfv with additional columns containing containing the loadings.</p></li>
 <li><p><code>score_plot</code>: a ggplot object with the score plot.</p></li>
 <li><p><code>loading_plot</code>: a ggplot object with the loading plot.</p></li>
 </ul></div>
