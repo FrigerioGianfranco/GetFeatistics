@@ -8,15 +8,19 @@
 #' @param v character. The names of the columns of df containing numerical data (ideally, they should be already centered and scaled!!).
 #' @param s NULL or a character of length 1. The name of the column of df containing the sample names. Pass it only if you want sample names on the score plot.
 #' @param f NULL or character of length 1. The name of the column of df containing the factor variable. Pass it only if you want colored points and ellipses on the score plot.
-#' @param col_pal a character vector containing colors. If NULL, colors from the pals package will be used (see function build_long_vector_of_colors).
-#' @param labels_on_loading logical. If TRUE, it will report the names of features the loading plot.
+#' @param dfv NULL or a dataframe. The first column must contain v. To this dataframe the lodgings table will be added.
+#' @param sv NULL or character. The name of the column of dfv containing the names you want to put on the loading plot. Pass it only if you want those names on the loading plot.
+#' @param fv NULL or character. The name of the column of dfv containing the factor variable. Pass it only if you want colored points and ellipses on the loading plot.
+#' @param labels_on_loading logical. Even if dfv and/or sv are NULL, if this argument is set to TRUE, the loading plot will report v as labels.
+#' @param col_pal a character vector containing colors for f. If NULL, colors from the pals package will be used (see function build_long_vector_of_colors).
+#' @param col_pal_fv a character vector containing colors for fv. If NULL, colors from the pals package will be used (see function build_long_vector_of_colors).
 #' @param PC_to_plot character of length 2. The principal components to plots on the score and loading plots.
 #'
 #' @return A list with 4 objects:
 #'
 #' - `df_with_scores_table`: the df with additional columns containing the scores.
 #' 
-#' - `loadings_table`: the tibble containing the loadings.
+#' - `dfv_with_loadings_table`: the dfv with additional columns containing containing the loadings.
 #'
 #' - `score_plot`: a ggplot object with the score plot.
 #'
@@ -24,7 +28,8 @@
 #'
 #'
 #' @export
-getPCA <- function(df, v, s = NULL, f = NULL, col_pal = NULL, labels_on_loading = TRUE, PC_to_plot = c("PC1", "PC2")) {
+getPCA <- function(df, v, s = NULL, f = NULL, dfv = NULL, sv = NULL, fv = NULL, labels_on_loading = TRUE,
+                   col_pal = NULL, col_pal_fv = NULL , PC_to_plot = c("PC1", "PC2")) {
   
   if (!is.data.frame(df)) {stop("df must be a data frame!")}
   
@@ -42,6 +47,39 @@ getPCA <- function(df, v, s = NULL, f = NULL, col_pal = NULL, labels_on_loading 
     if (any(is.na(pull(df, s)))) {stop("in df, the column chosen with s must not contain missing values")}
   }
   
+  if (!is.null(dfv)) {
+    if (!is.data.frame(dfv)) {stop("if not NULL, dfv must be a data frame!")}
+    if (nrow(dfv) < length(v)) {stop("if not NULL, dfv must be a data frame with a number of rows not less than the length of v")}
+    if (!all(v %in% pull(dfv, 1))) {stop(paste0('if not NULL, the first column of dfv must contain v. The following element of v are not present: "',
+                                                paste0(v[which(!v%in%pull(dfv, 1))], collapse = '", "'), '"'))}
+    
+    dfv_fil <- dfv[which(pull(dfv, 1) %in% v),]
+    
+    if (any(duplicated(pull(dfv_fil, 1)))) {stop(paste0('the first column of dfv must not contain duplicated in the elements of v that contains. The following are dupicated: "',
+                                                    paste0(pull(dfv_fil, 1)[which(duplicated(pull(dfv_fil, 1)))], collapse = '", "'), '"'))}
+    
+    if (!is.null(sv)) {
+      if (length(sv) != 1) {stop("sv must contain one name")}
+      if (is.na(sv)) {stop("sv must not be a missing value")}
+      if (!is.character(sv)) {stop("sv must be a character")}
+      if (!sv %in% colnames(dfv)) {stop("the name you indicate in sv must correspond to name of a column in dfv")}
+    }
+    
+    if (!is.null(fv)) {
+      if (length(fv) != 1) {stop("fv must contain one name")}
+      if (is.na(fv)) {stop("fv must not be a missing value")}
+      if (!is.character(fv)) {stop("if not NULL, fv must be a character")}
+      if (!all(fv %in% colnames(dfv))) {stop("if not NULL, the names you indicate in fv must correspond to names of columns in dfv")}
+      if (!is.factor(pull(dfv, fv))) {stop("in dfv, the column chosen with fv must contain a factor variable")}
+    }
+  }
+  
+  if (length(labels_on_loading)!=1) {stop("labels_on_loading must be exclusively TRUE or FALSE")}
+  if (!is.logical(labels_on_loading)) {stop("labels_on_loading must be exclusively TRUE or FALSE")}
+  if (is.na(labels_on_loading)) {stop("labels_on_loading must be exclusively TRUE or FALSE")}
+  
+  used_the_long_vector_of_colors <- FALSE
+  
   if (!is.null(f)) {
     if (length(f) != 1) {stop("f must contain one name")}
     if (is.na(f)) {stop("f must not contain mising value")}
@@ -56,6 +94,7 @@ getPCA <- function(df, v, s = NULL, f = NULL, col_pal = NULL, labels_on_loading 
       
     } else {
       col_pal <- build_long_vector_of_colors()
+      used_the_long_vector_of_colors <- TRUE
     }
     
     if (length(col_pal)<length(levels(pull(df, f)))) {
@@ -78,15 +117,42 @@ getPCA <- function(df, v, s = NULL, f = NULL, col_pal = NULL, labels_on_loading 
     
   }
   
-  if (length(labels_on_loading)!=1) {stop("labels_on_loading must be exclusively TRUE or FALSE")}
-  if (!is.logical(labels_on_loading)) {stop("labels_on_loading must be exclusively TRUE or FALSE")}
-  if (is.na(labels_on_loading)) {stop("labels_on_loading must be exclusively TRUE or FALSE")}
-  
   if (length(PC_to_plot) != 2) {stop("PC_to_plot must contain exactly 2 elements")}
   if (!is.character(PC_to_plot)) {stop("PC_to_plot must be a character vector")}
   if (any(is.na(PC_to_plot))) {stop("PC_to_plot must not contain NAs")}
   if (PC_to_plot[1] %in% colnames(df)) {stop(paste0("df already contains a column named ", PC_to_plot[1]))}
   if (PC_to_plot[2] %in% colnames(df)) {stop(paste0("df already contains a column named ", PC_to_plot[2]))}
+  if (!is.null(dfv)) {
+    if (PC_to_plot[1] %in% colnames(dfv)) {stop(paste0("dfv already contains a column named ", PC_to_plot[1]))}
+    if (PC_to_plot[2] %in% colnames(dfv)) {stop(paste0("dfv already contains a column named ", PC_to_plot[2]))}
+  }
+  
+  if (!is.null(dfv) & !is.null(fv)) {
+    if (!is.null(col_pal_fv)) {
+      if (!is.character(col_pal_fv)) {stop("col_pal_fv must be a character vector")}
+      if (any(is.na(col_pal_fv))) {stop("col_pal_fv must not contain NAs")}
+      
+    } else {
+      if (used_the_long_vector_of_colors) {
+        col_pal_fv <- build_long_vector_of_colors()[(length(col_pal)+1):length(build_long_vector_of_colors())]
+      } else {
+        col_pal_fv <- build_long_vector_of_colors()
+      }
+    }
+    
+    if (length(col_pal_fv)<length(levels(pull(dfv, fv)))) {
+      stop(paste0("There are ", length(levels(pull(dfv, fv))), " groups in f of dfv, and only ", length(col_pal_fv), " colors have been specified in col_pal_fv"))
+    } else {
+      col_pal_fv <- col_pal_fv[1:length(levels(pull(dfv, fv)))]
+    }
+    
+    if (!all(are.colors(col_pal_fv))) {stop(paste0('col_pal_fv must contain valid colors. In particular, these are not: "', paste(col_pal_fv[!are.colors(col_pal_fv)], collapse = '", "')), '"')}
+    
+    colors_of_groups_fv <- col_pal_fv
+    names(colors_of_groups_fv) <- levels(pull(dfv, fv))
+  }
+  
+  
   
   
   
@@ -96,13 +162,26 @@ getPCA <- function(df, v, s = NULL, f = NULL, col_pal = NULL, labels_on_loading 
   
   df_with_scores_table <- bind_cols(df, as_tibble(pca_res$x))
   
+  
   loadings_table <- bind_cols(tibble(variables = row.names(pca_res$rotation)),
                               as_tibble(pca_res$rotation))
   
+  if (length(v) != nrow(pca_res$rotation)) {stop("rows on loading don't correspond to v. That's wired, ask to Gianfranco to check what happened!!")}
+  if (!all(row.names(pca_res$rotation) == v)) {stop("rows on loading don't correspond to v. That's wired, ask to Gianfranco to check what happened!!")}
+  
+  if (is.null(dfv)) {
+    dfv_with_loadings_table <- loadings_table
+    dfv_with_loadings_table_fil <- dfv_with_loadings_table
+  } else {
+    colnames(loadings_table)[1] <- colnames(dfv)[1]
+    dfv_with_loadings_table <- left_join(dfv, loadings_table, by = colnames(dfv)[1])
+    dfv_with_loadings_table_fil <- dfv_with_loadings_table[which(pull(dfv, 1) %in% v),]
+  }
+  
   if (!PC_to_plot[1] %in% colnames(df_with_scores_table)) {stop(paste0(PC_to_plot[1], " is not contained in the scores tables"))}
   if (!PC_to_plot[2] %in% colnames(df_with_scores_table)) {stop(paste0(PC_to_plot[2], " is not contained in the scores tables"))}
-  if (!PC_to_plot[1] %in% colnames(loadings_table)) {stop(paste0(PC_to_plot[1], " is not contained in the loadings tables"))}
-  if (!PC_to_plot[2] %in% colnames(loadings_table)) {stop(paste0(PC_to_plot[2], " is not contained in the loadings tables"))}
+  if (!PC_to_plot[1] %in% colnames(dfv_with_loadings_table)) {stop(paste0(PC_to_plot[1], " is not contained in the loadings tables"))}
+  if (!PC_to_plot[2] %in% colnames(dfv_with_loadings_table)) {stop(paste0(PC_to_plot[2], " is not contained in the loadings tables"))}
   
   
   score_plot <- NULL
@@ -112,8 +191,8 @@ getPCA <- function(df, v, s = NULL, f = NULL, col_pal = NULL, labels_on_loading 
       geom_point() + 
       theme_bw() +
       ggtitle("PCA Score Plot") +
-      xlab(paste0(PC_to_plot[1], " (", round(summary(pca_res)$importance[2,1] * 100, 1), "%)")) +
-      ylab(paste0(PC_to_plot[2], " (", round(summary(pca_res)$importance[2,2] * 100, 1), "%)")) + 
+      xlab(paste0(PC_to_plot[1], " (", round(summary(pca_res)$importance[2,PC_to_plot[1]] * 100, 1), "%)")) +
+      ylab(paste0(PC_to_plot[2], " (", round(summary(pca_res)$importance[2,PC_to_plot[2]] * 100, 1), "%)")) + 
       theme(panel.grid.major = element_blank(),
             panel.grid.minor = element_blank(),
             plot.title = element_text(hjust = 0.5))
@@ -125,8 +204,8 @@ getPCA <- function(df, v, s = NULL, f = NULL, col_pal = NULL, labels_on_loading 
       scale_color_manual(values = colors_of_groups) + 
       theme_bw() +
       ggtitle("PCA Score Plot") +
-      xlab(paste0(PC_to_plot[1], " (", round(summary(pca_res)$importance[2,1] * 100, 1), "%)")) +
-      ylab(paste0(PC_to_plot[2], " (", round(summary(pca_res)$importance[2,2] * 100, 1), "%)")) + 
+      xlab(paste0(PC_to_plot[1], " (", round(summary(pca_res)$importance[2,PC_to_plot[1]] * 100, 1), "%)")) +
+      ylab(paste0(PC_to_plot[2], " (", round(summary(pca_res)$importance[2,PC_to_plot[2]] * 100, 1), "%)")) + 
       theme(panel.grid.major = element_blank(),
             panel.grid.minor = element_blank(),
             plot.title = element_text(hjust = 0.5))
@@ -136,8 +215,8 @@ getPCA <- function(df, v, s = NULL, f = NULL, col_pal = NULL, labels_on_loading 
       geom_text_repel(aes(label = !!sym(s))) +
       theme_bw() +
       ggtitle("PCA Score Plot") +
-      xlab(paste0(PC_to_plot[1], " (", round(summary(pca_res)$importance[2,1] * 100, 1), "%)")) +
-      ylab(paste0(PC_to_plot[2], " (", round(summary(pca_res)$importance[2,2] * 100, 1), "%)")) + 
+      xlab(paste0(PC_to_plot[1], " (", round(summary(pca_res)$importance[2,PC_to_plot[1]] * 100, 1), "%)")) +
+      ylab(paste0(PC_to_plot[2], " (", round(summary(pca_res)$importance[2,PC_to_plot[2]] * 100, 1), "%)")) + 
       theme(panel.grid.major = element_blank(),
             panel.grid.minor = element_blank(),
             plot.title = element_text(hjust = 0.5))
@@ -150,8 +229,8 @@ getPCA <- function(df, v, s = NULL, f = NULL, col_pal = NULL, labels_on_loading 
       scale_color_manual(values = colors_of_groups) + 
       theme_bw() +
       ggtitle("PCA Score Plot") +
-      xlab(paste0(PC_to_plot[1], " (", round(summary(pca_res)$importance[2,1] * 100, 1), "%)")) +
-      ylab(paste0(PC_to_plot[2], " (", round(summary(pca_res)$importance[2,2] * 100, 1), "%)")) + 
+      xlab(paste0(PC_to_plot[1], " (", round(summary(pca_res)$importance[2,PC_to_plot[1]] * 100, 1), "%)")) +
+      ylab(paste0(PC_to_plot[2], " (", round(summary(pca_res)$importance[2,PC_to_plot[2]] * 100, 1), "%)")) + 
       theme(panel.grid.major = element_blank(),
             panel.grid.minor = element_blank(),
             plot.title = element_text(hjust = 0.5))
@@ -160,33 +239,110 @@ getPCA <- function(df, v, s = NULL, f = NULL, col_pal = NULL, labels_on_loading 
   
   loading_plot <- NULL
   
-  if (labels_on_loading) {
-    loading_plot <- ggplot(loadings_table, aes(x = !!sym(PC_to_plot[1]), y = !!sym(PC_to_plot[2]))) +
-      geom_point() +
-      geom_text_repel(aes(label = variables)) +
-      theme_bw() +
-      ggtitle("PCA Score Plot") +
-      xlab(paste0(PC_to_plot[1], " Loadings")) +
-      ylab(paste0(PC_to_plot[2], " Loadings")) + 
-      theme(panel.grid.major = element_blank(),
-            panel.grid.minor = element_blank(),
-            plot.title = element_text(hjust = 0.5))
+  if (!is.null(dfv)) {
+    if (!is.null(fv)) {
+      if (!is.null(sv)) {
+        loading_plot <- ggplot(dfv_with_loadings_table_fil, aes(x = !!sym(PC_to_plot[1]), y = !!sym(PC_to_plot[2]), color = !!sym(fv), fill = !!sym(fv))) +
+          geom_point() +
+          geom_text_repel(aes(label = !!sym(sv))) +
+          scale_fill_manual(values = colors_of_groups_fv) +
+          scale_color_manual(values = colors_of_groups_fv) + 
+          theme_bw() +
+          ggtitle("PCA Score Plot") +
+          xlab(paste0(PC_to_plot[1], " Loadings")) +
+          ylab(paste0(PC_to_plot[2], " Loadings")) + 
+          theme(panel.grid.major = element_blank(),
+                panel.grid.minor = element_blank(),
+                plot.title = element_text(hjust = 0.5))
+      } else if (labels_on_loading) {
+        loading_plot <- ggplot(dfv_with_loadings_table_fil, aes(x = !!sym(PC_to_plot[1]), y = !!sym(PC_to_plot[2]), color = !!sym(fv), fill = !!sym(fv))) +
+          geom_point() +
+          geom_text_repel(aes(label = !!sym(colnames(dfv_with_loadings_table_fil)[1]))) +
+          scale_fill_manual(values = colors_of_groups_fv) +
+          scale_color_manual(values = colors_of_groups_fv) + 
+          theme_bw() +
+          ggtitle("PCA Score Plot") +
+          xlab(paste0(PC_to_plot[1], " Loadings")) +
+          ylab(paste0(PC_to_plot[2], " Loadings")) + 
+          theme(panel.grid.major = element_blank(),
+                panel.grid.minor = element_blank(),
+                plot.title = element_text(hjust = 0.5))
+      } else {
+        loading_plot <- ggplot(dfv_with_loadings_table_fil, aes(x = !!sym(PC_to_plot[1]), y = !!sym(PC_to_plot[2]), color = !!sym(fv), fill = !!sym(fv))) +
+          geom_point() +
+          scale_fill_manual(values = colors_of_groups_fv) +
+          scale_color_manual(values = colors_of_groups_fv) + 
+          theme_bw() +
+          ggtitle("PCA Score Plot") +
+          xlab(paste0(PC_to_plot[1], " Loadings")) +
+          ylab(paste0(PC_to_plot[2], " Loadings")) + 
+          theme(panel.grid.major = element_blank(),
+                panel.grid.minor = element_blank(),
+                plot.title = element_text(hjust = 0.5))
+      }
+    } else {
+      if (!is.null(sv)) {
+        loading_plot <- ggplot(dfv_with_loadings_table_fil, aes(x = !!sym(PC_to_plot[1]), y = !!sym(PC_to_plot[2]))) +
+          geom_point() +
+          geom_text_repel(aes(label = !!sym(sv))) +
+          theme_bw() +
+          ggtitle("PCA Score Plot") +
+          xlab(paste0(PC_to_plot[1], " Loadings")) +
+          ylab(paste0(PC_to_plot[2], " Loadings")) + 
+          theme(panel.grid.major = element_blank(),
+                panel.grid.minor = element_blank(),
+                plot.title = element_text(hjust = 0.5))
+      } else if (labels_on_loading) {
+        loading_plot <- ggplot(dfv_with_loadings_table_fil, aes(x = !!sym(PC_to_plot[1]), y = !!sym(PC_to_plot[2]))) +
+          geom_point() +
+          geom_text_repel(aes(label = !!sym(colnames(dfv_with_loadings_table_fil)[1]))) +
+          theme_bw() +
+          ggtitle("PCA Score Plot") +
+          xlab(paste0(PC_to_plot[1], " Loadings")) +
+          ylab(paste0(PC_to_plot[2], " Loadings")) + 
+          theme(panel.grid.major = element_blank(),
+                panel.grid.minor = element_blank(),
+                plot.title = element_text(hjust = 0.5))
+      } else {
+        loading_plot <- ggplot(dfv_with_loadings_table_fil, aes(x = !!sym(PC_to_plot[1]), y = !!sym(PC_to_plot[2]))) +
+          geom_point() +
+          theme_bw() +
+          ggtitle("PCA Score Plot") +
+          xlab(paste0(PC_to_plot[1], " Loadings")) +
+          ylab(paste0(PC_to_plot[2], " Loadings")) + 
+          theme(panel.grid.major = element_blank(),
+                panel.grid.minor = element_blank(),
+                plot.title = element_text(hjust = 0.5))
+      }
+    }
   } else {
-    loading_plot <- ggplot(loadings_table, aes(x = !!sym(PC_to_plot[1]), y = !!sym(PC_to_plot[2]))) +
-      geom_point() +
-      theme_bw() +
-      ggtitle("PCA Score Plot") +
-      xlab(paste0(PC_to_plot[1], " Loadings")) +
-      ylab(paste0(PC_to_plot[2], " Loadings")) + 
-      theme(panel.grid.major = element_blank(),
-            panel.grid.minor = element_blank(),
-            plot.title = element_text(hjust = 0.5))
+    if (labels_on_loading) {
+      loading_plot <- ggplot(dfv_with_loadings_table_fil, aes(x = !!sym(PC_to_plot[1]), y = !!sym(PC_to_plot[2]))) +
+        geom_point() +
+        geom_text_repel(aes(label = !!sym(colnames(dfv_with_loadings_table_fil)[1]))) +
+        theme_bw() +
+        ggtitle("PCA Score Plot") +
+        xlab(paste0(PC_to_plot[1], " Loadings")) +
+        ylab(paste0(PC_to_plot[2], " Loadings")) + 
+        theme(panel.grid.major = element_blank(),
+              panel.grid.minor = element_blank(),
+              plot.title = element_text(hjust = 0.5))
+    } else {
+      loading_plot <- ggplot(dfv_with_loadings_table_fil, aes(x = !!sym(PC_to_plot[1]), y = !!sym(PC_to_plot[2]))) +
+        geom_point() +
+        theme_bw() +
+        ggtitle("PCA Score Plot") +
+        xlab(paste0(PC_to_plot[1], " Loadings")) +
+        ylab(paste0(PC_to_plot[2], " Loadings")) + 
+        theme(panel.grid.major = element_blank(),
+              panel.grid.minor = element_blank(),
+              plot.title = element_text(hjust = 0.5))
+    }
   }
   
   
-  
   final_list <- list(df_with_scores_table = df_with_scores_table,
-                     loadings_table = loadings_table,
+                     dfv_with_loadings_table = dfv_with_loadings_table,
                      score_plot = score_plot,
                      loading_plot = loading_plot)
   

@@ -9,8 +9,12 @@ getPCA(
   v,
   s = NULL,
   f = NULL,
-  col_pal = NULL,
+  dfv = NULL,
+  sv = NULL,
+  fv = NULL,
   labels_on_loading = TRUE,
+  col_pal = NULL,
+  col_pal_fv = NULL,
   PC_to_plot = c("PC1", "PC2")
 )
 }
@@ -23,9 +27,17 @@ getPCA(
 
 \item{f}{NULL or character of length 1. The name of the column of df containing the factor variable. Pass it only if you want colored points and ellipses on the score plot.}
 
-\item{col_pal}{a character vector containing colors. If NULL, colors from the pals package will be used (see function build_long_vector_of_colors).}
+\item{dfv}{NULL or a dataframe. The first column must contain v. To this dataframe the lodgings table will be added.}
 
-\item{labels_on_loading}{logical. If TRUE, it will report the names of features the loading plot.}
+\item{sv}{NULL or character. The name of the column of dfv containing the names you want to put on the loading plot. Pass it only if you want those names on the loading plot.}
+
+\item{fv}{NULL or character. The name of the column of dfv containing the factor variable. Pass it only if you want colored points and ellipses on the loading plot.}
+
+\item{labels_on_loading}{logical. Even if dfv and/or sv are NULL, if this argument is set to TRUE, the loading plot will report v as labels.}
+
+\item{col_pal}{a character vector containing colors for f. If NULL, colors from the pals package will be used (see function build_long_vector_of_colors).}
+
+\item{col_pal_fv}{a character vector containing colors for fv. If NULL, colors from the pals package will be used (see function build_long_vector_of_colors).}
 
 \item{PC_to_plot}{character of length 2. The principal components to plots on the score and loading plots.}
 }
@@ -33,7 +45,7 @@ getPCA(
 A list with 4 objects:
 \itemize{
 \item \code{df_with_scores_table}: the df with additional columns containing the scores.
-\item \code{loadings_table}: the tibble containing the loadings.
+\item \code{dfv_with_loadings_table}: the dfv with additional columns containing containing the loadings.
 \item \code{score_plot}: a ggplot object with the score plot.
 \item \code{loading_plot}: a ggplot object with the loading plot.
 }
