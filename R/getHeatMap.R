@@ -5,9 +5,10 @@
 #'
 #' @param df dataframe. Containing data to plot.
 #' @param v character. The names of the columns of df containing numerical data (ideally, they should be already centered and scaled!!).
-#' @param s NULL or a character of length 1. The name of the column of df containing the sample names. You need to pass it only if you want sample names on heat map.
+#' @param s NULL or a character of length 1. The name of the column of df containing the sample names. You need to pass it only if you want sample names on the heat map.
 #' @param f NULL or character. The name(s) of the column(s) of df containing the factor variable. Pass it only if you want the additional rectangles for those groups on the heat map.
 #' @param dfv NULL or a dataframe. The first column must contain v. Additional columns can be used for the ordering or for grouping related to v.
+#' @param sv NULL or a character of length 1. The name of the column of dfv containing the names. You need to pass it only if you want names on the heat map and if you want to replace existing column names.
 #' @param fv NULL or character. The name(s) of the column(s) of dfv containing the factor variable. Pass it only if you want the additional rectangles for those groups on the heat map.
 #' @param order_df_by NULL or character. The name(s) of the column(s) of df that you want to use to order the values.
 #' @param order_dfv_by NULL or character. The name(s) of the column(s) of dfv that you want to use to order the values.
@@ -24,7 +25,7 @@
 #' @return a ggplot object.
 #'
 #' @export
-getHeatMap <- function(df, v, s = NULL, f = NULL, dfv = NULL, fv = NULL, order_df_by = NULL, order_dfv_by = NULL,
+getHeatMap <- function(df, v, s = NULL, f = NULL, dfv = NULL, sv = NULL, fv = NULL, order_df_by = NULL, order_dfv_by = NULL,
                        trnsp = TRUE, cluster_rows = FALSE, cluster_columns = FALSE, name_rows = FALSE, name_columns = FALSE,
                        three_heat_colors = c("red", "white", "blue"), set_heat_colors_limits = FALSE, heat_colors_limits = NULL, col_pal_list = NULL) {
   
@@ -50,8 +51,29 @@ getHeatMap <- function(df, v, s = NULL, f = NULL, dfv = NULL, fv = NULL, order_d
   
   if (!is.null(dfv)) {
     if (!is.data.frame(dfv)) {stop("if not NULL, dfv must be a data frame!")}
-    if (nrow(dfv) != length(v)) {stop("if not NULL, dfv must be a data frame with the same length of v")}
-    if (!all(pull(dfv, 1) == v)) {stop("if not NULL, the first column of dfv must contain exactly v")}
+    if (nrow(dfv) < length(v)) {stop("if not NULL, dfv must be a data frame with a number of rows not less than the length of v")}
+    if (!all(v %in% pull(dfv, 1))) {stop(paste0('if not NULL, the first column of dfv must contain v. The following element of v are not present: "',
+                                                paste0(v[which(!v%in%pull(dfv, 1))], collapse = '", "'), '"'))}
+    
+    dfv_fil_test <- dfv[which(pull(dfv, 1) %in% v),]
+    
+    if (any(duplicated(pull(dfv_fil_test, 1)))) {stop(paste0('the first column of dfv must not contain duplicated in the elements of v. The following are dupicated: "',
+                                                        paste0(pull(dfv_fil_test, 1)[which(duplicated(pull(dfv_fil_test, 1)))], collapse = '", "'), '"'))}
+    
+    dfv_fil <- dfv[0,]
+    
+    for (vname in v) {
+      this_new_row <- dfv[which(pull(dfv, 1) == vname),]
+      
+      dfv_fil <- rbind(dfv_fil, this_new_row)
+    }
+    
+    if (!is.null(sv)) {
+      if (length(sv) != 1) {stop("sv must contain one name")}
+      if (is.na(sv)) {stop("sv must not be a missing value")}
+      if (!is.character(sv)) {stop("sv must be a character")}
+      if (!sv %in% colnames(dfv)) {stop("the name you indicate in sv must correspond to name of a column in dfv")}
+    }
     
     if (!is.null(fv)) {
       if (!is.character(fv)) {stop("if not NULL, fv must be a character")}
@@ -132,6 +154,9 @@ getHeatMap <- function(df, v, s = NULL, f = NULL, dfv = NULL, fv = NULL, order_d
     rownames(df_fil_matrix) <- pull(df, s)
   }
   
+  if (!is.null(dfv) & !is.null(sv)) {
+    colnames(df_fil_matrix) <- pull(dfv_fil, sv)
+  }
   
   
   if (!is.null(order_df_by)) {
@@ -147,7 +172,7 @@ getHeatMap <- function(df, v, s = NULL, f = NULL, dfv = NULL, fv = NULL, order_d
     
     for (odfv in rev(order_dfv_by)) {
       
-      df_fil_matrix <- df_fil_matrix[,order(pull(dfv, odfv))]
+      df_fil_matrix <- df_fil_matrix[,order(pull(dfv_fil, odfv))]
       
     }
   }  
@@ -257,7 +282,7 @@ getHeatMap <- function(df, v, s = NULL, f = NULL, dfv = NULL, fv = NULL, order_d
                   paste0(colnames(hm)[which(colnames(hm) %in% fv)], collapse = ", "), '"'))
     }
     
-    dfv_to_join <- dfv[,c(1, which(colnames(dfv) %in% fv))]
+    dfv_to_join <- dfv_fil[,c(1, which(colnames(dfv_fil) %in% fv))]
     
     if (trnsp) {
       

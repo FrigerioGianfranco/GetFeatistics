@@ -15,7 +15,9 @@ getPCA(
   labels_on_loading = TRUE,
   col_pal = NULL,
   col_pal_fv = NULL,
-  PC_to_plot = c("PC1", "PC2")
+  PC_to_plot = c("PC1", "PC2"),
+  ellipses_on_score = TRUE,
+  ellipses_on_loading = FALSE
 )
 }
 \arguments{
@@ -40,6 +42,10 @@ getPCA(
 \item{col_pal_fv}{a character vector containing colors for fv. If NULL, colors from the pals package will be used (see function build_long_vector_of_colors).}
 
 \item{PC_to_plot}{character of length 2. The principal components to plots on the score and loading plots.}
+
+\item{ellipses_on_score}{logical. If you specified f and this is TRUE, ellipses will be added to the score plot.}
+
+\item{ellipses_on_loading}{logical. If you specified fv and this is TRUE, ellipses will be added to the score plot.}
 }
 \value{
 A list with 4 objects:

@@ -15,6 +15,8 @@
 #' @param col_pal a character vector containing colors for f. If NULL, colors from the pals package will be used (see function build_long_vector_of_colors).
 #' @param col_pal_fv a character vector containing colors for fv. If NULL, colors from the pals package will be used (see function build_long_vector_of_colors).
 #' @param PC_to_plot character of length 2. The principal components to plots on the score and loading plots.
+#' @param ellipses_on_score logical. If you specified f and this is TRUE, ellipses will be added to the score plot.
+#' @param ellipses_on_loading logical. If you specified fv and this is TRUE, ellipses will be added to the score plot.
 #'
 #' @return A list with 4 objects:
 #'
@@ -29,7 +31,8 @@
 #'
 #' @export
 getPCA <- function(df, v, s = NULL, f = NULL, dfv = NULL, sv = NULL, fv = NULL, labels_on_loading = TRUE,
-                   col_pal = NULL, col_pal_fv = NULL , PC_to_plot = c("PC1", "PC2")) {
+                   col_pal = NULL, col_pal_fv = NULL , PC_to_plot = c("PC1", "PC2"),
+                   ellipses_on_score = TRUE, ellipses_on_loading = FALSE) {
   
   if (!is.data.frame(df)) {stop("df must be a data frame!")}
   
@@ -55,7 +58,7 @@ getPCA <- function(df, v, s = NULL, f = NULL, dfv = NULL, sv = NULL, fv = NULL, 
     
     dfv_fil <- dfv[which(pull(dfv, 1) %in% v),]
     
-    if (any(duplicated(pull(dfv_fil, 1)))) {stop(paste0('the first column of dfv must not contain duplicated in the elements of v that contains. The following are dupicated: "',
+    if (any(duplicated(pull(dfv_fil, 1)))) {stop(paste0('the first column of dfv must not contain duplicated in the elements of v. The following are dupicated: "',
                                                     paste0(pull(dfv_fil, 1)[which(duplicated(pull(dfv_fil, 1)))], collapse = '", "'), '"'))}
     
     if (!is.null(sv)) {
@@ -80,6 +83,14 @@ getPCA <- function(df, v, s = NULL, f = NULL, dfv = NULL, sv = NULL, fv = NULL, 
   
   used_the_long_vector_of_colors <- FALSE
   
+  are.colors <- function (vect) {
+    map_lgl(vect, ~tryCatch({
+      is.matrix(col2rgb(.)) & ncol(col2rgb(.))>0
+    }, error = function(e) {
+      FALSE
+    }))
+  }
+  
   if (!is.null(f)) {
     if (length(f) != 1) {stop("f must contain one name")}
     if (is.na(f)) {stop("f must not contain mising value")}
@@ -103,13 +114,6 @@ getPCA <- function(df, v, s = NULL, f = NULL, dfv = NULL, sv = NULL, fv = NULL, 
       col_pal <- col_pal[1:length(levels(pull(df, f)))]
     }
     
-    are.colors <- function (vect) {
-      map_lgl(vect, ~tryCatch({
-        is.matrix(col2rgb(.)) & ncol(col2rgb(.))>0
-      }, error = function(e) {
-        FALSE
-      }))
-    }
     if (!all(are.colors(col_pal))) {stop(paste0('col_pal must contain valid colors. In particular, these are not: "', paste(col_pal[!are.colors(col_pal)], collapse = '", "')), '"')}
     
     colors_of_groups <- col_pal
@@ -151,6 +155,15 @@ getPCA <- function(df, v, s = NULL, f = NULL, dfv = NULL, sv = NULL, fv = NULL, 
     colors_of_groups_fv <- col_pal_fv
     names(colors_of_groups_fv) <- levels(pull(dfv, fv))
   }
+  
+  if (length(ellipses_on_score)!=1) {stop("ellipses_on_score must be exclusively TRUE or FALSE")}
+  if (!is.logical(ellipses_on_score)) {stop("ellipses_on_score must be exclusively TRUE or FALSE")}
+  if (is.na(ellipses_on_score)) {stop("ellipses_on_score must be exclusively TRUE or FALSE")}
+  
+  if (length(ellipses_on_loading)!=1) {stop("ellipses_on_loading must be exclusively TRUE or FALSE")}
+  if (!is.logical(ellipses_on_loading)) {stop("ellipses_on_loading must be exclusively TRUE or FALSE")}
+  if (is.na(ellipses_on_loading)) {stop("ellipses_on_loading must be exclusively TRUE or FALSE")}
+  
   
   
   
@@ -198,9 +211,7 @@ getPCA <- function(df, v, s = NULL, f = NULL, dfv = NULL, sv = NULL, fv = NULL, 
             plot.title = element_text(hjust = 0.5))
   } else if (is.null(s) & !is.null(f)) {
     score_plot <- ggplot(df_with_scores_table, aes(x = !!sym(PC_to_plot[1]), y = !!sym(PC_to_plot[2]), color = !!sym(f), fill = !!sym(f))) +
-      geom_point() + 
-      stat_ellipse(level = 0.95, geom = "polygon", alpha = 0.2) + 
-      scale_fill_manual(values = colors_of_groups) +
+      geom_point() + scale_fill_manual(values = colors_of_groups) +
       scale_color_manual(values = colors_of_groups) + 
       theme_bw() +
       ggtitle("PCA Score Plot") +
@@ -209,6 +220,11 @@ getPCA <- function(df, v, s = NULL, f = NULL, dfv = NULL, sv = NULL, fv = NULL, 
       theme(panel.grid.major = element_blank(),
             panel.grid.minor = element_blank(),
             plot.title = element_text(hjust = 0.5))
+    
+    if (ellipses_on_score) {
+      score_plot <- score_plot +
+        stat_ellipse(level = 0.95, geom = "polygon", alpha = 0.2)
+    }
   } else if (!is.null(s) & is.null(f)) {
     score_plot <- ggplot(df_with_scores_table, aes(x = !!sym(PC_to_plot[1]), y = !!sym(PC_to_plot[2]))) +
       geom_point() + 
@@ -223,7 +239,6 @@ getPCA <- function(df, v, s = NULL, f = NULL, dfv = NULL, sv = NULL, fv = NULL, 
   } else if (!is.null(s) & !is.null(f)) {
     score_plot <- ggplot(df_with_scores_table, aes(x = !!sym(PC_to_plot[1]), y = !!sym(PC_to_plot[2]), color = !!sym(f), fill = !!sym(f))) +
       geom_point() + 
-      stat_ellipse(level = 0.95, geom = "polygon", alpha = 0.2) + 
       geom_text_repel(aes(label = !!sym(s))) +
       scale_fill_manual(values = colors_of_groups) +
       scale_color_manual(values = colors_of_groups) + 
@@ -234,6 +249,11 @@ getPCA <- function(df, v, s = NULL, f = NULL, dfv = NULL, sv = NULL, fv = NULL, 
       theme(panel.grid.major = element_blank(),
             panel.grid.minor = element_blank(),
             plot.title = element_text(hjust = 0.5))
+    
+    if (ellipses_on_score) {
+      score_plot <- score_plot +
+        stat_ellipse(level = 0.95, geom = "polygon", alpha = 0.2)
+    }
   }
   
   
@@ -280,6 +300,12 @@ getPCA <- function(df, v, s = NULL, f = NULL, dfv = NULL, sv = NULL, fv = NULL, 
                 panel.grid.minor = element_blank(),
                 plot.title = element_text(hjust = 0.5))
       }
+      
+      if (ellipses_on_loading) {
+        loading_plot <- loading_plot +
+          stat_ellipse(level = 0.95, geom = "polygon", alpha = 0.2)
+      }
+      
     } else {
       if (!is.null(sv)) {
         loading_plot <- ggplot(dfv_with_loadings_table_fil, aes(x = !!sym(PC_to_plot[1]), y = !!sym(PC_to_plot[2]))) +

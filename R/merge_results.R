@@ -74,9 +74,11 @@ merge_results <- function(results_list, strings_in_colnames_to_remove = "", by_c
   
   for (rl in 1:length(results_list)) {
     
-    if (!any(grepl(strings_in_colnames_to_remove[rl], colnames(results_list[[rl]])))) {warning(paste0(strings_in_colnames_to_remove[rl], " was not found in any column names of ", names(results_list)[rl]))}
-    
-    colnames(results_list[[rl]]) <- str_remove_all(colnames(results_list[[rl]]), strings_in_colnames_to_remove[rl])
+    if (strings_in_colnames_to_remove[rl] != "") {
+      if (!any(grepl(strings_in_colnames_to_remove[rl], colnames(results_list[[rl]])))) {warning(paste0(strings_in_colnames_to_remove[rl], " was not found in any column names of ", names(results_list)[rl]))}
+      
+      colnames(results_list[[rl]]) <- str_remove_all(colnames(results_list[[rl]]), strings_in_colnames_to_remove[rl])
+    }
   }
   
   

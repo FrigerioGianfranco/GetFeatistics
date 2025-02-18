@@ -10,6 +10,7 @@ getHeatMap(
   s = NULL,
   f = NULL,
   dfv = NULL,
+  sv = NULL,
   fv = NULL,
   order_df_by = NULL,
   order_dfv_by = NULL,
@@ -29,11 +30,13 @@ getHeatMap(
 
 \item{v}{character. The names of the columns of df containing numerical data (ideally, they should be already centered and scaled!!).}
 
-\item{s}{NULL or a character of length 1. The name of the column of df containing the sample names. You need to pass it only if you want sample names on heat map.}
+\item{s}{NULL or a character of length 1. The name of the column of df containing the sample names. You need to pass it only if you want sample names on the heat map.}
 
 \item{f}{NULL or character. The name(s) of the column(s) of df containing the factor variable. Pass it only if you want the additional rectangles for those groups on the heat map.}
 
 \item{dfv}{NULL or a dataframe. The first column must contain v. Additional columns can be used for the ordering or for grouping related to v.}
+
+\item{sv}{NULL or a character of length 1. The name of the column of dfv containing the names. You need to pass it only if you want names on the heat map and if you want to replace existing column names.}
 
 \item{fv}{NULL or character. The name(s) of the column(s) of dfv containing the factor variable. Pass it only if you want the additional rectangles for those groups on the heat map.}
 
