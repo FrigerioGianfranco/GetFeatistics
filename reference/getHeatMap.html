@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">GetFeatistics</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.9.3.4</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.9.3.5</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -47,6 +47,7 @@
 <span>  s <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  f <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  dfv <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  sv <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  fv <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  order_df_by <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  order_dfv_by <span class="op">=</span> <span class="cn">NULL</span>,</span>
@@ -75,7 +76,7 @@
 
 
 <dt id="arg-s">s<a class="anchor" aria-label="anchor" href="#arg-s"></a></dt>
-<dd><p>NULL or a character of length 1. The name of the column of df containing the sample names. You need to pass it only if you want sample names on heat map.</p></dd>
+<dd><p>NULL or a character of length 1. The name of the column of df containing the sample names. You need to pass it only if you want sample names on the heat map.</p></dd>
 
 
 <dt id="arg-f">f<a class="anchor" aria-label="anchor" href="#arg-f"></a></dt>
@@ -84,6 +85,10 @@
 
 <dt id="arg-dfv">dfv<a class="anchor" aria-label="anchor" href="#arg-dfv"></a></dt>
 <dd><p>NULL or a dataframe. The first column must contain v. Additional columns can be used for the ordering or for grouping related to v.</p></dd>
+
+
+<dt id="arg-sv">sv<a class="anchor" aria-label="anchor" href="#arg-sv"></a></dt>
+<dd><p>NULL or a character of length 1. The name of the column of dfv containing the names. You need to pass it only if you want names on the heat map and if you want to replace existing column names.</p></dd>
 
 
 <dt id="arg-fv">fv<a class="anchor" aria-label="anchor" href="#arg-fv"></a></dt>
