@@ -26,7 +26,6 @@ gentab_P.2wayANOVA_posthocTurkeyHSD <- function(DF, v, f, interact = FALSE, FDR 
   if (!all(v %in% colnames(DF))) {stop("the names you indicate in v must correspond to names of columns in DF")}
   if (!all(map_lgl(DF[,v], is.numeric))) {stop("in DF, the columns chosed with v must contain numerical values")}
   if (any(map_lgl(DF[,v], ~ any(is.na(.x))))) {stop("in DF, the columns chosen with v must not contain missing values")}
-  if (any(map_lgl(DF[,v], ~ any(.x == 0)))) {warning("There are some zeros in the data, isn't it better to replace them with NAs?")}
   
   if (!is.character(f)) {stop("f must be a character")}
   if (length(f) != 2) {stop("f must contain the names of two coloumn of DF")}

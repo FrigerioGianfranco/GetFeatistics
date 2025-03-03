@@ -12,15 +12,16 @@
 #' @param category character of length 1. If dep_cat is TRUE, pass here the name of the column in tab that contains the categorisation.
 #' @param cut_off_names numerical of length 1. Names of dependent variables will be shown only if above this cut-off.
 #' @param line1 logical. Do you want to show a horizontal dotted line?
-#' @param line1_position numerical of length 1. If line1 is TRUE, pass here the value of the dotted line.
+#' @param line1_position numerical of length 1. If line1 is TRUE, pass here the y-value of the horizontal dotted line.
 #' @param line2 logical.  Do you want to show a second horizontal dotted line?
-#' @param line2_position numerical of length 1. If line2 is TRUE, pass here the value of the second dotted line.
+#' @param line2_position numerical of length 1. If line2 is TRUE, pass here the y-value of the second horizontal dotted line.
+#' @param col_pal a character vector containing colors. If NULL, colors from the pals package will be used (see function build_long_vector_of_colors).
 #'
 #'
 #' @return a ggplot object, with the Volcano plot.
 #'
 #' @export
-Volcano_lm <- function(tab, ind_main, x_values = "variation_perc", y_values = "negative_log10fdr", dep_cat = FALSE, category = NULL, cut_off_names = -log10(0.0001), line1 = TRUE, line1_position = -log10(0.05), line2 = TRUE, line2_position = -log10(0.0001)) {
+Volcano_lm <- function(tab, ind_main, x_values = "variation_perc", y_values = "negative_log10fdr", dep_cat = FALSE, category = NULL, cut_off_names = -log10(0.0001), line1 = TRUE, line1_position = -log10(0.05), line2 = TRUE, line2_position = -log10(0.0001), col_pal = NULL) {
   
   if (!is.data.frame(tab)) {stop("tab must be a data frame created with the gentab_lm_long fucntion")}
   if (!"Dependent" %in% colnames(tab) |
@@ -56,6 +57,10 @@ Volcano_lm <- function(tab, ind_main, x_values = "variation_perc", y_values = "n
     if (is.na(category)) {stop("category must be a character of lenght 1, and it should be a column in tab containing the categories of the dependent variables")}
     if (!is.character(category)) {stop("category must be a character of lenght 1, and it should be a column in tab containing the categories of the dependent variables")}
     if (!category %in% colnames(tab)) {stop("category must be a character of lenght 1, and it should be a column in tab containing the categories of the dependent variables")}
+    
+    if (!is.factor(pull(tab, category))) {
+      tab[,category] <- as.factor(pull(tab, category))
+    }
   }
   
   if (length(cut_off_names)!=1) {stop("cut_off_names must be a single number")}
@@ -82,6 +87,41 @@ Volcano_lm <- function(tab, ind_main, x_values = "variation_perc", y_values = "n
     if (!is.numeric(line2_position)) {stop("line2_position must be a number")}
   }
   
+  if (dep_cat) {
+    if (!is.null(col_pal)) {
+      if (!is.character(col_pal)) {stop("col_pal must be a character vector")}
+      if (any(is.na(col_pal))) {stop("col_pal must not contain NAs")}
+      
+    } else {
+      col_pal <- build_long_vector_of_colors()
+    }
+    
+    if (length(col_pal)<length(levels(pull(tab, category)))) {
+      stop(paste0("There are ", length(levels(pull(tab, category))), " groups, and you have specified only ", length(col_pal), " colors in col_pal"))
+    } else {
+      col_pal <- col_pal[1:length(levels(pull(tab, category)))]
+    }
+    
+    are.colors <- function (vect) {
+      map_lgl(vect, ~tryCatch({
+        is.matrix(col2rgb(.)) & ncol(col2rgb(.))>0
+      }, error = function(e) {
+        FALSE
+      }))
+    }
+    if (!all(are.colors(col_pal))) {stop(paste0('col_pal must contain valid colors. In particular, these are not: "', paste(col_pal[!are.colors(col_pal)], collapse = '", "')), '"')}
+    
+    colors_of_groups <- col_pal
+    if (is.null(names(colors_of_groups))) {
+      names(colors_of_groups) <- levels(pull(tab, category))
+    } else {
+      if (any(duplicated(names(colors_of_groups)))) {"col_pal has some duplicated in the names"}
+      if (!all(names(colors_of_groups) %in% levels(pull(tab, category)) & levels(pull(tab, category)) %in% names(colors_of_groups))) {stop("the names of col_pal don't correspond to the levels of category")}
+    }
+  }
+  
+  
+  
   
   tab_fil <- filter(tab, Independent == ind_main)
   ind_covar <- unique(tab$Independent)[unique(tab$Independent) != "(Intercept)" & unique(tab$Independent) != ind_main]
@@ -90,6 +130,8 @@ Volcano_lm <- function(tab, ind_main, x_values = "variation_perc", y_values = "n
   if (dep_cat == TRUE) {
     p <- ggplot(tab_fil) +
       geom_point(aes(x=!!sym(x_values), y=!!sym(y_values), colour=!!sym(category), fill= !!sym(category), shape=!!sym(category))) +
+      scale_fill_manual(values = colors_of_groups) +
+      scale_colour_manual(values = colors_of_groups) +
       theme_bw() +
       labs(x= ifelse(x_values=="variation_perc", "% Variation", ifelse(x_values=="beta", "beta_slopes", x_values)),
            y = ifelse(y_values == "negative_log10fdr", "\u2212log10(FDR P-value)", ifelse(y_values == "negative_log10p", "\u2212log10(P-value)", y_values)) ,

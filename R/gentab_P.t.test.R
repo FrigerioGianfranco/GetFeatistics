@@ -33,7 +33,7 @@ gentab_P.t.test <- function(df, v, f, paired = FALSE, FDR = FALSE, cutPval = FAL
   if (!all(v %in% colnames(df))) {stop("v must be a vector containing the names of the coloumns with data that you want to apply the t-test to")}
   if (mean(map_lgl(select(df, all_of(v)), is.numeric)) != 1) {stop("all coloumn passed with v must be numeric!")}
   if (any(map_lgl(select(df, all_of(v)), ~ any(is.na(.))))) {stop("there are some missing values in the data. Please, input or remove those missing values. Consider using the function transf_data of the present package")}
-  if (any(map_lgl(df[,v], ~ any(.x == 0)))) {warning("There are some zeros in the data, isn't it better to replace them with NAs?")}
+  
   
   f_and_v  <- c(f, v)
   if (any(check_if_fix_names_needed(f_and_v))) {warning(paste0("Some coloumn names contain a special character or start with a number. Please, consider using the function fix_names before applying the current function. These are the names with issues: ",

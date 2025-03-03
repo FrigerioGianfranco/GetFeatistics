@@ -7,7 +7,7 @@
 #' @param df dataframe. Containing data to plot.
 #' @param v character. The names of the columns of df containing numerical data to plot
 #' @param f character of length 1. The names of the factor variable used to group the boxplots.
-#' @param col_pal a character vector containing colors. If NULL, colors from the pals package will be used (see function build_long_vector_of_colors).
+#' @param col_pal NULL or a character vector containing colors. If NULL, colors from the pals package will be used (see function build_long_vector_of_colors).
 #'
 #'
 #' @return A ggplot object (if v is only 1), or a list of ggplots (if v contains 2 or more elements).
@@ -52,7 +52,12 @@ getBoxplots <- function(df, v, f, col_pal = NULL) {
   if (!all(are.colors(col_pal))) {stop(paste0('col_pal must contain valid colors. In particular, these are not: "', paste(col_pal[!are.colors(col_pal)], collapse = '", "')), '"')}
   
   colors_of_groups <- col_pal
-  names(colors_of_groups) <- levels(pull(df, f))
+  if (is.null(names(colors_of_groups))) {
+    names(colors_of_groups) <- levels(pull(df, f))
+  } else {
+    if (any(duplicated(names(colors_of_groups)))) {"col_pal has some duplicated in the names"}
+    if (!all(names(colors_of_groups) %in% levels(pull(df, f)) & levels(pull(df, f)) %in% names(colors_of_groups))) {stop("the names of col_pal don't correspond to the levels of f")}
+  }
   
   
   

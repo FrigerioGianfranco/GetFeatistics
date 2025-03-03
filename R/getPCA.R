@@ -117,7 +117,15 @@ getPCA <- function(df, v, s = NULL, f = NULL, dfv = NULL, sv = NULL, fv = NULL, 
     if (!all(are.colors(col_pal))) {stop(paste0('col_pal must contain valid colors. In particular, these are not: "', paste(col_pal[!are.colors(col_pal)], collapse = '", "')), '"')}
     
     colors_of_groups <- col_pal
-    names(colors_of_groups) <- levels(pull(df, f))
+    if (is.null(names(colors_of_groups))) {
+      names(colors_of_groups) <- levels(pull(df, f))
+    } else {
+      if (any(duplicated(names(colors_of_groups)))) {"col_pal has some duplicated in the names"}
+      if (!all(names(colors_of_groups) %in% levels(pull(df, f)) & levels(pull(df, f)) %in% names(colors_of_groups))) {stop("the names of col_pal don't correspond to the levels of f")}
+    }
+    
+    
+    
     
   }
   
@@ -153,7 +161,12 @@ getPCA <- function(df, v, s = NULL, f = NULL, dfv = NULL, sv = NULL, fv = NULL, 
     if (!all(are.colors(col_pal_fv))) {stop(paste0('col_pal_fv must contain valid colors. In particular, these are not: "', paste(col_pal_fv[!are.colors(col_pal_fv)], collapse = '", "')), '"')}
     
     colors_of_groups_fv <- col_pal_fv
-    names(colors_of_groups_fv) <- levels(pull(dfv, fv))
+    if (is.null(names(colors_of_groups_fv))) {
+      names(colors_of_groups_fv) <- levels(pull(dfv, fv))
+    } else {
+      if (any(duplicated(names(colors_of_groups_fv)))) {"col_pal_fv has some duplicated in the names"}
+      if (!all(names(colors_of_groups_fv) %in% levels(pull(dfv, fv)) & levels(pull(dfv, fv)) %in% names(colors_of_groups_fv))) {stop("the names of col_pal_fv don't correspond to the levels of fv")}
+    }
   }
   
   if (length(ellipses_on_score)!=1) {stop("ellipses_on_score must be exclusively TRUE or FALSE")}

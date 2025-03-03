@@ -3,6 +3,7 @@
 export(GetCombined_featTable_MSDial)
 export(QCs_process)
 export(Volcano_lm)
+export(Volcano_ttest_FC)
 export(addINFO_to_table)
 export(auto_scale)
 export(build_long_vector_of_colors)

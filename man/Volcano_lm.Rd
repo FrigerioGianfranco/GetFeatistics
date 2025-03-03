@@ -15,7 +15,8 @@ Volcano_lm(
   line1 = TRUE,
   line1_position = -log10(0.05),
   line2 = TRUE,
-  line2_position = -log10(1e-04)
+  line2_position = -log10(1e-04),
+  col_pal = NULL
 )
 }
 \arguments{
@@ -35,11 +36,13 @@ Volcano_lm(
 
 \item{line1}{logical. Do you want to show a horizontal dotted line?}
 
-\item{line1_position}{numerical of length 1. If line1 is TRUE, pass here the value of the dotted line.}
+\item{line1_position}{numerical of length 1. If line1 is TRUE, pass here the y-value of the horizontal dotted line.}
 
 \item{line2}{logical.  Do you want to show a second horizontal dotted line?}
 
-\item{line2_position}{numerical of length 1. If line2 is TRUE, pass here the value of the second dotted line.}
+\item{line2_position}{numerical of length 1. If line2 is TRUE, pass here the y-value of the second horizontal dotted line.}
+
+\item{col_pal}{a character vector containing colors. If NULL, colors from the pals package will be used (see function build_long_vector_of_colors).}
 }
 \value{
 a ggplot object, with the Volcano plot.

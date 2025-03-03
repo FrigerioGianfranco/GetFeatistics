@@ -19,6 +19,7 @@ getHeatMap(
   cluster_columns = FALSE,
   name_rows = FALSE,
   name_columns = FALSE,
+  rotate_name_columns = TRUE,
   three_heat_colors = c("red", "white", "blue"),
   set_heat_colors_limits = FALSE,
   heat_colors_limits = NULL,
@@ -53,6 +54,8 @@ getHeatMap(
 \item{name_rows}{logical. If TRUE, names will be added to rows, on the right of the heat map.}
 
 \item{name_columns}{logical. if TRUE, names will be added to column, below the heat map.}
+
+\item{rotate_name_columns}{logical. if TRUE, column names will be rotated vertically (this argument is meaningless if name_columns is FALSE).}
 
 \item{three_heat_colors}{character of length 3, each specifying a color. These 3 colors will be used as color scale for values of the heat map.}
 

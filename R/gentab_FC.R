@@ -9,8 +9,8 @@
 #' @param f character vector of length 1. Name of the column of df containing the factor variable (that must have exactly 2 levels) considered for performing the Fold Change analysis.
 #' @param second_to_first_ratio logical. If TRUE the second group/first group ratio will be computed, if FALSE the first group/second group ratio will be computed.
 #' @param paired logical. If FALSE it performs FC on mean of the two groups. If TRUE it performs FC for each pair and then compute the mean.
-#' @param are_log_transf logical. If you really need to perform this FC analysis on already log-transformed data, specify here as TRUE, and the subtraction will be performed instead of the ration.
-#' @param log_base numeric of length 1. Specify here the base of the logarithm to calculate the logFC or, if are_log_transf is TRUE; the base of the logarithm the that were used to transform the data.
+#' @param are_log_transf logical. If you really need to perform this FC analysis on already log-transformed data, specify here as TRUE, and the subtraction will be performed instead of the ratio.
+#' @param log_base numeric of length 1. Specify here the base of the logarithm to calculate the logFC or, if are_log_transf is TRUE; the base of the logarithm that were used to transform the data.
 #' @param filter_sign logical. If TRUE, the table will be filtered and only those that passed the FCcutoff will be retained.
 #' @param FCcutoff numeric of length 1. If filter_sign is TRUE, the value of the FCcutoff to consider a feature difference as significant.
 #'
@@ -33,7 +33,7 @@ gentab_FC <- function(df, v, f, second_to_first_ratio = TRUE, paired = FALSE, ar
   if (any(is.na(v))) {stop("v must be a vector containing the names of the coloumns with data that you want to apply the Fold Change analysis to")}
   if (!all(v %in% colnames(df))) {stop("v must be a vector containing the names of the coloumns with data that you want to apply the Fold Change analysis to")}
   if (mean(map_lgl(select(df, all_of(v)), is.numeric)) != 1) {stop("all coloumn passed with v must be numeric!")}
-  if (any(map_lgl(select(df, all_of(v)), ~ any(is.na(.))))) {warning("there are some missing values in the data")}
+  if (any(map_lgl(select(df, all_of(v)), ~ any(is.na(.))))) {stop("there are some missing values in the data")}
   
   
   

@@ -17,6 +17,7 @@
 #' @param cluster_columns logical. If TRUE, a dendrogram built from the hierarchical clustering of distances of column values will be added above the heat map.
 #' @param name_rows logical. If TRUE, names will be added to rows, on the right of the heat map.
 #' @param name_columns logical. if TRUE, names will be added to column, below the heat map.
+#' @param rotate_name_columns logical. if TRUE, column names will be rotated vertically (this argument is meaningless if name_columns is FALSE).
 #' @param three_heat_colors character of length 3, each specifying a color. These 3 colors will be used as color scale for values of the heat map.
 #' @param set_heat_colors_limits logical. If TRUE, the absolute of the minimum or the absolute of the maximum value (which is higher) will be set in positive as the upper limit and in negative as the lower limit for the color gradients of values of the heat map (this will also set the middle color exactly to zero). 
 #' @param heat_colors_limits NULL or a numeric of length 2. If set_heat_colors_limits is FALSE, you can specify here the limits for the color gradients of values of the heat map (if NULL, the maximum and the minimum values will be used).
@@ -26,7 +27,7 @@
 #'
 #' @export
 getHeatMap <- function(df, v, s = NULL, f = NULL, dfv = NULL, sv = NULL, fv = NULL, order_df_by = NULL, order_dfv_by = NULL,
-                       trnsp = TRUE, cluster_rows = FALSE, cluster_columns = FALSE, name_rows = FALSE, name_columns = FALSE,
+                       trnsp = TRUE, cluster_rows = FALSE, cluster_columns = FALSE, name_rows = FALSE, name_columns = FALSE, rotate_name_columns = TRUE, 
                        three_heat_colors = c("red", "white", "blue"), set_heat_colors_limits = FALSE, heat_colors_limits = NULL, col_pal_list = NULL) {
   
   if (!is.data.frame(df)) {stop("df must be a data frame!")}
@@ -113,6 +114,12 @@ getHeatMap <- function(df, v, s = NULL, f = NULL, dfv = NULL, sv = NULL, fv = NU
   if (length(name_columns)!=1) {stop("name_columns must be exclusively TRUE or FALSE")}
   if (!is.logical(name_columns)) {stop("name_columns must be exclusively TRUE or FALSE")}
   if (is.na(name_columns)) {stop("name_columns must be exclusively TRUE or FALSE")}
+  
+  if (name_columns) {
+    if (length(rotate_name_columns)!=1) {stop("rotate_name_columns must be exclusively TRUE or FALSE")}
+    if (!is.logical(rotate_name_columns)) {stop("rotate_name_columns must be exclusively TRUE or FALSE")}
+    if (is.na(rotate_name_columns)) {stop("rotate_name_columns must be exclusively TRUE or FALSE")}
+  }
   
   are.colors <- function (vect) {
     map_lgl(vect, ~tryCatch({
@@ -341,9 +348,15 @@ getHeatMap <- function(df, v, s = NULL, f = NULL, dfv = NULL, sv = NULL, fv = NU
   }
   
   if (name_columns) {
-    the_heatmap_plot <- the_heatmap_plot +
-      scale_x_continuous(expand=c(0,0), breaks=unique(hm$x), labels=unique(hm$variable)) +
-      theme(axis.text.x=element_text(angle = 90, vjust = 0.5))
+    if (rotate_name_columns) {
+      the_heatmap_plot <- the_heatmap_plot +
+        scale_x_continuous(expand=c(0,0), breaks=unique(hm$x), labels=unique(hm$variable)) +
+        theme(axis.text.x=element_text(angle = 270, vjust = 0.5, hjust = 0.5, margin = margin(t = -30, r = 0, b = 0, l = 0)))
+    } else {
+      the_heatmap_plot <- the_heatmap_plot +
+        scale_x_continuous(expand=c(0,0), breaks=unique(hm$x), labels=unique(hm$variable)) +
+        theme(axis.text.x=element_text(angle = 0, vjust = 0.5, hjust = 0.5, margin = margin(t = -30, r = 0, b = 0, l = 0)))
+    }
   } else {
     the_heatmap_plot <- the_heatmap_plot +
       theme(axis.text.x=element_blank())

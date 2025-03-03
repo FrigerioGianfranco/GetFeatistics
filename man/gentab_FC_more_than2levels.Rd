@@ -26,9 +26,9 @@ gentab_FC_more_than2levels(
 
 \item{paired}{logical. If FALSE it performs FC on mean of the two groups. If TRUE it performs FC for each pair and then compute the mean.}
 
-\item{are_log_transf}{logical. If you really need to perform this FC analysis on already log-transformed data, specify here as TRUE, and the subtraction will be performed instead of the ration.}
+\item{are_log_transf}{logical. If you really need to perform this FC analysis on already log-transformed data, specify here as TRUE, and the subtraction will be performed instead of the ratio.}
 
-\item{log_base}{numeric of length 1. Specify here the base of the logarithm to calculate the logFC or, if are_log_transf is TRUE; the base of the logarithm the that were used to transform the data.}
+\item{log_base}{numeric of length 1. Specify here the base of the logarithm to calculate the logFC or, if are_log_transf is TRUE; the base of the logarithm that were used to transform the data.}
 
 \item{only_on_positive}{logical. If TRUE, FC analysis will be performed only if all values are positive (if paired), or if all means are positive (if not paired). The rest will be left as NA.}
 }
