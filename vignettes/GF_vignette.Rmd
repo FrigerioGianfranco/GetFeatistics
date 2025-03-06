@@ -1,7 +1,7 @@
 ---
 title: "Vignette of the GetFeatistics package"
 author: "Gianfranco Frigerio"
-date: "2025-03-05"
+date: "2025-03-06"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{GF_vignette}
