@@ -2,7 +2,7 @@
 % Please edit documentation in R/do_FELLA_enrichment_analysis.R
 \name{do_FELLA_enrichment_analysis}
 \alias{do_FELLA_enrichment_analysis}
-\title{Do FELLA enrichment_analysis.}
+\title{Perform FELLA Enrichment Analysis.}
 \usage{
 do_FELLA_enrichment_analysis(
   organism_code,
@@ -27,5 +27,5 @@ do_FELLA_enrichment_analysis(
 Export csv table and png file, along with creating object in the global environment.
 }
 \description{
-Given KEGG codes and a defined organism, it performs the enrichment_analysis with the FELLA package.
+Given KEGG codes and a defined organism, it performs the enrichment analysis with the FELLA package.
 }

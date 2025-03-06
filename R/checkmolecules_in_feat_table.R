@@ -12,7 +12,7 @@
 #' @param error_type one of the following: "ppm", or "Da". It is referred to the value provided in the error argument.
 #' @param check_rt logical. Should also the retention times be checked?
 #' @param rt_to_search if check_rt is TRUE, it is the column name of the molecules_list data-frame with the rt values to look for. (it not provided the second column will be used)
-#' @param rt_window numeric of length 1. It is the retention time window to consider centered to the known molecules to check the experimental ones. Please check that the unit (seconds or minutes) is the same in all tha tables.
+#' @param rt_window numeric of length 1. It is the retention time window to consider centered to the known molecules to check the experimental ones. Please check that the unit (seconds or minutes) is the same in all the tables.
 #'
 #'
 #' @return A tibble with the matching feature intensities.

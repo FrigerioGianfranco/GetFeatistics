@@ -4,18 +4,33 @@
 #'
 #' Given a table exported from MSDIAL (exporting the Area from MS-Dial 5.1.230912), it creates a table with only the name of features in the first column (same names created in the one of the featINFO) and the intensities of features in each other column.
 #'
-#' @param MSDIAL_raw_table a dataframe. Load on R the exported table using write_tsv or write_csv, then directly pass it in this argument.
-#' @param n_last_coloums_to_delete numercial of length 1. Usually in the exported file from MSDIAL, the last columns are for descriptive statistics of the features. Pass here the numner of the last columns that you need to remove.
+#' @param MSDIAL_raw_table NULL or a dataframe. Load on R the exported table using write_tsv or write_csv, then directly pass it in this argument. This argument will be ignored if the following one is not NULL.
+#' @param MSDIAL_raw_table_file_name NULL or a character vector of length 1. The name of the .txt file of the MSDIAL exported table to import. It is preferred to use this argument instead of the previous, so the table will be also imported with the correct column types and information.
+#' @param n_last_coloums_to_delete numeric of length 1. Usually in the exported file from MSDIAL, the last columns are for descriptive statistics of the features. Pass here the number of the last columns that you need to remove.
 #'
 #'
 #' @return A tibble with the feature intensities.
 #'
 #' @export
-get_feat_table_from_MSDial <- function(MSDIAL_raw_table, n_last_coloums_to_delete = 2) {
+get_feat_table_from_MSDial <- function(MSDIAL_raw_table = NULL, MSDIAL_raw_table_file_name = NULL, n_last_coloums_to_delete = 2) {
+  
+  if (!is.null(MSDIAL_raw_table_file_name)) {
+    if (length(MSDIAL_raw_table_file_name) != 1) {stop("MSDIAL_raw_table_file_name must be a character vector of length 1")}
+    if (!is.character(MSDIAL_raw_table_file_name)) {stop("MSDIAL_raw_table_file_name must be a character vector of length 1")}
+    if (is.na(MSDIAL_raw_table_file_name)) {stop("MSDIAL_raw_table_file_name must be a character vector of length 1, not NA")}
+    
+    MSDIAL_raw_table <- suppressMessages(read_tsv(MSDIAL_raw_table_file_name,
+                                                  show_col_types = FALSE,
+                                                  guess_max = Inf))
+  } else if (!is.null(MSDIAL_raw_table)) {
+    if (is.data.frame(MSDIAL_raw_table)) {stop("MSDIAL_raw_table must be NULL or a dataframe")}
+  } else {
+    stop("either MSDIAL_raw_table or MSDIAL_raw_table_file_name must not be NULL. Using MSDIAL_raw_table_file_name is generally preferred")
+  }
   
   check_integer <- function(x) {x == round(x)}
-  if (length(n_last_coloums_to_delete)!=1) { stop("n_last_coloums_to_delete must contain a whole number indicating the number of last column from the table to remove") }
-  if (!check_integer(n_last_coloums_to_delete)) { stop("n_last_coloums_to_delete must contain a whole number indicating the number of last column from the table to remove") }
+  if (length(n_last_coloums_to_delete)!=1) {stop("n_last_coloums_to_delete must contain a whole number indicating the number of last column from the table to remove")}
+  if (!check_integer(n_last_coloums_to_delete)) {stop("n_last_coloums_to_delete must contain a whole number indicating the number of last column from the table to remove")}
   if (is.na(n_last_coloums_to_delete)) {stop("n_last_coloums_to_delete must contain a whole number indicating the number of last column from the table to remove")}
   
   MSDIAL_raw_table_selected <- MSDIAL_raw_table[,-c(2:which(colnames(MSDIAL_raw_table)== "Class"))]

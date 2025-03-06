@@ -1,11 +1,11 @@
 
 
-## Packages required: FELLA igraph
+## Packages required: FELLA, igraph
 
 
-#' Do FELLA enrichment_analysis.
+#' Perform FELLA Enrichment Analysis.
 #'
-#' Given KEGG codes and a defined organism, it performs the enrichment_analysis with the FELLA package.
+#' Given KEGG codes and a defined organism, it performs the enrichment analysis with the FELLA package.
 #'
 #' @param organism_code character of length 1. The KEGG organism code. For example, for homo sapiens (human) is 'hsa'. All codes are here: https://www.genome.jp/kegg/tables/br08606.html.
 #' @param KEGG_codes Character. KEGG codes of compounds.
@@ -63,9 +63,9 @@ do_FELLA_enrichment_analysis <- function(organism_code, KEGG_codes, path_databas
   
   assign(paste0(output_prefix, "enrich_analysis_", organism_code, output_suffix), enrich_analysis_this_organism, envir = .GlobalEnv)
   
-  cat(paste0(length(getInput(enrich_analysis_sign_molecules_hsa)), " codes used; ",
-             length(getExcluded(enrich_analysis_sign_molecules_hsa)), " codes excluded; ",
-             length(Significative_molecules_KEGG_codes), " total codes\n"))
+  cat(paste0(length(getInput(enrich_analysis_this_organism)), " codes used; ",
+             length(getExcluded(enrich_analysis_this_organism)), " codes excluded; ",
+             length(KEGG_codes), " total codes\n"))
   
   
   enrich_analysis_run_this_organism <- runDiffusion(object = enrich_analysis_this_organism,

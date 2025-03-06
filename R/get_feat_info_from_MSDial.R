@@ -4,13 +4,28 @@
 #'
 #' Given a table exported from MSDIAL (exporting the Area from MS-Dial 5.1.230912), it creates the featINFO table, i.e. the table with the full information on each feature.
 #'
-#' @param MSDIAL_raw_table a dataframe. Inport on R the exported table using write_tsv or write_csv, then directly pass it in this argument.
+#' @param MSDIAL_raw_table NULL or a dataframe. Load on R the exported table using write_tsv or write_csv, then directly pass it in this argument. This argument will be ignored if the following one is not NULL.
+#' @param MSDIAL_raw_table_file_name NULL or a character vector of length 1. The name of the .txt file of the MSDIAL exported table to import. It is preferred to use this argument instead of the previous, so the table will be also imported with the correct column types and information.
 #' @param add_AnnoLevels logical. If TRUE, an additional column named "AnnoLevels" will be added, and the annotation levels will be calculated considering the cut-offs reported in https://doi.org/10.1007/s00216-022-04207-z.
 #'
 #' @return A tibble with the information for each feature.
 #'
 #' @export
-get_feat_info_from_MSDial <- function(MSDIAL_raw_table, add_AnnoLevels = FALSE) {
+get_feat_info_from_MSDial <- function(MSDIAL_raw_table = NULL, MSDIAL_raw_table_file_name = NULL, add_AnnoLevels = FALSE) {
+  
+  if (!is.null(MSDIAL_raw_table_file_name)) {
+    if (length(MSDIAL_raw_table_file_name) != 1) {stop("MSDIAL_raw_table_file_name must be a character vector of length 1")}
+    if (!is.character(MSDIAL_raw_table_file_name)) {stop("MSDIAL_raw_table_file_name must be a character vector of length 1")}
+    if (is.na(MSDIAL_raw_table_file_name)) {stop("MSDIAL_raw_table_file_name must be a character vector of length 1, not NA")}
+    
+    MSDIAL_raw_table <- suppressMessages(read_tsv(MSDIAL_raw_table_file_name,
+                                                  show_col_types = FALSE,
+                                                  guess_max = Inf))
+  } else if (!is.null(MSDIAL_raw_table)) {
+    if (is.data.frame(MSDIAL_raw_table)) {stop("MSDIAL_raw_table must be NULL or a dataframe")}
+  } else {
+    stop("either MSDIAL_raw_table or MSDIAL_raw_table_file_name must not be NULL. Using MSDIAL_raw_table_file_name is generally preferred")
+  }
   
   if (length(add_AnnoLevels)!=1) {stop("add_AnnoLevels must be exclusively TRUE or FALSE")}
   if (!is.logical(add_AnnoLevels)) {stop("add_AnnoLevels must be exclusively TRUE or FALSE")}
@@ -83,6 +98,7 @@ get_feat_info_from_MSDial <- function(MSDIAL_raw_table, add_AnnoLevels = FALSE) 
   feat_info_output <- MSDIAL_raw_table_selected_better
   
   if (add_AnnoLevels) {
+    
     feat_info_output <- get_AnnoLevels_MSDial(feat_info_output)
   }
   

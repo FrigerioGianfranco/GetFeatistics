@@ -4,10 +4,15 @@
 \alias{get_feat_table_from_patRoon}
 \title{Get a table of feature intensities from the patRoon output.}
 \usage{
-get_feat_table_from_patRoon(patRoon_featureGroups)
+get_feat_table_from_patRoon(
+  patRoon_featureGroups = NULL,
+  patRoon_featureGroups_file_name = NULL
+)
 }
 \arguments{
-\item{patRoon_featureGroups}{a dataframe. Features groups and related intensities obtained after XCMS. This table should contain the feature group names in a column named "group", the retention times a column named "ret", the m/z ratio in a column named "mz", and the intensities in all other columns.}
+\item{patRoon_featureGroups}{NULL or a dataframe. Features groups and related intensities obtained after XCMS. This table should contain the feature group names in a column named "group", the retention times a column named "ret", the m/z ratio in a column named "mz", and the intensities in all other columns.}
+
+\item{patRoon_featureGroups_file_name}{NULL or a character vector of length 1. If patRoon_featureGroups is NULL, this can be used and directly import the table with the .csv or .txt file name passed.}
 }
 \value{
 A tibble with the feature intensities.

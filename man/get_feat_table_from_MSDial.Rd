@@ -4,12 +4,18 @@
 \alias{get_feat_table_from_MSDial}
 \title{Get a table of feature intensities from the MSDIAL export file.}
 \usage{
-get_feat_table_from_MSDial(MSDIAL_raw_table, n_last_coloums_to_delete = 2)
+get_feat_table_from_MSDial(
+  MSDIAL_raw_table = NULL,
+  MSDIAL_raw_table_file_name = NULL,
+  n_last_coloums_to_delete = 2
+)
 }
 \arguments{
-\item{MSDIAL_raw_table}{a dataframe. Load on R the exported table using write_tsv or write_csv, then directly pass it in this argument.}
+\item{MSDIAL_raw_table}{NULL or a dataframe. Load on R the exported table using write_tsv or write_csv, then directly pass it in this argument. This argument will be ignored if the following one is not NULL.}
 
-\item{n_last_coloums_to_delete}{numercial of length 1. Usually in the exported file from MSDIAL, the last columns are for descriptive statistics of the features. Pass here the numner of the last columns that you need to remove.}
+\item{MSDIAL_raw_table_file_name}{NULL or a character vector of length 1. The name of the .txt file of the MSDIAL exported table to import. It is preferred to use this argument instead of the previous, so the table will be also imported with the correct column types and information.}
+
+\item{n_last_coloums_to_delete}{numeric of length 1. Usually in the exported file from MSDIAL, the last columns are for descriptive statistics of the features. Pass here the number of the last columns that you need to remove.}
 }
 \value{
 A tibble with the feature intensities.

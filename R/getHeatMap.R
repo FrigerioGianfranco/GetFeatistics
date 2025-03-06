@@ -341,7 +341,8 @@ getHeatMap <- function(df, v, s = NULL, f = NULL, dfv = NULL, sv = NULL, fv = NU
   
   if (name_rows) {
     the_heatmap_plot <- the_heatmap_plot +
-      scale_y_continuous(expand=c(0,0), breaks=unique(hm$y), labels=unique(hm$rowid), position = "right")
+      scale_y_continuous(expand=c(0,0), breaks=unique(hm$y), labels=unique(hm$rowid), position = "right") +
+      theme(axis.text.y=element_text(angle = 0, vjust = 0.5, hjust = 0.5))
   } else {
     the_heatmap_plot <- the_heatmap_plot +
       theme(axis.text.y=element_blank())

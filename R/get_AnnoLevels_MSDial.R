@@ -14,15 +14,15 @@ get_AnnoLevels_MSDial <- function(feat_info_table_MSDial) {
   
   if (!is.data.frame(feat_info_table_MSDial)) {stop("feat_info_table_MSDial must be a data frame")}
   if (!"Matched_peaks_count"%in%colnames(feat_info_table_MSDial)) {stop("feat_info_table_MSDial must contain a column named Matched_peaks_count")}
-  if (!is.numeric(feat_info_table_MSDial$Matched_peaks_count)) {stop("The column Matched_peaks_count of feat_info_table_MSDial must contain numeric data")}
+  if (!is.numeric(feat_info_table_MSDial$Matched_peaks_count)) { feat_info_table_MSDial$Matched_peaks_count <- as.numeric(feat_info_table_MSDial$Matched_peaks_count) }
   if (!"Weighted_dot_product"%in%colnames(feat_info_table_MSDial)) {stop("feat_info_table_MSDial must contain a column named Weighted_dot_product")}
-  if (!is.numeric(feat_info_table_MSDial$Weighted_dot_product)) {stop("The column Weighted_dot_product of feat_info_table_MSDial must contain numeric data")}
+  if (!is.numeric(feat_info_table_MSDial$Weighted_dot_product)) { feat_info_table_MSDial$Weighted_dot_product <- as.numeric(feat_info_table_MSDial$Weighted_dot_product) }
   if (!"Matched_peaks_percentage"%in%colnames(feat_info_table_MSDial)) {stop("feat_info_table_MSDial must contain a column named Matched_peaks_percentage")}
-  if (!is.numeric(feat_info_table_MSDial$Matched_peaks_percentage)) {stop("The column Matched_peaks_percentage of feat_info_table_MSDial must contain numeric data")}
+  if (!is.numeric(feat_info_table_MSDial$Matched_peaks_percentage)) { feat_info_table_MSDial$Matched_peaks_percentage <- as.numeric(feat_info_table_MSDial$Matched_peaks_percentage) }
   if (!"INCHIKEY"%in%colnames(feat_info_table_MSDial)) {stop("feat_info_table_MSDial must contain a column named INCHIKEY")}
   if (!"Formula"%in%colnames(feat_info_table_MSDial)) {stop("feat_info_table_MSDial must contain a column named Formula")}
   if (!"MS_MS_assigned"%in%colnames(feat_info_table_MSDial)) {stop("feat_info_table_MSDial must contain a column named MS_MS_assigned")}
-  if (!is.logical(feat_info_table_MSDial$MS_MS_assigned)) {stop("The column MS_MS_assigned of feat_info_table_MSDial must contain logical data (TRUE or FALSE)")}
+  if (!is.logical(feat_info_table_MSDial$MS_MS_assigned)) { feat_info_table_MSDial$MS_MS_assigned <- as.logical(feat_info_table_MSDial$MS_MS_assigned) }
   if ("AnnoLevel"%in%colnames(feat_info_table_MSDial)) {warning("feat_info_table_MSDial already contains a column named AnnoLevel. Please, note that it has been completely replaced here")}
   
   feat_info_table_MSDial_annolevels <- add_column(feat_info_table_MSDial, AnnoLevel = as.character(NA), .after = 3) %>%
