@@ -20,7 +20,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">GetFeatistics</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.9.3.7</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -58,7 +58,7 @@
                         <h4 data-toc-skip class="author">Gianfranco
 Frigerio</h4>
             
-            <h4 data-toc-skip class="date">2025-01-16</h4>
+            <h4 data-toc-skip class="date">2025-03-05</h4>
       
 
       <div class="d-none name"><code>GF_vignette.Rmd</code></div>
@@ -71,7 +71,7 @@ Frigerio</h4>
 </h3>
 <p>The <strong>GetFeatistics</strong> (GF) package provides several
 functions useful for the elaboration of metabolomics data. In this
-vignette you can find an example of a workflow using the functions of
+vignette you will find an example of a workflow using the functions of
 this package.</p>
 </div>
 <div class="section level3">
@@ -118,12 +118,13 @@ and untargeted metabolomics experiments.</p>
 <span><span class="co">#&gt;  In the Global Environment, created the object  df_example_qc_sampletype</span></span>
 <span><span class="co">#&gt;  In the Global Environment, created the object  df_example_melecules_to_search</span></span>
 <span><span class="co">#&gt;  In the Global Environment, created the object  df_example_gradient</span></span></code></pre></div>
-<p>The vignette is composed of three main chapters: <strong>targeted
-analyses</strong>, <strong>non-targeted analyses</strong>, and
-<strong>statistical analyses</strong>.</p>
+<p>The vignette is composed of four main chapters: <strong>1. Targeted
+analyses</strong>, <strong>2. Non-targeted analyses</strong>, <strong>3.
+Statistical analyses</strong>, and <strong>4.
+Miscellaneous</strong>.</p>
 </div>
 <div class="section level2">
-<h2 id="targeted-analyses">Targeted analyses<a class="anchor" aria-label="anchor" href="#targeted-analyses"></a>
+<h2 id="targeted-analyses">1. Targeted analyses<a class="anchor" aria-label="anchor" href="#targeted-analyses"></a>
 </h2>
 <p>To elaborate a targeted analyses, we need to organise the data in at
 least two tables:</p>
@@ -196,7 +197,7 @@ weighting factor such as <strong>1/X</strong>, <strong>1/Y</strong>, or
 analytes, but if you still don’t want, you can put “none” or NA;</li>
 <li>in the fourth column, the unit of measure of the known concentration
 (this is only for visualizations and it’s not considered for any
-calculation)</li>
+calculation).</li>
 </ul>
 <p>Yes, everything as in the
 <em>df_example_targeted_compounds_legend</em>:</p>
@@ -215,7 +216,7 @@ three arguments of the <em>get_targeted_elaboration</em> function!</p>
 <code class="sourceCode R"><span><span class="va">TARGETED_EXAMPLE_RESULTS</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_targeted_elaboration.html">get_targeted_elaboration</a></span><span class="op">(</span>data_intensity <span class="op">=</span> <span class="va">df_example_targeted</span>,</span>
 <span>                                                     data_legend <span class="op">=</span> <span class="va">df_example_targeted_legend</span>,</span>
 <span>                                                     compound_legend <span class="op">=</span> <span class="va">df_example_targeted_compounds_legend</span><span class="op">)</span></span></code></pre></div>
-<p>The output of the function is a list with 5 useful things:</p>
+<p>The output of the function is a list with 5 useful elements:</p>
 <ul>
 <li>
 <em>results_concentrations</em>: a table with the calculated
@@ -278,9 +279,11 @@ a list of ggplots that you can either print on R or export using the
 <span></span>
 <span><span class="va">TARGETED_EXAMPLE_CALIBRATION_CURVES</span><span class="op">$</span><span class="va">molecule01</span></span>
 <span><span class="co">#&gt; `geom_smooth()` using formula = 'y ~ x'</span></span></code></pre></div>
-<p><img src="GF_vignette_files/figure-html/unnamed-chunk-11-1.png" width="700"></p>
+<p><img src="GF_vignette_files/figure-html/unnamed-chunk-11-1.png" width="480"></p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/export_figures.html">export_figures</a></span><span class="op">(</span><span class="va">TARGETED_EXAMPLE_CALIBRATION_CURVES</span>, exprt_fig_type <span class="op">=</span> <span class="st">"pdf"</span><span class="op">)</span></span></code></pre></div>
+<p>All the figures of this package are created as ggplot object, so they
+can be furhter modified following the ggplot2 sintax.</p>
 <p>Last step before moving to the next chapter: let’s store separately
 just what we will need later for the statistics. Two easy steps.</p>
 <ol style="list-style-type: decimal">
@@ -296,7 +299,7 @@ object:</li>
 <code class="sourceCode R"><span><span class="va">TARGETED_MOLECULES</span> <span class="op">&lt;-</span> <span class="va">TARGETED_EXAMPLE_RESULTS</span><span class="op">$</span><span class="va">compound_legend</span><span class="op">$</span><span class="va">compounds</span></span></code></pre></div>
 </div>
 <div class="section level2">
-<h2 id="non-targeted-analyses">Non-targeted analyses<a class="anchor" aria-label="anchor" href="#non-targeted-analyses"></a>
+<h2 id="non-targeted-analyses">2. Non-targeted analyses<a class="anchor" aria-label="anchor" href="#non-targeted-analyses"></a>
 </h2>
 <p>This package is supposed to be used after obtaining a feature table
 using open source tools such as XCMS and MS-Dial. In particular, we need
@@ -341,45 +344,106 @@ such as this one:</p>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">8</span> feature008   221  104.</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">9</span> feature009   593  425.</span></span></code></pre></div>
 <p>If you worked with MS-dial, you just need to export the areas or the
-normalized areas, upload the .txt table on R using a function like
-<em>read_tsv()</em> and then pass it to the functions
+normalized areas, and then use the functions
 <em>get_feat_table_from_MSDial</em> and
-<em>get_feat_info_from_MSDial</em>. For example, something like
-that:</p>
+<em>get_feat_info_from_MSDial</em>. For example, something like that:
+(check the full documentation of the functions if you want to know
+more!)</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
-<span><span class="va">POTENTIAL_FEAT_TABLE</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_feat_table_from_MSDial.html">get_feat_table_from_MSDial</a></span><span class="op">(</span><span class="fu">read_tsv</span><span class="op">(</span><span class="st">"_NAME_OF_THE_EXPORTED_MSDIAL_FILE_.txt"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">FEAT_TABLE_FROM_MSDIAL</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_feat_table_from_MSDial.html">get_feat_table_from_MSDial</a></span><span class="op">(</span>MSDIAL_raw_table_file_name <span class="op">=</span> <span class="st">"FILE_AREA_EXPORTED_FROM_MSDIAL.txt"</span>,</span>
+<span>                                                     n_last_coloums_to_delete <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">POTENTIAL_FEAT_INFO</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_feat_info_from_MSDial.html">get_feat_info_from_MSDial</a></span><span class="op">(</span><span class="fu">read_tsv</span><span class="op">(</span><span class="st">"_NAME_OF_THE_EXPORTED_MSDIAL_FILE_.txt"</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu"><a href="../reference/get_AnnoLevels_MSDial.html">get_AnnoLevels_MSDial</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">FEAT_INFO_FROM_MSDIAL</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_feat_info_from_MSDial.html">get_feat_info_from_MSDial</a></span><span class="op">(</span>MSDIAL_raw_table_file_name <span class="op">=</span> <span class="st">"FILE_AREA_EXPORTED_FROM_MSDIAL.txt"</span>,</span>
+<span>                                                   add_AnnoLevels <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 <p>If you used XCMS while working within patRoon (and if you didn’t, I
 suggest you to do it next time as patRoon is a great “docking station”
 tool that feature several widely used R-based algorithms, such as
 metFrag for example, check it out: <a href="https://github.com/rickhelmus/patRoon" class="external-link uri">https://github.com/rickhelmus/patRoon</a>) you can use the
 functions <em>get_feat_table_from_patRoon</em> and
-<em>get_feat_info_from_patRoon</em>. Below some examples:</p>
+<em>get_feat_info_from_patRoon</em>. Below some examples (check the full
+documentation to learn how what to pass in the arguments):</p>
 <div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" tabindex="-1"></a></span>
-<span id="cb17-2"><a href="#cb17-2" tabindex="-1"></a>POTENTIAL_FEAT_TABLE <span class="ot">&lt;-</span> <span class="fu">get_feat_table_from_patRoon</span>(<span class="at">patRoon_featureGroups =</span> _PUT_HERE_THE_featureGroups_TABLE_FROM_patRoon_)</span>
+<span id="cb17-2"><a href="#cb17-2" tabindex="-1"></a>FEAT_TABLE_FROM_PATROON <span class="ot">&lt;-</span> <span class="fu">get_feat_table_from_patRoon</span>(<span class="at">patRoon_featureGroups =</span> _featureGroups_DATA_FRAME_FROM_patRoon_)</span>
 <span id="cb17-3"><a href="#cb17-3" tabindex="-1"></a></span>
-<span id="cb17-4"><a href="#cb17-4" tabindex="-1"></a>POTENTIAL_FEAT_INFO <span class="ot">&lt;-</span> <span class="fu">get_feat_info_from_patRoon</span>(<span class="at">patRoon_featureGroups =</span> _PUT_HERE_THE_featureGroups_TABLE_FROM_patRoon_,</span>
-<span id="cb17-5"><a href="#cb17-5" tabindex="-1"></a>                                                  <span class="at">patRoon_MFsummary =</span> <span class="cn">NULL</span>,</span>
-<span id="cb17-6"><a href="#cb17-6" tabindex="-1"></a>                                                  <span class="at">MFsummary_score_columns =</span> <span class="fu">c</span>(<span class="st">"individualMoNAScore"</span>, <span class="st">"score"</span>),</span>
-<span id="cb17-7"><a href="#cb17-7" tabindex="-1"></a>                                                  <span class="at">add_AnnoLevels =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<span id="cb17-4"><a href="#cb17-4" tabindex="-1"></a>FEAT_INFO_FROM_PATROON <span class="ot">&lt;-</span> <span class="fu">get_feat_info_from_patRoon</span>(<span class="at">patRoon_featureGroups =</span> _featureGroups_DATA_FRAME_FROM_patRoon_,</span>
+<span id="cb17-5"><a href="#cb17-5" tabindex="-1"></a>                                                     <span class="at">patRoon_MFsummary =</span> _MFsummary_DATA_FRAME_FROM_patRoon_,</span>
+<span id="cb17-6"><a href="#cb17-6" tabindex="-1"></a>                                                     <span class="at">MFsummary_score_columns =</span> <span class="fu">c</span>(<span class="st">"individualMoNAScore"</span>, <span class="st">"score"</span>),</span>
+<span id="cb17-7"><a href="#cb17-7" tabindex="-1"></a>                                                     <span class="at">add_AnnoLevels =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
 <p>Great. The previous two chunks are not actually run, as in this
-vignette we will be using the mock df_examples. Speaking of which, let’s
-look at a table that is necessary for the next step of this workflow:
-the filtration of features following some defined cut-offs considereing
-pooled QC.</p>
+vignette we will be using the mock <em>df_example_feat_intensities</em>
+and <em>df_example_feat_info</em>. If you have a list of actual chemical
+standards (with or without the retention times) you can check if those
+standards are present in your feature tables. To do so, you need to
+prepare a table like <em>df_example_melecules_to_search</em>:</p>
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">df_example_melecules_to_search</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 8 × 3</span></span></span>
+<span><span class="co">#&gt;   coumpound        rt    mz</span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> Alanine         146  88.0</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> Asparagine      262 131. </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> Cysteine        243 120. </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> Glutamate       290 146. </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> Glycine         169  74.0</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> Leucine          98 130. </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">7</span> Methionine      258 148. </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">8</span> Phenylalanine   471 164.</span></span></code></pre></div>
+<p>Then, you can use the function <em>checkmolecules_in_feat_table</em>
+passing: - the data frames of feature intensity, feature INFO, and known
+molecules to the first three arguments, respectively; - the name of the
+column of the known molecules data frames containing m/z values to
+<em>mz_to_search</em> (or the third column will be taken as default); -
+the accepted error value in <em>error</em>; - “ppm” or “Da” in
+<em>error_type</em> (which is refering to the <em>error</em> value); -
+TRUE to <em>check_rt</em> if you have retention times and want to also
+check them; - the name of the column of the known molecules data frames
+containing retention time values to <em>rt_to_search </em> (or the
+second column will be taken as default); - the accepted window of
+retention time to <em>rt_window</em> (and be sure that the unit, like
+seconds or minutes, is consistent!)</p>
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">CHECKED_MOLECULES</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/checkmolecules_in_feat_table.html">checkmolecules_in_feat_table</a></span><span class="op">(</span>featmatrix <span class="op">=</span> <span class="va">df_example_feat_intensities</span>,</span>
+<span>                                                  featinfo <span class="op">=</span> <span class="va">df_example_feat_info</span>,</span>
+<span>                                                  molecules_list <span class="op">=</span> <span class="va">df_example_melecules_to_search</span>,</span>
+<span>                                                  mz_to_search <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>                                                  error <span class="op">=</span> <span class="fl">20</span>,</span>
+<span>                                                  error_type <span class="op">=</span> <span class="st">"ppm"</span>,</span>
+<span>                                                  check_rt <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>                                                  rt_to_search <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>                                                  rt_window <span class="op">=</span> <span class="fl">12</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">CHECKED_MOLECULES</span><span class="op">[</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"molecule"</span>, <span class="st">"featname"</span>, <span class="st">"rt_confirmed"</span><span class="op">)</span><span class="op">]</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 9 × 3</span></span></span>
+<span><span class="co">#&gt;   molecule      featname   rt_confirmed</span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span>       </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> Alanine       NOT_FOUND  <span style="color: #BB0000;">NA</span>          </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> Asparagine    NOT_FOUND  <span style="color: #BB0000;">NA</span>          </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> Cysteine      feature001 TRUE        </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> Glutamate     feature002 TRUE        </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> Glycine       NOT_FOUND  <span style="color: #BB0000;">NA</span>          </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> Leucine       NOT_FOUND  <span style="color: #BB0000;">NA</span>          </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">7</span> Methionine    feature004 FALSE       </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">8</span> Phenylalanine feature005 TRUE        </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">9</span> Phenylalanine feature006 TRUE</span></span></code></pre></div>
+<p>Amazing!! Now, if you are a good metabolomer, you know how much is
+important to clean the dataset using well-established methods such as
+pooled quality controls (QCs). If you want to filter the feature data
+table considering defined cut-offs from the analyses of pooled QCs, you
+might want to read the next step carefully!</p>
+<p>First, you need to prepare a table containing the following
+information:</p>
 <ul>
-<li>The first column are the samples,</li>
-<li>the second column should contain “REMOVE” (to not consider at all
+<li>The first column contains the sample names.</li>
+<li>The second column should contain “REMOVE” (to not consider at all
 those samples, I suggest to do so for the first analyses of each batch),
 “blank”, “QC”, “QC_half” (if you prepared some 50:50 dilution of pooled
 QC samples) or “unknown”.</li>
-<li>The third should be prepared only separated pooled QCs were
+<li>The third should be prepared only if separated pooled QCs were
 prepared. If you want more information of such an approach, please check
 the idea behind it by reading this paper: <a href="https://doi.org/10.3390/molecules27082580" class="external-link uri">https://doi.org/10.3390/molecules27082580</a>.</li>
 </ul>
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">df_example_qc_sampletype</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 77 × 3</span></span></span>
 <span><span class="co">#&gt;    samples            action  qc_group</span></span>
@@ -421,7 +485,7 @@ separately in each QC groups, and then features that are confirmed in at
 least one of the groups defined in <em>QC_to_merge</em> will be
 kept.</li>
 </ul>
-<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">UNTARGETED_FEAT_TABLE_QC_FILTERED</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/QCs_process.html">QCs_process</a></span><span class="op">(</span>featmatrix <span class="op">=</span> <span class="va">df_example_feat_intensities</span>,</span>
 <span>                                                 sampletype <span class="op">=</span> <span class="va">df_example_qc_sampletype</span>,</span>
 <span>                                                 sep_QC <span class="op">=</span> <span class="cn">TRUE</span>,</span>
@@ -444,7 +508,7 @@ kept.</li>
 <span><span class="co">#&gt; Furthermore, while considering the feature matrix combined of tot F3A F3B F3C the final table contained 6 features</span></span></code></pre></div>
 <p>I’d suggest also to filter the featINFO table accordingly, you could
 run something like this:</p>
-<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">UNTARGETED_FEAT_INFO_QC_FILTERED</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">df_example_feat_info</span>,</span>
 <span>                                           <span class="va">featname</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="va">UNTARGETED_FEAT_TABLE_QC_FILTERED</span><span class="op">$</span><span class="va">featname</span><span class="op">)</span></span></code></pre></div>
 <p>Brilliant. Last step of this chapter is to prepare what we need for
@@ -452,37 +516,37 @@ the following statistical elaborations. Statistically speaking,
 considering the samples as observations (so as rows) and the features as
 variables (so as columns) is better for statistics. Luckily, I prepared
 a function that transpose our current feature table:</p>
-<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">UNTARGETED_RESULTS_FOR_STATISTICS</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/transpose_feat_table.html">transpose_feat_table</a></span><span class="op">(</span><span class="va">UNTARGETED_FEAT_TABLE_QC_FILTERED</span><span class="op">)</span></span></code></pre></div>
 <p>Finally, we also need to collect the feature names in a character
 vector object:</p>
-<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">FEATURES_CONSIDERED</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">UNTARGETED_RESULTS_FOR_STATISTICS</span><span class="op">)</span><span class="op">[</span><span class="op">-</span><span class="fl">1</span><span class="op">]</span></span></code></pre></div>
 </div>
 <div class="section level2">
-<h2 id="statistical-analysis">Statistical analysis<a class="anchor" aria-label="anchor" href="#statistical-analysis"></a>
+<h2 id="statistical-analysis">3. Statistical analysis<a class="anchor" aria-label="anchor" href="#statistical-analysis"></a>
 </h2>
 <p>Not bad so far. Before actually start off with the statistics, let’s
 put together the data from targeted and untargeted analyses in a single
 dataframe, together also with some other variables relevant for your
-samples (for example in an epidemiologic study, we could have patient
+samples (for example in an epidemiological study, we could have patient
 data such as age, BMI, sex, and more). In this vignette we will use mock
 data from the <em>df_example_sample_data</em> which contains three
-categoriacal variables and two numerical variables.</p>
-<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
+categorical variables and two numerical variables.</p>
+<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">EXAMPLE_TABLE_FOR_STATISTICAL_ANALYSES</span> <span class="op">&lt;-</span> <span class="va">df_example_sample_data</span> <span class="op">%&gt;%</span></span>
 <span>  <span class="fu">left_join</span><span class="op">(</span><span class="va">TARGETED_RESULTS_FOR_STATISTICS</span>, by <span class="op">=</span> <span class="st">"samples"</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
 <span>  <span class="fu">left_join</span><span class="op">(</span><span class="va">UNTARGETED_RESULTS_FOR_STATISTICS</span>, by <span class="op">=</span> <span class="st">"samples"</span><span class="op">)</span></span></code></pre></div>
 <p>Moreover, let’s put together the character vectors of the known
 molecule variables from the targeted analyses with the character vector
 of the feature names.</p>
-<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">ALL_POTENTIAL_COMPOUNDS</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">TARGETED_MOLECULES</span>, <span class="va">FEATURES_CONSIDERED</span><span class="op">)</span></span></code></pre></div>
 <p>Obviously, if you have only targeted or only untargeted experiments,
 and if you don’t have any other data to join, you can skip this
 preparatory step and go directly on with the statistics.</p>
 <div class="section level3">
-<h3 id="descriptive-statistics">Descriptive statistics<a class="anchor" aria-label="anchor" href="#descriptive-statistics"></a>
+<h3 id="descriptive-statistics">3.1. Descriptive statistics<a class="anchor" aria-label="anchor" href="#descriptive-statistics"></a>
 </h3>
 <p>Have you ever wished of a table that gives you quick summary of the
 data with mean or median, and/or with percentiles? Maybe also with the
@@ -496,7 +560,7 @@ want in the type argument, for example “median (5th; 95th percentile)”.
 Check the full documentation by tying <em>?gentab_descr</em> to know the
 other options such as setting a defined number of digital places, or how
 to consider missing values.</p>
-<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">EXAMPLE_DESCRIPTIVE_STATISTICS_RESULTS</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/gentab_descr.html">gentab_descr</a></span><span class="op">(</span>df <span class="op">=</span> <span class="va">EXAMPLE_TABLE_FOR_STATISTICAL_ANALYSES</span>,</span>
 <span>                                                       v <span class="op">=</span> <span class="va">ALL_POTENTIAL_COMPOUNDS</span>,</span>
 <span>                                                       f <span class="op">=</span> <span class="st">"factor_condition3lev"</span>,</span>
@@ -508,11 +572,11 @@ to consider missing values.</p>
 <p>Don’t forget to export it as an external table with the
 <em>export_the_table</em> function and it will be ready to be used as a
 table of your next publication!</p>
-<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/export_the_table.html">export_the_table</a></span><span class="op">(</span><span class="va">EXAMPLE_DESCRIPTIVE_STATISTICS_RESULTS</span>, exprtname <span class="op">=</span> <span class="st">"The_results_of_statistics"</span>, exprt_type <span class="op">=</span> <span class="st">"csv"</span><span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/export_the_table.html">export_the_table</a></span><span class="op">(</span><span class="va">EXAMPLE_DESCRIPTIVE_STATISTICS_RESULTS</span>, exprtname <span class="op">=</span> <span class="st">"The_results_of_descriptive_statistics"</span>, exprt_type <span class="op">=</span> <span class="st">"xlsx"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
-<h3 id="data-normalisation">Data normalisation<a class="anchor" aria-label="anchor" href="#data-normalisation"></a>
+<h3 id="data-normalisation">3.2. Data normalisation<a class="anchor" aria-label="anchor" href="#data-normalisation"></a>
 </h3>
 <p>Before moving to parametric inferential statistics, we should check
 if the data are normally distributed. We could do it in three different
@@ -521,24 +585,24 @@ ways:</p>
 <li>We could plot a density plot and check if the data distribution
 resembles a Gaussian:</li>
 </ol>
-<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">DENSITY_PLOTS</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/test_normality_density_plot.html">test_normality_density_plot</a></span><span class="op">(</span>df <span class="op">=</span> <span class="va">EXAMPLE_TABLE_FOR_STATISTICAL_ANALYSES</span>, v <span class="op">=</span> <span class="va">ALL_POTENTIAL_COMPOUNDS</span><span class="op">)</span></span>
 <span><span class="va">DENSITY_PLOTS</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span></code></pre></div>
-<p><img src="GF_vignette_files/figure-html/unnamed-chunk-28-1.png" width="700"></p>
+<p><img src="GF_vignette_files/figure-html/unnamed-chunk-30-1.png" width="480"></p>
 <ol start="2" style="list-style-type: decimal">
 <li>We could plot a Q–Q plot, anchd check that all points are within the
 grey area of the graph:</li>
 </ol>
-<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">QQPLOT</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/test_normality_q_q_plot.html">test_normality_q_q_plot</a></span><span class="op">(</span>df <span class="op">=</span> <span class="va">EXAMPLE_TABLE_FOR_STATISTICAL_ANALYSES</span>, v <span class="op">=</span> <span class="va">ALL_POTENTIAL_COMPOUNDS</span><span class="op">)</span></span>
 <span><span class="va">QQPLOT</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span></code></pre></div>
-<p><img src="GF_vignette_files/figure-html/unnamed-chunk-29-1.png" width="700"></p>
+<p><img src="GF_vignette_files/figure-html/unnamed-chunk-31-1.png" width="480"></p>
 <ol start="3" style="list-style-type: decimal">
 <li>We could apply Shapiro–Wilk tests: if the <em>P</em>-value is less
 than a defined cut-off (classical 0.05) means that data are not normally
 distributed:</li>
 </ol>
-<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">SHAPIRO_TABLE</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/test_normality_Shapiro_table.html">test_normality_Shapiro_table</a></span><span class="op">(</span>df <span class="op">=</span> <span class="va">EXAMPLE_TABLE_FOR_STATISTICAL_ANALYSES</span>, v <span class="op">=</span> <span class="va">ALL_POTENTIAL_COMPOUNDS</span>, pvalcutoff <span class="op">=</span> <span class="fl">0.05</span>, cutpval <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span><span class="va">SHAPIRO_TABLE</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 10 × 4</span></span></span>
@@ -560,7 +624,7 @@ guide to how to prepare the arguments:</p>
 <ul>
 <li>As most of the statistical function of the package, put the data
 frame of interest, and a character vector with the name of the numerical
-columns of interest in the first two arguments</li>
+columns of interest in the first two arguments.</li>
 <li>If <em>missing_replace</em> is TRUE, each NA in the data will be
 replaced by the minimum value of that variable, after being processed by
 an operation (“divide”, “multiply”, or “exponentiate”) passed to
@@ -593,7 +657,7 @@ that object in <em>name_vect_names</em>
 </li>
 </ul>
 <p>Hopefully running the example will make things clear:</p>
-<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">EXAMPLE_TABLE_FOR_STATISTICAL_ANALYSES_transf</span> <span class="op">&lt;-</span>  <span class="fu"><a href="../reference/transf_data.html">transf_data</a></span><span class="op">(</span>df <span class="op">=</span> <span class="va">EXAMPLE_TABLE_FOR_STATISTICAL_ANALYSES</span>,</span>
 <span>                                                              v <span class="op">=</span> <span class="va">ALL_POTENTIAL_COMPOUNDS</span>,</span>
 <span>                                                              missing_replace <span class="op">=</span> <span class="cn">TRUE</span>,</span>
@@ -608,7 +672,7 @@ that object in <em>name_vect_names</em>
 <p>Look at the column names of the object: “_mr” has been added for
 missing value replaced, “_ln” for the log-transformation, and “paretosc”
 for the pareto scaling:</p>
-<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">glimpse</span><span class="op">(</span><span class="va">EXAMPLE_TABLE_FOR_STATISTICAL_ANALYSES_transf</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Rows: 52</span></span>
 <span><span class="co">#&gt; Columns: 47</span></span>
@@ -660,7 +724,7 @@ for the pareto scaling:</p>
 <span><span class="co">#&gt; $ feature007_mr_ln_paretosc <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> -0.59936838, -0.85153551, 1.50829588, 1.0400…</span></span>
 <span><span class="co">#&gt; $ feature009_mr_ln_paretosc <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 0.13079507, 0.66197920, 0.02676705, 0.367105…</span></span></code></pre></div>
 <p>Those name are also saved in different objects:</p>
-<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">ALL_POTENTIAL_COMPOUNDS_transf_mr</span></span>
 <span><span class="co">#&gt;  [1] "molecule01_mr" "molecule02_mr" "molecule03_mr" "molecule04_mr"</span></span>
 <span><span class="co">#&gt;  [5] "feature002_mr" "feature003_mr" "feature004_mr" "feature005_mr"</span></span>
@@ -675,13 +739,40 @@ for the pareto scaling:</p>
 <span><span class="co">#&gt;  [5] "feature002_mr_ln_paretosc" "feature003_mr_ln_paretosc"</span></span>
 <span><span class="co">#&gt;  [7] "feature004_mr_ln_paretosc" "feature005_mr_ln_paretosc"</span></span>
 <span><span class="co">#&gt;  [9] "feature007_mr_ln_paretosc" "feature009_mr_ln_paretosc"</span></span></code></pre></div>
-<p>These object with character vector of column names are useful to be
-passed to the next functions. We want to consider the data missing value
-replaced, log-transformed, and pareto scaled, that’s why we will use the
-<em>ALL_POTENTIAL_COMPOUNDS_transf_mr_ln_paretosc</em> object.</p>
+<p>I decided to creat the function in a way that it explicates all the
+results of the different steps of the transformations, to compare and
+have access to the complete information in case of need. …But then I
+realised the dataframe can have just too many columns!! To clean it and
+have only the data of interest, and without those wired suffix, just run
+the function: <em>clean_transf_colnames</em></p>
+<div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">EXAMPLE_TABLE_FOR_STATISTICAL_ANALYSES_transf_cleaned</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/clean_transf_colnames.html">clean_transf_colnames</a></span><span class="op">(</span>df <span class="op">=</span> <span class="va">EXAMPLE_TABLE_FOR_STATISTICAL_ANALYSES_transf</span>,</span>
+<span>                                                                               v <span class="op">=</span> <span class="va">ALL_POTENTIAL_COMPOUNDS</span>,</span>
+<span>                                                                               suffix_to_consider <span class="op">=</span> <span class="st">"_mr_ln_paretosc"</span><span class="op">)</span></span>
+<span><span class="fu">glimpse</span><span class="op">(</span><span class="va">EXAMPLE_TABLE_FOR_STATISTICAL_ANALYSES_transf_cleaned</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Rows: 52</span></span>
+<span><span class="co">#&gt; Columns: 17</span></span>
+<span><span class="co">#&gt; $ samples               <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "unkwon_sample_001", "unkwon_sample_002", "unkwo…</span></span>
+<span><span class="co">#&gt; $ factor_condition2lev  <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span> F2A, F2A, F2A, F2A, F2A, F2A, F2A, F2A, F2A, F2A…</span></span>
+<span><span class="co">#&gt; $ factor_condition3lev  <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span> F3A, F3A, F3A, F3A, F3A, F3A, F3A, F3A, F3A, F3A…</span></span>
+<span><span class="co">#&gt; $ factor_condition4lev  <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span> F4A, F4A, F4A, F4A, F4A, F4A, F4A, F4A, F4A, F4A…</span></span>
+<span><span class="co">#&gt; $ numerical_condition_a <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 4144.84, 2730.27, 1830.29, 3890.55, 1894.76, 299…</span></span>
+<span><span class="co">#&gt; $ numerical_condition_b <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 4.9, 4.0, 5.9, 6.1, 14.8, 27.1, 23.0, 23.8, 24.8…</span></span>
+<span><span class="co">#&gt; $ sample_type           <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "unknown", "unknown", "unknown", "unknown", "unk…</span></span>
+<span><span class="co">#&gt; $ molecule01            <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> -0.095654618, -0.766251137, 0.967217623, 1.03065…</span></span>
+<span><span class="co">#&gt; $ molecule02            <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 1.08532715, 0.58954061, 0.14452697, 1.09067249, …</span></span>
+<span><span class="co">#&gt; $ molecule03            <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> -2.9491548, -1.4902254, -1.7295601, -3.5017350, …</span></span>
+<span><span class="co">#&gt; $ molecule04            <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 0.90019580, 0.51688222, 0.19625440, 0.90523908, …</span></span>
+<span><span class="co">#&gt; $ feature002            <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> -1.7080635, -1.3542181, -1.3560513, -1.2191125, …</span></span>
+<span><span class="co">#&gt; $ feature003            <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> -2.297112, -2.089123, -2.195260, -2.242153, -2.1…</span></span>
+<span><span class="co">#&gt; $ feature004            <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> -2.1304636, -2.2603710, -2.2016170, -2.2726418, …</span></span>
+<span><span class="co">#&gt; $ feature005            <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 0.137588664, 0.040306189, 0.060498877, 0.8342616…</span></span>
+<span><span class="co">#&gt; $ feature007            <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> -0.59936838, -0.85153551, 1.50829588, 1.04004490…</span></span>
+<span><span class="co">#&gt; $ feature009            <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 0.13079507, 0.66197920, 0.02676705, 0.36710523, …</span></span></code></pre></div>
+<p>Voilà! Only what we need, transformed, and with cleaned names!</p>
 </div>
 <div class="section level3">
-<h3 id="univariate-statistics">Univariate statistics<a class="anchor" aria-label="anchor" href="#univariate-statistics"></a>
+<h3 id="univariate-statistics-with-2-groups">3.3. Univariate statistics with 2 groups<a class="anchor" aria-label="anchor" href="#univariate-statistics-with-2-groups"></a>
 </h3>
 <p>Let’s compare differences in two groups with a t-test. A t-test for
 each numerical variable of interest will be performed with the following
@@ -708,9 +799,9 @@ significant differences considering the cutoff specified in
 <li>if <em>filter_sign</em> is TRUE, differences that have a p-value
 higher than <em>pcutoff</em> will be filtered out.</li>
 </ul>
-<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">EXAMPLE_T_TEST</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/gentab_P.t.test.html">gentab_P.t.test</a></span><span class="op">(</span>df <span class="op">=</span> <span class="va">EXAMPLE_TABLE_FOR_STATISTICAL_ANALYSES_transf</span>,</span>
-<span>                                  v <span class="op">=</span> <span class="va">ALL_POTENTIAL_COMPOUNDS_transf_mr_ln_paretosc</span>,</span>
+<div class="sourceCode" id="cb36"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">EXAMPLE_T_TEST</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/gentab_P.t.test.html">gentab_P.t.test</a></span><span class="op">(</span>df <span class="op">=</span> <span class="va">EXAMPLE_TABLE_FOR_STATISTICAL_ANALYSES_transf_cleaned</span>,</span>
+<span>                                  v <span class="op">=</span> <span class="va">ALL_POTENTIAL_COMPOUNDS</span>,</span>
 <span>                                  f <span class="op">=</span> <span class="st">"factor_condition2lev"</span>,</span>
 <span>                                  paired <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>                                  FDR <span class="op">=</span> <span class="cn">TRUE</span>,</span>
@@ -721,25 +812,99 @@ higher than <em>pcutoff</em> will be filtered out.</li>
 <span></span>
 <span><span class="va">EXAMPLE_T_TEST</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 10 × 4</span></span></span>
-<span><span class="co">#&gt;    variables                  Pvalues PvaluesFDR group_diff</span></span>
-<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                        <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> molecule01_mr_ln_paretosc 1.85<span style="color: #949494;">e</span><span style="color: #BB0000;">- 7</span>   4.62<span style="color: #949494;">e</span><span style="color: #BB0000;">- 7</span> F2A &gt; F2B </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> molecule02_mr_ln_paretosc 4.24<span style="color: #949494;">e</span><span style="color: #BB0000;">- 1</span>   7.07<span style="color: #949494;">e</span><span style="color: #BB0000;">- 1</span> <span style="color: #BB0000;">NA</span>        </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> molecule03_mr_ln_paretosc 1.56<span style="color: #949494;">e</span><span style="color: #BB0000;">- 8</span>   5.20<span style="color: #949494;">e</span><span style="color: #BB0000;">- 8</span> F2B &gt; F2A </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> molecule04_mr_ln_paretosc 7.41<span style="color: #949494;">e</span><span style="color: #BB0000;">- 1</span>   8.85<span style="color: #949494;">e</span><span style="color: #BB0000;">- 1</span> <span style="color: #BB0000;">NA</span>        </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> feature002_mr_ln_paretosc 2.74<span style="color: #949494;">e</span><span style="color: #BB0000;">-46</span>   2.74<span style="color: #949494;">e</span><span style="color: #BB0000;">-45</span> F2B &gt; F2A </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> feature003_mr_ln_paretosc 4.06<span style="color: #949494;">e</span><span style="color: #BB0000;">- 3</span>   8.13<span style="color: #949494;">e</span><span style="color: #BB0000;">- 3</span> F2B &gt; F2A </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> feature004_mr_ln_paretosc 8.22<span style="color: #949494;">e</span><span style="color: #BB0000;">-17</span>   4.11<span style="color: #949494;">e</span><span style="color: #BB0000;">-16</span> F2B &gt; F2A </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> feature005_mr_ln_paretosc 8.85<span style="color: #949494;">e</span><span style="color: #BB0000;">- 1</span>   8.85<span style="color: #949494;">e</span><span style="color: #BB0000;">- 1</span> <span style="color: #BB0000;">NA</span>        </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> feature007_mr_ln_paretosc 8.00<span style="color: #949494;">e</span><span style="color: #BB0000;">- 1</span>   8.85<span style="color: #949494;">e</span><span style="color: #BB0000;">- 1</span> <span style="color: #BB0000;">NA</span>        </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> feature009_mr_ln_paretosc 7.22<span style="color: #949494;">e</span><span style="color: #BB0000;">- 1</span>   8.85<span style="color: #949494;">e</span><span style="color: #BB0000;">- 1</span> <span style="color: #BB0000;">NA</span></span></span></code></pre></div>
-<p>Very similarly, we can do a one-way ANOVA, with posthocTurkeyHSD for
-pairwise group comparison. The argument are similar to the previous
-function, obviously in the third one we need to put the name of a
-categorical variable with three or more levels:</p>
-<div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">EXAMPLE_ANOVA_1WAY</span> <span class="op">&lt;-</span>  <span class="fu"><a href="../reference/gentab_P.1wayANOVA_posthocTurkeyHSD.html">gentab_P.1wayANOVA_posthocTurkeyHSD</a></span><span class="op">(</span>DF <span class="op">=</span> <span class="va">EXAMPLE_TABLE_FOR_STATISTICAL_ANALYSES_transf</span>,</span>
-<span>                                                           v <span class="op">=</span> <span class="va">ALL_POTENTIAL_COMPOUNDS_transf_mr_ln_paretosc</span>,</span>
+<span><span class="co">#&gt;    variables   Pvalues PvaluesFDR group_diff</span></span>
+<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> molecule01 1.85<span style="color: #949494;">e</span><span style="color: #BB0000;">- 7</span>   4.62<span style="color: #949494;">e</span><span style="color: #BB0000;">- 7</span> F2A &gt; F2B </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> molecule02 4.24<span style="color: #949494;">e</span><span style="color: #BB0000;">- 1</span>   7.07<span style="color: #949494;">e</span><span style="color: #BB0000;">- 1</span> <span style="color: #BB0000;">NA</span>        </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> molecule03 1.56<span style="color: #949494;">e</span><span style="color: #BB0000;">- 8</span>   5.20<span style="color: #949494;">e</span><span style="color: #BB0000;">- 8</span> F2B &gt; F2A </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> molecule04 7.41<span style="color: #949494;">e</span><span style="color: #BB0000;">- 1</span>   8.85<span style="color: #949494;">e</span><span style="color: #BB0000;">- 1</span> <span style="color: #BB0000;">NA</span>        </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> feature002 2.74<span style="color: #949494;">e</span><span style="color: #BB0000;">-46</span>   2.74<span style="color: #949494;">e</span><span style="color: #BB0000;">-45</span> F2B &gt; F2A </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> feature003 4.06<span style="color: #949494;">e</span><span style="color: #BB0000;">- 3</span>   8.13<span style="color: #949494;">e</span><span style="color: #BB0000;">- 3</span> F2B &gt; F2A </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> feature004 8.22<span style="color: #949494;">e</span><span style="color: #BB0000;">-17</span>   4.11<span style="color: #949494;">e</span><span style="color: #BB0000;">-16</span> F2B &gt; F2A </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> feature005 8.85<span style="color: #949494;">e</span><span style="color: #BB0000;">- 1</span>   8.85<span style="color: #949494;">e</span><span style="color: #BB0000;">- 1</span> <span style="color: #BB0000;">NA</span>        </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> feature007 8.00<span style="color: #949494;">e</span><span style="color: #BB0000;">- 1</span>   8.85<span style="color: #949494;">e</span><span style="color: #BB0000;">- 1</span> <span style="color: #BB0000;">NA</span>        </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> feature009 7.22<span style="color: #949494;">e</span><span style="color: #BB0000;">- 1</span>   8.85<span style="color: #949494;">e</span><span style="color: #BB0000;">- 1</span> <span style="color: #BB0000;">NA</span></span></span></code></pre></div>
+<p>We can also perform a Fold Change analysis! Differently from the
+t-test, the Fold Change should be performed on data before the scaling
+(because we don’t want data with negative values for the Fold Change!).
+We do want to replace missing values though. While, if you performed or
+not already the log-transformation can be specified in the
+<em>are_log_transf</em> argument (and if TRUE, the function will do
+fold-change substracting the data instead of the ratio. Logarithmic
+properties rulez!). <em>second_to_first_ratio</em> as TRUE implies that
+you want to see the effect of the group that is specified as the second
+level of the factor compared to the first; the opposite will happen if
+FALSE.</p>
+<div class="sourceCode" id="cb37"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">EXAMPLE_TABLE_FOR_STATISTICAL_ANALYSES_missing_repl</span> <span class="op">&lt;-</span>  <span class="fu"><a href="../reference/transf_data.html">transf_data</a></span><span class="op">(</span>df <span class="op">=</span> <span class="va">EXAMPLE_TABLE_FOR_STATISTICAL_ANALYSES</span>,</span>
+<span>                                                                    v <span class="op">=</span> <span class="va">ALL_POTENTIAL_COMPOUNDS</span>,</span>
+<span>                                                                    missing_replace <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>                                                                    missing_repl_type <span class="op">=</span> <span class="st">"divide"</span>,</span>
+<span>                                                                    missing_repl_value <span class="op">=</span> <span class="fl">5</span>,</span>
+<span>                                                                    log_transf <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>                                                                    scaling <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>                                                                    vect_names_transf <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>                                                                    name_vect_names <span class="op">=</span> <span class="st">"ALL_POTENTIAL_COMPOUNDS_missing_repl"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">EXAMPLE_TABLE_FOR_STATISTICAL_ANALYSES_missing_repl_cleaned</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/clean_transf_colnames.html">clean_transf_colnames</a></span><span class="op">(</span>df <span class="op">=</span> <span class="va">EXAMPLE_TABLE_FOR_STATISTICAL_ANALYSES_missing_repl</span>,</span>
+<span>                                                                                     v <span class="op">=</span> <span class="va">ALL_POTENTIAL_COMPOUNDS</span>,</span>
+<span>                                                                                     suffix_to_consider <span class="op">=</span> <span class="st">"_mr"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">EXAMPLE_FC</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/gentab_FC.html">gentab_FC</a></span><span class="op">(</span>df <span class="op">=</span> <span class="va">EXAMPLE_TABLE_FOR_STATISTICAL_ANALYSES_missing_repl_cleaned</span>,</span>
+<span>                        v <span class="op">=</span> <span class="va">ALL_POTENTIAL_COMPOUNDS</span>,</span>
+<span>                        f <span class="op">=</span> <span class="st">"factor_condition2lev"</span>,</span>
+<span>                        second_to_first_ratio <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>                        paired <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>                        are_log_transf <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>                        log_base <span class="op">=</span> <span class="fl">2</span>,</span>
+<span>                        filter_sign <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>                        FCcutoff <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">EXAMPLE_FC</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 10 × 3</span></span></span>
+<span><span class="co">#&gt;    variables       FC    logFC</span></span>
+<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> molecule01   0.319 -<span style="color: #BB0000;">1.65</span>   </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> molecule02   0.807 -<span style="color: #BB0000;">0.309</span>  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> molecule03   6.04   2.59   </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> molecule04   0.842 -<span style="color: #BB0000;">0.249</span>  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> feature002 155.     7.28   </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> feature003   0.883 -<span style="color: #BB0000;">0.179</span>  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> feature004  60.7    5.92   </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> feature005   1.08   0.105  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> feature007   0.910 -<span style="color: #BB0000;">0.136</span>  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> feature009   1.01   0.008<span style="text-decoration: underline;">13</span></span></span></code></pre></div>
+<p>Why not combining the information of the t-test and the Fold Change
+analysis into a Volcano plot? You can do it with the function
+<em>Volcano_ttest_FC</em>, that takes as input the results of the
+<em>gentab_P.t.test</em> and <em>gentab_FC</em> functions. You can leave
+the other arguments as default or personalise them, make sure to read
+the documentation with <em>?Volcano_ttest_FC</em> first!</p>
+<div class="sourceCode" id="cb38"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">Volcano_plot_ttest_FC</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/Volcano_ttest_FC.html">Volcano_ttest_FC</a></span><span class="op">(</span>ttest_results <span class="op">=</span> <span class="va">EXAMPLE_T_TEST</span>,</span>
+<span>                                          FC_results <span class="op">=</span> <span class="va">EXAMPLE_FC</span>,</span>
+<span>                                          FDR <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>                                          log_base <span class="op">=</span> <span class="fl">2</span>,</span>
+<span>                                          cut_off_names <span class="op">=</span> <span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log10</a></span><span class="op">(</span><span class="fl">0.05</span><span class="op">)</span>,</span>
+<span>                                          line1_position <span class="op">=</span> <span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log10</a></span><span class="op">(</span><span class="fl">0.05</span><span class="op">)</span>,</span>
+<span>                                          line2_position <span class="op">=</span> <span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log10</a></span><span class="op">(</span><span class="fl">0.0001</span><span class="op">)</span>,</span>
+<span>                                          names_to_plot <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>                                          category <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>                                          col_pal <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
+<p>We could do also some box-plots already, but I will describe them in
+the next section!</p>
+</div>
+<div class="section level3">
+<h3 id="univariate-statistics-with-3-or-more-groups">3.4. Univariate statistics with 3 or more groups<a class="anchor" aria-label="anchor" href="#univariate-statistics-with-3-or-more-groups"></a>
+</h3>
+<p>Very similarly to the t-test, we can do a one-way ANOVA, with
+posthocTurkeyHSD for pairwise group comparison. The argument are similar
+to the <em>gentab_P.t.test</em> function, obviously in the third one we
+need to put the name of a categorical variable with three or more
+levels:</p>
+<div class="sourceCode" id="cb39"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">EXAMPLE_ANOVA_1WAY</span> <span class="op">&lt;-</span>  <span class="fu"><a href="../reference/gentab_P.1wayANOVA_posthocTurkeyHSD.html">gentab_P.1wayANOVA_posthocTurkeyHSD</a></span><span class="op">(</span>DF <span class="op">=</span> <span class="va">EXAMPLE_TABLE_FOR_STATISTICAL_ANALYSES_transf_cleaned</span>,</span>
+<span>                                                           v <span class="op">=</span> <span class="va">ALL_POTENTIAL_COMPOUNDS</span>,</span>
 <span>                                                           f <span class="op">=</span> <span class="st">"factor_condition3lev"</span>,</span>
 <span>                                                           FDR <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>                                                           groupdiff <span class="op">=</span> <span class="cn">TRUE</span>,</span>
@@ -749,7 +914,7 @@ categorical variable with three or more levels:</p>
 <span><span class="fu">glimpse</span><span class="op">(</span><span class="va">EXAMPLE_ANOVA_1WAY</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Rows: 10</span></span>
 <span><span class="co">#&gt; Columns: 12</span></span>
-<span><span class="co">#&gt; $ Dependent                      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "molecule01_mr_ln_paretosc", "molecule0…</span></span>
+<span><span class="co">#&gt; $ Dependent                      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "molecule01", "molecule02", "molecule03…</span></span>
 <span><span class="co">#&gt; $ factor_condition3lev_Pvalue    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 1.215946e-03, 2.574197e-01, 2.153475e-3…</span></span>
 <span><span class="co">#&gt; $ F3B_vs_F3A_Pvalue              <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 1.623657e-01, 2.376120e-01, 0.000000e+0…</span></span>
 <span><span class="co">#&gt; $ F3C_vs_F3A_Pvalue              <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 0.0007683746, 0.5422966698, 0.000000000…</span></span>
@@ -763,41 +928,62 @@ categorical variable with three or more levels:</p>
 <span><span class="co">#&gt; $ F3C_vs_F3B                     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #BB0000;">NA</span>, <span style="color: #BB0000;">NA</span>, "F3C &gt; F3B", <span style="color: #BB0000;">NA</span>, "F3C &gt; F3B", "…</span></span></code></pre></div>
 <p>A nice graphical visualisation of the distribution of the data can be
 obtained with the following function that generate some boxplots:</p>
-<div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">EXAMPLE_BOX_PLOTS</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/getBoxplots.html">getBoxplots</a></span><span class="op">(</span>df <span class="op">=</span> <span class="va">EXAMPLE_TABLE_FOR_STATISTICAL_ANALYSES_transf</span>,</span>
-<span>                                 v <span class="op">=</span> <span class="va">ALL_POTENTIAL_COMPOUNDS_transf_mr_ln_paretosc</span>,</span>
+<div class="sourceCode" id="cb40"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">EXAMPLE_BOX_PLOTS</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/getBoxplots.html">getBoxplots</a></span><span class="op">(</span>df <span class="op">=</span> <span class="va">EXAMPLE_TABLE_FOR_STATISTICAL_ANALYSES_transf_cleaned</span>,</span>
+<span>                                 v <span class="op">=</span> <span class="va">ALL_POTENTIAL_COMPOUNDS</span>,</span>
 <span>                                 f <span class="op">=</span> <span class="st">"factor_condition3lev"</span><span class="op">)</span></span>
 <span><span class="va">EXAMPLE_BOX_PLOTS</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span></code></pre></div>
-<p><img src="GF_vignette_files/figure-html/unnamed-chunk-36-1.png" width="700"></p>
+<p><img src="GF_vignette_files/figure-html/unnamed-chunk-41-1.png" width="480"></p>
 <p>Since it generates a list with a box plot for each variable of
 interest. We could use the <em>export_figures</em> to export them all in
 a single pdf file:</p>
-<div class="sourceCode" id="cb36"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/export_figures.html">export_figures</a></span><span class="op">(</span><span class="va">EXAMPLE_BOX_PLOTS</span>, exprtname_figures <span class="op">=</span> <span class="st">"Amazing_boxplots"</span>, exprt_fig_type <span class="op">=</span> <span class="st">"pdf"</span><span class="op">)</span></span></code></pre></div>
-<p>Ah! …and why, just one-way? Two-ways ANOVA are also an option and can
-be obtained with the following function, specifying the two categorical
-factor in the third argument and if we want interactions in the
-<em>interact</em> argument:</p>
-<div class="sourceCode" id="cb37"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">EXAMPLE_ANOVA_2WAY</span> <span class="op">&lt;-</span>  <span class="fu"><a href="../reference/gentab_P.2wayANOVA_posthocTurkeyHSD.html">gentab_P.2wayANOVA_posthocTurkeyHSD</a></span><span class="op">(</span>DF <span class="op">=</span> <span class="va">EXAMPLE_TABLE_FOR_STATISTICAL_ANALYSES_transf</span>,</span>
-<span>                                                           v <span class="op">=</span> <span class="va">ALL_POTENTIAL_COMPOUNDS_transf_mr_ln_paretosc</span>,</span>
+<div class="sourceCode" id="cb41"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/export_figures.html">export_figures</a></span><span class="op">(</span><span class="va">EXAMPLE_BOX_PLOTS</span>, exprtname_figures <span class="op">=</span> <span class="st">"All_the_amazing_boxplots"</span>, exprt_fig_type <span class="op">=</span> <span class="st">"pdf"</span><span class="op">)</span></span></code></pre></div>
+<p>I also prepared a cool functions that performs the Fold Change
+analyses for each group pair! It is similar to <em>gentab_FC</em>, and I
+also added an argument <em>only_on_positive</em> that you can set to
+TRUE if you want to be sure the FC analysis is performed only on those
+positive data.</p>
+<div class="sourceCode" id="cb42"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">EXAMPLE_multiple_FC</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/gentab_FC_more_than2levels.html">gentab_FC_more_than2levels</a></span><span class="op">(</span>df <span class="op">=</span> <span class="va">EXAMPLE_TABLE_FOR_STATISTICAL_ANALYSES_missing_repl_cleaned</span>,</span>
+<span>                                                  v <span class="op">=</span> <span class="va">ALL_POTENTIAL_COMPOUNDS</span>,</span>
+<span>                                                  f <span class="op">=</span> <span class="st">"factor_condition3lev"</span>,</span>
+<span>                                                  second_to_first_ratio <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>                                                  paired <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>                                                  are_log_transf <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>                                                  log_base <span class="op">=</span> <span class="fl">2</span>,</span>
+<span>                                                  only_on_positive <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="fu">glimpse</span><span class="op">(</span><span class="va">EXAMPLE_multiple_FC</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Rows: 10</span></span>
+<span><span class="co">#&gt; Columns: 7</span></span>
+<span><span class="co">#&gt; $ variables        <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "molecule01", "molecule02", "molecule03", "molecule04…</span></span>
+<span><span class="co">#&gt; $ F3A_vs_F3B_FC    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 0.6012417, 0.6853129, 145.8960113, 0.6952361, 69.0272…</span></span>
+<span><span class="co">#&gt; $ F3A_vs_F3B_logFC <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> -0.7339830, -0.5451652, 7.1887966, -0.5244251, 6.1090…</span></span>
+<span><span class="co">#&gt; $ F3A_vs_F3C_FC    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 0.3122194, 0.6735777, 356.2687121, 0.7191330, 168.164…</span></span>
+<span><span class="co">#&gt; $ F3A_vs_F3C_logFC <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> -1.67936792, -0.57008366, 8.47682198, -0.47566941, 7.…</span></span>
+<span><span class="co">#&gt; $ F3B_vs_F3C_FC    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 0.51929098, 0.98287615, 2.44193593, 1.03437242, 2.436…</span></span>
+<span><span class="co">#&gt; $ F3B_vs_F3C_logFC <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> -0.94538494, -0.02491845, 1.28802535, 0.04875571, 1.2…</span></span></code></pre></div>
+<p>Ah! …and why, just one-way ANOVA?? Two-ways ANOVA are also an option
+and can be obtained with the following function, specifying the two
+categorical factor in the third argument and if we want interactions in
+the <em>interact</em> argument:</p>
+<div class="sourceCode" id="cb43"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">EXAMPLE_ANOVA_2WAY</span> <span class="op">&lt;-</span>  <span class="fu"><a href="../reference/gentab_P.2wayANOVA_posthocTurkeyHSD.html">gentab_P.2wayANOVA_posthocTurkeyHSD</a></span><span class="op">(</span>DF <span class="op">=</span> <span class="va">EXAMPLE_TABLE_FOR_STATISTICAL_ANALYSES_transf_cleaned</span>,</span>
+<span>                                                           v <span class="op">=</span> <span class="va">ALL_POTENTIAL_COMPOUNDS</span>,</span>
 <span>                                                           f <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"factor_condition3lev"</span>, <span class="st">"factor_condition4lev"</span><span class="op">)</span>,</span>
 <span>                                                           interact <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>                                                           FDR <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>                                                           groupdiff <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>                                                           pcutoff <span class="op">=</span> <span class="fl">0.05</span>,</span>
 <span>                                                           filter_sign <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>                                                           cutPval <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
+<span>                                                           cutPval <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> </span></code></pre></div>
 <p>Great, last part of this chapter: merging the statistics just
-obtained with the featINFO table from an untargeted study! Afterall, the
-name of this package is GetFeatistics (get features + statistics!!)</p>
-<p>You can do that with the <em>addINFO_to_table</em> function, after
-that we renamed the features as they were pefore the transformatio
-(this, removing “_mr_ln_paretosc”):</p>
-<div class="sourceCode" id="cb38"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">EXAMPLE_ANOVA_2WAY</span><span class="op">$</span><span class="va">Dependent</span> <span class="op">&lt;-</span> <span class="fu">str_remove_all</span><span class="op">(</span><span class="va">EXAMPLE_ANOVA_2WAY</span><span class="op">$</span><span class="va">Dependent</span>, <span class="st">"_mr_ln_paretosc"</span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">FINAL_FEAT_INFO_COMBINED_WITH_STATISTICS</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/addINFO_to_table.html">addINFO_to_table</a></span><span class="op">(</span>df1 <span class="op">=</span> <span class="va">EXAMPLE_ANOVA_2WAY</span>,  </span>
+obtained with the featINFO table from an untargeted study! After all,
+the name of this package is GetFeatistics (get features +
+statistics!!)</p>
+<p>You can do that with the <em>addINFO_to_table</em> function:</p>
+<div class="sourceCode" id="cb44"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">FINAL_FEAT_INFO_COMBINED_WITH_STATISTICS</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/addINFO_to_table.html">addINFO_to_table</a></span><span class="op">(</span>df1 <span class="op">=</span> <span class="va">EXAMPLE_ANOVA_2WAY</span>,  </span>
 <span>                                                             colfeat_df1 <span class="op">=</span> <span class="st">"Dependent"</span>,</span>
 <span>                                                             dfINFO <span class="op">=</span> <span class="va">df_example_feat_info</span>,</span>
 <span>                                                             colfeat_dfINFO <span class="op">=</span> <span class="st">"featname"</span>,</span>
@@ -819,7 +1005,7 @@ that we renamed the features as they were pefore the transformatio
 target analyses did not find a match in the featINFO, and that’s correct
 of course!</p>
 <p>This is a glimpse of the content of this table:</p>
-<div class="sourceCode" id="cb39"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb45"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">glimpse</span><span class="op">(</span><span class="va">FINAL_FEAT_INFO_COMBINED_WITH_STATISTICS</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Rows: 10</span></span>
 <span><span class="co">#&gt; Columns: 35</span></span>
@@ -859,11 +1045,177 @@ of course!</p>
 <span><span class="co">#&gt; $ F4D_vs_F4B                     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #BB0000;">NA</span>, <span style="color: #BB0000;">NA</span>, <span style="color: #BB0000;">NA</span>, <span style="color: #BB0000;">NA</span>, "F4D &gt; F4B", <span style="color: #BB0000;">NA</span>, "F4D &gt;…</span></span>
 <span><span class="co">#&gt; $ F4D_vs_F4C                     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #BB0000;">NA</span>, <span style="color: #BB0000;">NA</span>, <span style="color: #BB0000;">NA</span>, <span style="color: #BB0000;">NA</span>, "F4C &gt; F4D", <span style="color: #BB0000;">NA</span>, "F4D &gt;…</span></span></code></pre></div>
 <p>Which we can finally export it this way:</p>
-<div class="sourceCode" id="cb40"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb46"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/export_the_table.html">export_the_table</a></span><span class="op">(</span><span class="va">FINAL_FEAT_INFO_COMBINED_WITH_STATISTICS</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
-<h3 id="linear-models">Linear models<a class="anchor" aria-label="anchor" href="#linear-models"></a>
+<h3 id="principal-component-analysis-and-heat-map-with-cluster-analysis">3.5. Principal Component Analysis, and Heat Map with Cluster
+Analysis<a class="anchor" aria-label="anchor" href="#principal-component-analysis-and-heat-map-with-cluster-analysis"></a>
+</h3>
+<p>In this section, I will show you two functions for some cool
+multivariate data visualisation. The function might look complex, but
+don’t be scared, I’ll explain everything you need to know! First of all,
+in addition to the data frame we used for other statistical analyses
+(df), we can optionally pass another one (dfv) containing information
+about the metabolites (such as molecule categories). For the purpose of
+this vignette we can prepare a data frame with a factor variable
+indicating whether the compound is a molecule from the targeted analysis
+or a feature from the untargeted experiment.</p>
+<div class="sourceCode" id="cb47"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">COMPOUNDS_INFO</span> <span class="op">&lt;-</span> <span class="fu">tibble</span><span class="op">(</span>The_compounds <span class="op">=</span> <span class="va">ALL_POTENTIAL_COMPOUNDS</span>,</span>
+<span>                           type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">grepl</a></span><span class="op">(</span><span class="st">"feature"</span>, <span class="va">ALL_POTENTIAL_COMPOUNDS</span><span class="op">)</span>, <span class="st">"feat"</span>, <span class="st">"mol"</span><span class="op">)</span>, levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"feat"</span>, <span class="st">"mol"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<p>Let’s look at the function for Principal Component Analysis (PCA):
+<em>getPCA</em>.</p>
+<ul>
+<li>arguments <em>df</em> and <em>v</em> are the same as we saw before
+(the dataframe with data and the names of columns containing the data,
+respectively). Remember to use normalised data!</li>
+<li>
+<em>s</em> is optional and it’s the name of the column with samples
+names. Pass it only if you want those names on the score plot.</li>
+<li>
+<em>f</em>, also optional, is the name of the column with sample
+groups. Pass it only if you want to color the dots on score plot based
+on sample groups.</li>
+<li>
+<em>dfv</em>, optional, is the data frame with compound information
+we just created.</li>
+<li>
+<em>sv</em> and <em>fv</em>, similarly to <em>s</em> and <em>f</em>
+are optional and are the column names of the dfv data frame with names
+and group you want on the loading plot.</li>
+<li>even if you didn’t have a dfv fata frame, but you want the names on
+the loading plot, just pass this as TRUE.</li>
+<li>
+<em>col_pal</em> and <em>col_pal_fv</em> can be used to specified
+the colors for groups. If not specified some defined colors will be
+used.</li>
+<li>Choose the two PC you want on the score and loading plots by passing
+them here.</li>
+<li>set <em>ellipses_on_score</em> and /or <em>ellipses_on_loading</em>
+if you also want to create ellipses based on the groups.</li>
+</ul>
+<p>The output of such a functions is a list with four objects: the score
+and loading plots as ggplot objects, and the values of all principal
+components for the scores and loading attached to the passed
+dataframes.</p>
+<div class="sourceCode" id="cb48"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">PCA_list</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/getPCA.html">getPCA</a></span><span class="op">(</span>df <span class="op">=</span> <span class="va">EXAMPLE_TABLE_FOR_STATISTICAL_ANALYSES_transf_cleaned</span>,</span>
+<span>                   v <span class="op">=</span> <span class="va">ALL_POTENTIAL_COMPOUNDS</span>,</span>
+<span>                   s <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>                   f <span class="op">=</span> <span class="st">"factor_condition2lev"</span>,</span>
+<span>                   dfv <span class="op">=</span> <span class="va">COMPOUNDS_INFO</span>,</span>
+<span>                   sv <span class="op">=</span> <span class="st">"The_compounds"</span>,</span>
+<span>                   fv <span class="op">=</span> <span class="st">"type"</span>,</span>
+<span>                   labels_on_loading <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>                   col_pal <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>                   col_pal_fv <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>                   PC_to_plot <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"PC1"</span>, <span class="st">"PC2"</span><span class="op">)</span>,</span>
+<span>                   ellipses_on_score <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>                   ellipses_on_loading <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">PCA_list</span><span class="op">$</span><span class="va">df_with_scores_table</span><span class="op">[</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"samples"</span>, <span class="st">"PC1"</span>, <span class="st">"PC2"</span>, <span class="st">"PC3"</span>, <span class="st">"PC4"</span>, <span class="st">"PC5"</span>, <span class="st">"PC6"</span>, <span class="st">"PC7"</span>, <span class="st">"PC8"</span>, <span class="st">"PC9"</span><span class="op">)</span><span class="op">]</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 52 × 10</span></span></span>
+<span><span class="co">#&gt;    samples   PC1     PC2     PC3     PC4     PC5     PC6     PC7    PC8      PC9</span></span>
+<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> unkwon…  4.64  0.728  -<span style="color: #BB0000;">0.213</span>   0.016<span style="text-decoration: underline;">9</span>  0.922  -<span style="color: #BB0000;">0.715</span>   0.029<span style="text-decoration: underline;">4</span> -<span style="color: #BB0000;">0.153</span>  0.540  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> unkwon…  3.44  0.262  -<span style="color: #BB0000;">0.419</span>  -<span style="color: #BB0000;">0.029</span><span style="color: #BB0000; text-decoration: underline;">2</span>  1.63   -<span style="color: #BB0000;">0.424</span>  -<span style="color: #BB0000;">0.850</span>  -<span style="color: #BB0000;">0.504</span>  0.008<span style="text-decoration: underline;">92</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> unkwon…  3.86 -<span style="color: #BB0000;">0.181</span>  -<span style="color: #BB0000;">0.365</span>  -<span style="color: #BB0000;">0.502</span>  -<span style="color: #BB0000;">0.529</span>   1.39    0.028<span style="text-decoration: underline;">7</span> -<span style="color: #BB0000;">0.447</span>  0.138  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> unkwon…  5.01  1.08    0.036<span style="text-decoration: underline;">6</span> -<span style="color: #BB0000;">0.416</span>   0.075<span style="text-decoration: underline;">9</span>  0.757   1.28   -<span style="color: #BB0000;">0.343</span>  0.413  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> unkwon…  3.60 -<span style="color: #BB0000;">0.598</span>  -<span style="color: #BB0000;">0.877</span>   0.376   0.570  -<span style="color: #BB0000;">0.506</span>  -<span style="color: #BB0000;">0.341</span>  -<span style="color: #BB0000;">0.791</span>  0.022<span style="text-decoration: underline;">9</span> </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> unkwon…  3.80  0.356   0.090<span style="text-decoration: underline;">6</span> -<span style="color: #BB0000;">0.611</span>  -<span style="color: #BB0000;">0.146</span>   1.80   -<span style="color: #BB0000;">0.272</span>  -<span style="color: #BB0000;">0.364</span>  0.426  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> unkwon…  3.83 -<span style="color: #BB0000;">0.600</span>  -<span style="color: #BB0000;">1.01</span>   -<span style="color: #BB0000;">1.42</span>    1.06    0.441  -<span style="color: #BB0000;">0.253</span>   0.887 -<span style="color: #BB0000;">0.648</span>  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> unkwon…  3.72 -<span style="color: #BB0000;">1.56</span>   -<span style="color: #BB0000;">1.81</span>   -<span style="color: #BB0000;">1.44</span>   -<span style="color: #BB0000;">1.94</span>   -<span style="color: #BB0000;">1.21</span>   -<span style="color: #BB0000;">0.325</span>  -<span style="color: #BB0000;">0.219</span>  0.180  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> unkwon…  4.09 -<span style="color: #BB0000;">1.31</span>   -<span style="color: #BB0000;">1.15</span>    0.752  -<span style="color: #BB0000;">0.420</span>   0.465   0.410  -<span style="color: #BB0000;">0.753</span> -<span style="color: #BB0000;">0.217</span>  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> unkwon…  3.85 -<span style="color: #BB0000;">0.099</span><span style="color: #BB0000; text-decoration: underline;">7</span>  0.038<span style="text-decoration: underline;">5</span>  0.959   0.297  -<span style="color: #BB0000;">0.084</span><span style="color: #BB0000; text-decoration: underline;">7</span> -<span style="color: #BB0000;">0.302</span>  -<span style="color: #BB0000;">0.776</span> -<span style="color: #BB0000;">0.259</span>  </span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 42 more rows</span></span></span>
+<span></span>
+<span><span class="va">PCA_list</span><span class="op">$</span><span class="va">dfv_with_loadings_table</span><span class="op">[</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"The_compounds"</span>, <span class="st">"PC1"</span>, <span class="st">"PC2"</span>, <span class="st">"PC3"</span>, <span class="st">"PC4"</span>, <span class="st">"PC5"</span>, <span class="st">"PC6"</span>, <span class="st">"PC7"</span>, <span class="st">"PC8"</span>, <span class="st">"PC9"</span><span class="op">)</span><span class="op">]</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 10 × 10</span></span></span>
+<span><span class="co">#&gt;    The_compounds     PC1     PC2      PC3      PC4      PC5     PC6     PC7</span></span>
+<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> molecule01     0.157  -<span style="color: #BB0000;">0.087</span><span style="color: #BB0000; text-decoration: underline;">6</span>  0.229    0.542   -<span style="color: #BB0000;">0.597</span>    0.182   0.328 </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> molecule02     0.085<span style="text-decoration: underline;">1</span>  0.416   0.285    0.068<span style="text-decoration: underline;">4</span>   0.043<span style="text-decoration: underline;">7</span>  -<span style="color: #BB0000;">0.139</span>  -<span style="color: #BB0000;">0.045</span><span style="color: #BB0000; text-decoration: underline;">2</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> molecule03    -<span style="color: #BB0000;">0.547</span>  -<span style="color: #BB0000;">0.038</span><span style="color: #BB0000; text-decoration: underline;">3</span>  0.136    0.130   -<span style="color: #BB0000;">0.094</span><span style="color: #BB0000; text-decoration: underline;">5</span>   0.253  -<span style="color: #BB0000;">0.699</span> </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> molecule04     0.092<span style="text-decoration: underline;">6</span>  0.531   0.269    0.005<span style="text-decoration: underline;">01</span>  0.007<span style="text-decoration: underline;">83</span>  0.032<span style="text-decoration: underline;">1</span> -<span style="color: #BB0000;">0.137</span> </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> feature002    -<span style="color: #BB0000;">0.444</span>   0.319  -<span style="color: #BB0000;">0.436</span>   -<span style="color: #BB0000;">0.232</span>   -<span style="color: #BB0000;">0.036</span><span style="color: #BB0000; text-decoration: underline;">3</span>  -<span style="color: #BB0000;">0.081</span><span style="color: #BB0000; text-decoration: underline;">5</span>  0.399 </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> feature003    -<span style="color: #BB0000;">0.470</span>  -<span style="color: #BB0000;">0.304</span>   0.674   -<span style="color: #BB0000;">0.229</span>    0.073<span style="text-decoration: underline;">2</span>  -<span style="color: #BB0000;">0.188</span>   0.354 </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> feature004    -<span style="color: #BB0000;">0.487</span>   0.258  -<span style="color: #BB0000;">0.195</span>    0.410   -<span style="color: #BB0000;">0.173</span>    0.012<span style="text-decoration: underline;">1</span>  0.146 </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> feature005     0.059<span style="text-decoration: underline;">7</span>  0.521   0.305   -<span style="color: #BB0000;">0.128</span>    0.065<span style="text-decoration: underline;">6</span>   0.134   0.095<span style="text-decoration: underline;">8</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> feature007     0.015<span style="text-decoration: underline;">2</span> -<span style="color: #BB0000;">0.015</span><span style="color: #BB0000; text-decoration: underline;">4</span> -<span style="color: #BB0000;">0.003</span><span style="color: #BB0000; text-decoration: underline;">21</span> -<span style="color: #BB0000;">0.484</span>   -<span style="color: #BB0000;">0.276</span>    0.762   0.109 </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> feature009    -<span style="color: #BB0000;">0.039</span><span style="color: #BB0000; text-decoration: underline;">7</span> -<span style="color: #BB0000;">0.053</span><span style="color: #BB0000; text-decoration: underline;">0</span>  0.020<span style="text-decoration: underline;">9</span>   0.400    0.718    0.491   0.238 </span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 2 more variables: PC8 &lt;dbl&gt;, PC9 &lt;dbl&gt;</span></span></span>
+<span></span>
+<span><span class="va">PCA_list</span><span class="op">$</span><span class="va">score_plot</span></span></code></pre></div>
+<p><img src="GF_vignette_files/figure-html/unnamed-chunk-49-1.png" width="480"></p>
+<div class="sourceCode" id="cb49"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span></span>
+<span><span class="va">PCA_list</span><span class="op">$</span><span class="va">loading_plot</span></span></code></pre></div>
+<p><img src="GF_vignette_files/figure-html/unnamed-chunk-49-2.png" width="480"></p>
+<p>Great, now let’s see how to do an heat map with or without cluster
+analysis.</p>
+<ul>
+<li>The first set of arguments are similar to the previous function, but
+here you can specify multuple columns for <em>f</em> and <em>fv</em>,
+for example if you can divide your samples into different groups. For
+each column passed, colored bars will be added at the top and/or at the
+left of the heatmap to indicate the groups.</li>
+<li>In <em>order_df_by</em> and/or <em>order_dfv_by</em> we can put
+names of column to order the samples and/or features (these arguments
+are very useful, but will be completely ignored if you perform a cluster
+analysis, see below)</li>
+<li>By default <em>trnsp</em> is TRUE and the features will be as rows
+of the heatmap. The opposite will happen if <em>trnsp</em> is
+FALSE.</li>
+<li>
+<em>cluster_rows</em> and <em>cluster_columns</em> can be set to
+TRUE to perform the cluster analyses.</li>
+<li>
+<em>name_rows</em> and/or <em>name_columns</em>, can be set to TRUE
+to add the labels if the arguments <em>s</em> and/or <em>sv</em> were
+defined. <em>rotate_name_columns</em> is usefull as TRUE if you have
+long names and short space.</li>
+<li>
+<em>three_heat_colors</em> needs to be a vector of three colors: the
+rectangles will be colored with the first color if higher, or to the
+last color if lower.</li>
+<li>if <em>set_heat_colors_limits</em> is TRUE, the same maximum and
+minimum value will be set for the colors of the rectangles (also to
+ensure zero is always referring to the middle color). This is not really
+needed, though, if your data are well normalised. Those color limits can
+also be manually set with <em>heat_colors_limits</em>.</li>
+<li>
+<em>col_pal_list</em> can be left to NULL to use some default colors
+the grouping, or a list of color can be passed. Name each element of the
+list as the element passed to <em>f</em> and/or <em>fv</em> to ensure
+the matching.</li>
+</ul>
+<div class="sourceCode" id="cb50"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">HeatMap</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/getHeatMap.html">getHeatMap</a></span><span class="op">(</span>df <span class="op">=</span> <span class="va">EXAMPLE_TABLE_FOR_STATISTICAL_ANALYSES_transf_cleaned</span>,</span>
+<span>                      v <span class="op">=</span> <span class="va">ALL_POTENTIAL_COMPOUNDS</span>,</span>
+<span>                      s <span class="op">=</span> <span class="st">"samples"</span>,</span>
+<span>                      f <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"factor_condition2lev"</span>, <span class="st">"factor_condition3lev"</span><span class="op">)</span>,</span>
+<span>                      dfv <span class="op">=</span> <span class="va">COMPOUNDS_INFO</span>,</span>
+<span>                      sv <span class="op">=</span> <span class="st">"The_compounds"</span>,</span>
+<span>                      fv <span class="op">=</span> <span class="st">"type"</span>,</span>
+<span>                      order_df_by <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>                      order_dfv_by <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>                      trnsp <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>                      cluster_rows <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>                      cluster_columns <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>                      name_rows <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>                      name_columns <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>                      rotate_name_columns <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>                      three_heat_colors <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"magenta"</span>, <span class="st">"white"</span>, <span class="st">"cyan"</span><span class="op">)</span>,</span>
+<span>                      set_heat_colors_limits <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>                      heat_colors_limits <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>                      col_pal_list <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>factor_condition3lev <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"magenta4"</span>, <span class="st">"skyblue1"</span>, <span class="st">"lightgreen"</span><span class="op">)</span>,</span>
+<span>                                          type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>mol <span class="op">=</span> <span class="st">"pink"</span>, feat <span class="op">=</span> <span class="st">"brown"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">HeatMap</span></span></code></pre></div>
+<p><img src="GF_vignette_files/figure-html/unnamed-chunk-50-1.png" width="480"></p>
+</div>
+<div class="section level3">
+<h3 id="linear-models">3.6. Linear models<a class="anchor" aria-label="anchor" href="#linear-models"></a>
 </h3>
 <p>And now, the gem of the package and the statistical approach that I
 personally like the most: multiple regression linear models!! The cool
@@ -901,7 +1253,7 @@ as TRUE is to add the multiple correction to the p-value,
 <em>filter_sign</em> as TRUE is to keep only results with a p-value
 below what we indicate in <em>pcutoff</em> and <em>cutPval</em> as TRUE
 will replace p-value&lt;0.001 with “&lt;0.001”.</p>
-<div class="sourceCode" id="cb41"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb51"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">EXAMPLE_LINEAR_MODEL</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/gentab_lm_long.html">gentab_lm_long</a></span><span class="op">(</span>df <span class="op">=</span> <span class="va">EXAMPLE_TABLE_FOR_STATISTICAL_ANALYSES_transf</span>,</span>
 <span>                                       dep <span class="op">=</span> <span class="va">ALL_POTENTIAL_COMPOUNDS_transf_mr_ln_paretosc</span>,</span>
 <span>                                       form_ind <span class="op">=</span> <span class="st">"factor_condition2lev + factor_condition3lev + numerical_condition_a + numerical_condition_b"</span>,</span>
@@ -933,7 +1285,7 @@ beta being significantly different from zero. - <em>negative_log10p</em>
 and <em>negative_log10fdr</em> are the negative log-transformed (base
 10) P-values (usefull for VOlcano plots, see later) -
 <em>variation_perc</em> is the calculated variation percentage</p>
-<div class="sourceCode" id="cb42"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb52"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">glimpse</span><span class="op">(</span><span class="va">EXAMPLE_LINEAR_MODEL</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Rows: 60</span></span>
 <span><span class="co">#&gt; Columns: 13</span></span>
@@ -971,7 +1323,7 @@ what has a P-value lower than 0.0001, we can put here
 horizontal dotted lines will be reported in the <em>line1_position</em>
 and/or <em>line2_position</em>.</li>
 </ul>
-<div class="sourceCode" id="cb43"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb53"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">EXAMPLE_VOLCANO_PLOT_1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/Volcano_lm.html">Volcano_lm</a></span><span class="op">(</span>tab <span class="op">=</span> <span class="va">EXAMPLE_LINEAR_MODEL</span>,</span>
 <span>                                     ind_main <span class="op">=</span> <span class="st">"numerical_condition_a"</span>,</span>
 <span>                                     x_values <span class="op">=</span> <span class="st">"variation_perc"</span>,</span>
@@ -984,15 +1336,15 @@ and/or <em>line2_position</em>.</li>
 <span>                                     line2 <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">EXAMPLE_VOLCANO_PLOT_1</span></span></code></pre></div>
-<p><img src="GF_vignette_files/figure-html/unnamed-chunk-44-1.png" width="700"></p>
+<p><img src="GF_vignette_files/figure-html/unnamed-chunk-53-1.png" width="480"></p>
 <p>As usual, we can easily export it in this way:</p>
-<div class="sourceCode" id="cb44"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb54"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/export_figures.html">export_figures</a></span><span class="op">(</span><span class="va">EXAMPLE_VOLCANO_PLOT_1</span>, exprt_fig_type <span class="op">=</span> <span class="st">"png"</span>, plot_sizes <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">14</span>, <span class="fl">14</span><span class="op">)</span>, plot_unit <span class="op">=</span> <span class="st">"in"</span><span class="op">)</span></span></code></pre></div>
 <p>Pay attention: if we want to generate a Volcano plot to appreciate
 the association with a categorical variable, remember that the name of
 the independent variables includes also the group we want to check
 (compared to the reference group):</p>
-<div class="sourceCode" id="cb45"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb55"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">EXAMPLE_VOLCANO_PLOT_2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/Volcano_lm.html">Volcano_lm</a></span><span class="op">(</span>tab <span class="op">=</span> <span class="va">EXAMPLE_LINEAR_MODEL</span>,</span>
 <span>                                     ind_main <span class="op">=</span> <span class="st">"factor_condition2levF2B"</span>,</span>
 <span>                                     x_values <span class="op">=</span> <span class="st">"variation_perc"</span>,</span>
@@ -1005,7 +1357,7 @@ the independent variables includes also the group we want to check
 <span>                                     line2 <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">EXAMPLE_VOLCANO_PLOT_2</span></span></code></pre></div>
-<p><img src="GF_vignette_files/figure-html/unnamed-chunk-46-1.png" width="700"></p>
+<p><img src="GF_vignette_files/figure-html/unnamed-chunk-55-1.png" width="480"></p>
 <ol start="2" style="list-style-type: decimal">
 <li>“lmer”: linear models with mixed effects (random and fixed), using
 the <em>lmer</em> function from the lme4 package. These models are
@@ -1021,7 +1373,7 @@ independent variable with random effects in this way: dependent_variable
 third argument of the <em>gentab_lm_long</em> function (as multiple
 models will be fitted, each for each dependent variable passed in the
 second argument):</p>
-<div class="sourceCode" id="cb46"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb56"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">EXAMPLE_MIXED_LINEAR_MODEL</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/gentab_lm_long.html">gentab_lm_long</a></span><span class="op">(</span>df <span class="op">=</span> <span class="va">EXAMPLE_TABLE_FOR_STATISTICAL_ANALYSES_transf</span>,</span>
 <span>                                             dep <span class="op">=</span> <span class="va">ALL_POTENTIAL_COMPOUNDS_transf_mr_ln_paretosc</span>,</span>
 <span>                                             form_ind <span class="op">=</span> <span class="st">"factor_condition2lev + factor_condition3lev + numerical_condition_a + numerical_condition_b + (1|factor_condition4lev)"</span>,</span>
@@ -1045,25 +1397,108 @@ we can pass a named numeric vector with those values (the names of the
 vector must be the dependent variables). Of course if we transformed the
 data, we shoudl transforme these data as well:</li>
 </ol>
-<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" tabindex="-1"></a></span>
-<span id="cb47-2"><a href="#cb47-2" tabindex="-1"></a>LOD_molecules_ln_paretosc <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="at">molecule01_mr_ln_paretosc =</span> (<span class="fu">log</span>(<span class="dv">10</span>)<span class="sc">-</span><span class="fu">mean</span>(EXAMPLE_TABLE_FOR_STATISTICAL_ANALYSES_transf<span class="sc">$</span>molecule01_mr_ln))<span class="sc">/</span><span class="fu">sqrt</span>(<span class="fu">sd</span>(EXAMPLE_TABLE_FOR_STATISTICAL_ANALYSES_transf<span class="sc">$</span>molecule01_mr_ln)),</span>
-<span id="cb47-3"><a href="#cb47-3" tabindex="-1"></a>                               <span class="at">molecule02_mr_ln_paretosc =</span> (<span class="fu">log</span>(<span class="dv">100</span>)<span class="sc">-</span><span class="fu">mean</span>(EXAMPLE_TABLE_FOR_STATISTICAL_ANALYSES_transf<span class="sc">$</span>molecule02_mr_ln))<span class="sc">/</span><span class="fu">sqrt</span>(<span class="fu">sd</span>(EXAMPLE_TABLE_FOR_STATISTICAL_ANALYSES_transf<span class="sc">$</span>molecule02_mr_ln)),</span>
-<span id="cb47-4"><a href="#cb47-4" tabindex="-1"></a>                               <span class="at">molecule03_mr_ln_paretosc =</span> (<span class="fu">log</span>(<span class="dv">1</span>)<span class="sc">-</span><span class="fu">mean</span>(EXAMPLE_TABLE_FOR_STATISTICAL_ANALYSES_transf<span class="sc">$</span>molecule03_mr_ln))<span class="sc">/</span><span class="fu">sqrt</span>(<span class="fu">sd</span>(EXAMPLE_TABLE_FOR_STATISTICAL_ANALYSES_transf<span class="sc">$</span>molecule03_mr_ln)),</span>
-<span id="cb47-5"><a href="#cb47-5" tabindex="-1"></a>                               <span class="at">molecule04_mr_ln_paretosc =</span> (<span class="fu">log</span>(<span class="dv">10</span>)<span class="sc">-</span><span class="fu">mean</span>(EXAMPLE_TABLE_FOR_STATISTICAL_ANALYSES_transf<span class="sc">$</span>molecule04_mr_ln))<span class="sc">/</span><span class="fu">sqrt</span>(<span class="fu">sd</span>(EXAMPLE_TABLE_FOR_STATISTICAL_ANALYSES_transf<span class="sc">$</span>molecule04_mr_ln)))</span>
-<span id="cb47-6"><a href="#cb47-6" tabindex="-1"></a></span>
-<span id="cb47-7"><a href="#cb47-7" tabindex="-1"></a>EXAMPLE_TOBIT_LINEAR_MODEL <span class="ot">&lt;-</span> <span class="fu">gentab_lm_long</span>(<span class="at">df =</span> EXAMPLE_TABLE_FOR_STATISTICAL_ANALYSES_transf,</span>
-<span id="cb47-8"><a href="#cb47-8" tabindex="-1"></a>                                             <span class="at">dep =</span> <span class="fu">c</span>(<span class="st">"molecule01_mr_ln_paretosc"</span> <span class="st">"molecule02_mr_ln_paretosc"</span> <span class="st">"molecule03_mr_ln_paretosc"</span> <span class="st">"molecule04_mr_ln_paretosc"</span>),</span>
-<span id="cb47-9"><a href="#cb47-9" tabindex="-1"></a>                                             <span class="at">form_ind =</span> <span class="st">"factor_condition2lev + factor_condition3lev + numerical_condition_a + numerical_condition_b"</span>,</span>
-<span id="cb47-10"><a href="#cb47-10" tabindex="-1"></a>                                             <span class="at">mdl =</span> <span class="st">"tobit"</span>,</span>
-<span id="cb47-11"><a href="#cb47-11" tabindex="-1"></a>                                             <span class="at">left_cens =</span> LOD_molecules_ln_paretosc,</span>
-<span id="cb47-12"><a href="#cb47-12" tabindex="-1"></a>                                             <span class="at">right_cens =</span> <span class="cn">NULL</span>,</span>
-<span id="cb47-13"><a href="#cb47-13" tabindex="-1"></a>                                             <span class="at">var_perc =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb47-14"><a href="#cb47-14" tabindex="-1"></a>                                             <span class="at">base =</span> <span class="fu">exp</span>(<span class="dv">1</span>),</span>
-<span id="cb47-15"><a href="#cb47-15" tabindex="-1"></a>                                             <span class="at">FDR =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb47-16"><a href="#cb47-16" tabindex="-1"></a>                                             <span class="at">filter_sign =</span> <span class="cn">FALSE</span>,</span>
-<span id="cb47-17"><a href="#cb47-17" tabindex="-1"></a>                                             <span class="at">pcutoff =</span> <span class="fl">0.05</span>,</span>
-<span id="cb47-18"><a href="#cb47-18" tabindex="-1"></a>                                             <span class="at">cutPval =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb57"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1" tabindex="-1"></a></span>
+<span id="cb57-2"><a href="#cb57-2" tabindex="-1"></a>LOD_molecules_ln_paretosc <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="at">molecule01_mr_ln_paretosc =</span> (<span class="fu">log</span>(<span class="dv">10</span>)<span class="sc">-</span><span class="fu">mean</span>(EXAMPLE_TABLE_FOR_STATISTICAL_ANALYSES_transf<span class="sc">$</span>molecule01_mr_ln))<span class="sc">/</span><span class="fu">sqrt</span>(<span class="fu">sd</span>(EXAMPLE_TABLE_FOR_STATISTICAL_ANALYSES_transf<span class="sc">$</span>molecule01_mr_ln)),</span>
+<span id="cb57-3"><a href="#cb57-3" tabindex="-1"></a>                               <span class="at">molecule02_mr_ln_paretosc =</span> (<span class="fu">log</span>(<span class="dv">100</span>)<span class="sc">-</span><span class="fu">mean</span>(EXAMPLE_TABLE_FOR_STATISTICAL_ANALYSES_transf<span class="sc">$</span>molecule02_mr_ln))<span class="sc">/</span><span class="fu">sqrt</span>(<span class="fu">sd</span>(EXAMPLE_TABLE_FOR_STATISTICAL_ANALYSES_transf<span class="sc">$</span>molecule02_mr_ln)),</span>
+<span id="cb57-4"><a href="#cb57-4" tabindex="-1"></a>                               <span class="at">molecule03_mr_ln_paretosc =</span> (<span class="fu">log</span>(<span class="dv">1</span>)<span class="sc">-</span><span class="fu">mean</span>(EXAMPLE_TABLE_FOR_STATISTICAL_ANALYSES_transf<span class="sc">$</span>molecule03_mr_ln))<span class="sc">/</span><span class="fu">sqrt</span>(<span class="fu">sd</span>(EXAMPLE_TABLE_FOR_STATISTICAL_ANALYSES_transf<span class="sc">$</span>molecule03_mr_ln)),</span>
+<span id="cb57-5"><a href="#cb57-5" tabindex="-1"></a>                               <span class="at">molecule04_mr_ln_paretosc =</span> (<span class="fu">log</span>(<span class="dv">10</span>)<span class="sc">-</span><span class="fu">mean</span>(EXAMPLE_TABLE_FOR_STATISTICAL_ANALYSES_transf<span class="sc">$</span>molecule04_mr_ln))<span class="sc">/</span><span class="fu">sqrt</span>(<span class="fu">sd</span>(EXAMPLE_TABLE_FOR_STATISTICAL_ANALYSES_transf<span class="sc">$</span>molecule04_mr_ln)))</span>
+<span id="cb57-6"><a href="#cb57-6" tabindex="-1"></a></span>
+<span id="cb57-7"><a href="#cb57-7" tabindex="-1"></a>EXAMPLE_TOBIT_LINEAR_MODEL <span class="ot">&lt;-</span> <span class="fu">gentab_lm_long</span>(<span class="at">df =</span> EXAMPLE_TABLE_FOR_STATISTICAL_ANALYSES_transf,</span>
+<span id="cb57-8"><a href="#cb57-8" tabindex="-1"></a>                                             <span class="at">dep =</span> <span class="fu">c</span>(<span class="st">"molecule01_mr_ln_paretosc"</span> <span class="st">"molecule02_mr_ln_paretosc"</span> <span class="st">"molecule03_mr_ln_paretosc"</span> <span class="st">"molecule04_mr_ln_paretosc"</span>),</span>
+<span id="cb57-9"><a href="#cb57-9" tabindex="-1"></a>                                             <span class="at">form_ind =</span> <span class="st">"factor_condition2lev + factor_condition3lev + numerical_condition_a + numerical_condition_b"</span>,</span>
+<span id="cb57-10"><a href="#cb57-10" tabindex="-1"></a>                                             <span class="at">mdl =</span> <span class="st">"tobit"</span>,</span>
+<span id="cb57-11"><a href="#cb57-11" tabindex="-1"></a>                                             <span class="at">left_cens =</span> LOD_molecules_ln_paretosc,</span>
+<span id="cb57-12"><a href="#cb57-12" tabindex="-1"></a>                                             <span class="at">right_cens =</span> <span class="cn">NULL</span>,</span>
+<span id="cb57-13"><a href="#cb57-13" tabindex="-1"></a>                                             <span class="at">var_perc =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb57-14"><a href="#cb57-14" tabindex="-1"></a>                                             <span class="at">base =</span> <span class="fu">exp</span>(<span class="dv">1</span>),</span>
+<span id="cb57-15"><a href="#cb57-15" tabindex="-1"></a>                                             <span class="at">FDR =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb57-16"><a href="#cb57-16" tabindex="-1"></a>                                             <span class="at">filter_sign =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb57-17"><a href="#cb57-17" tabindex="-1"></a>                                             <span class="at">pcutoff =</span> <span class="fl">0.05</span>,</span>
+<span id="cb57-18"><a href="#cb57-18" tabindex="-1"></a>                                             <span class="at">cutPval =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
 </div>
+<div class="section level3">
+<h3 id="pathway-enrichment-analysis">3.7. Pathway Enrichment Analysis<a class="anchor" aria-label="anchor" href="#pathway-enrichment-analysis"></a>
+</h3>
+<p>Concluding the workflow of this package, a pathway enrichment
+analysis can be performed following the workflow of this package using
+the tool FELLA (<a href="https://doi.org/10.1186/s12859-018-2487-5" class="external-link uri">https://doi.org/10.1186/s12859-018-2487-5</a>). I wrapped
+everything we need to do that in the function
+<em>do_FELLA_enrichment_analysis</em>:</p>
+<ul>
+<li>
+<em>organism_code</em> is the three letter code of the organism.
+“hsa” is for human (<a href="https://www.genome.jp/kegg/tables/br08606.html" class="external-link uri">https://www.genome.jp/kegg/tables/br08606.html</a>).</li>
+<li>
+<em>KEGG_codes</em> are the KEGG codes of the metabolites of
+interest (like the one you found statistically significant). In the
+following examples they are the codes of cysteine, glutamate,
+phenylalanine.</li>
+<li>
+<em>path_databases</em> is were you have the FELLA database and if
+you don’t have already, where they will be automatically created.</li>
+<li>The function will both creating objects in the global environment
+and also exporting csv table and png picture in the working directory.
+<em>output_prefix</em> and <em>output_suffix</em> can add some other
+characters to those object and file names.</li>
+</ul>
+<div class="sourceCode" id="cb58"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/do_FELLA_enrichment_analysis.html">do_FELLA_enrichment_analysis</a></span><span class="op">(</span>organism_code <span class="op">=</span> <span class="st">"hsa"</span>,</span>
+<span>                             KEGG_codes <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"C00097"</span>, <span class="st">"C00025"</span>, <span class="st">"C00079"</span><span class="op">)</span>,</span>
+<span>                             path_databases <span class="op">=</span> <span class="st">"C:/databases/FELLA/"</span>,</span>
+<span>                             output_prefix <span class="op">=</span> <span class="st">"SomeAA_"</span>,</span>
+<span>                             output_suffix <span class="op">=</span> <span class="st">""</span><span class="op">)</span></span></code></pre></div>
+</div>
+</div>
+<div class="section level2">
+<h2 id="miscellaneous">4. Miscellaneous<a class="anchor" aria-label="anchor" href="#miscellaneous"></a>
+</h2>
+<p>There are some miscellaneous functions that I prepared that can be
+generically useful.</p>
+<p>Some are to adjust variable or sample names like:
+<em>zero_prefixing</em> (to get some names ordered by name correctly),
+<em>fix_duplicated</em>, <em>fix_names</em> (to remove special
+characters) and the related <em>check_if_fix_names_needed</em>. I am
+also particularly produ of <em>get_phase_amount</em> (to know the exact
+amount mobile phases needed for a gradient) and of
+<em>GetCombined_featTable_MSDial</em> (to combine three feature
+intensity tables from different batches into a single one)</p>
+<p>I would particularly speak here in more details of
+<em>merge_results</em>. Suppose you perform your untargeted analyses,
+and then the statistical analyses, on different combinations of
+chromatographic runs and mass polarity (such as HILIC POS, RPLC NEG).
+Wouldn’t you like to combine the results into a single table? Your wish
+will be granted with <em>merge_results</em>:</p>
+<ul>
+<li>combine your result tables in a list, then pass it to
+<em>results_list</em>
+</li>
+<li>if sample names of different batches of analyses are identical,
+except for some string (for example: “SAMPLE_NAME1_HILIC_POS”,
+“SAMPLE_NAME2_HILIC_POS”…), pass to
+<em>strings_in_colnames_to_remove</em> what you need to remove to make
+sample names idendical.</li>
+<li>The reference column that will be used to look for duplicates (for
+example the compound names) should be passed to <em>by_column</em>. For
+example you only want to keep one of each unique compound from your
+different result tables.</li>
+<li>But how to prioritise the feature table from which taking that
+compound? by specifying the <em>if_duplicated_consider_columns</em>. Can
+be more than one, for example look the one with the lowest “PvaluesFDR”,
+and in case of tie, look “Pvalues”.</li>
+<li>For each column passed to <em>if_duplicated_consider_columns</em>,
+if you want to do the raking in decreasing order set <em>decreasing</em>
+to TRUE. In the example of p-values we want to prioritise lower p-values
+first, so <em>decreasing</em> should set to FALSE</li>
+<li>A new table will be returned with a column called
+<em>name_new_column</em> with the combined results (and also printing
+what happpened in case of duplicated to the console!)</li>
+</ul>
+<div class="sourceCode" id="cb59"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb59-1"><a href="#cb59-1" tabindex="-1"></a>MARGED_TABLE <span class="ot">&lt;-</span> <span class="fu">merge_results</span>(<span class="at">results_list =</span> <span class="fu">list</span>(<span class="at">HILIC_POS =</span> _A_DF_WTIH_RESULTS_, <span class="at">RPLC_NEG =</span> _ANOTHER_DF_WITH_RESULTS_),</span>
+<span id="cb59-2"><a href="#cb59-2" tabindex="-1"></a>                              <span class="at">strings_in_colnames_to_remove =</span> <span class="fu">c</span>(<span class="st">"HILIC_POS"</span>, <span class="st">"RPLC_NEG"</span>),</span>
+<span id="cb59-3"><a href="#cb59-3" tabindex="-1"></a>                              <span class="at">by_column =</span> <span class="st">"variables"</span>,</span>
+<span id="cb59-4"><a href="#cb59-4" tabindex="-1"></a>                              <span class="at">if_duplicated_consider_columns =</span> <span class="fu">c</span>(<span class="st">"PvaluesFDR"</span>, <span class="st">"Pvalues"</span>),</span>
+<span id="cb59-5"><a href="#cb59-5" tabindex="-1"></a>                              <span class="at">decreasing =</span> <span class="fu">c</span>(<span class="cn">FALSE</span>, <span class="cn">FALSE</span>),</span>
+<span id="cb59-6"><a href="#cb59-6" tabindex="-1"></a>                              <span class="at">name_new_column =</span> <span class="st">"chromatographic_run"</span>)</span></code></pre></div>
 <div class="section level3">
 <h3 id="conclusion">Conclusion<a class="anchor" aria-label="anchor" href="#conclusion"></a>
 </h3>

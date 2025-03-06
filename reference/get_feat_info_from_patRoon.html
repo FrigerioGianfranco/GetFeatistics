@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">GetFeatistics</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.9.3.7</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -42,8 +42,10 @@
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">get_feat_info_from_patRoon</span><span class="op">(</span></span>
-<span>  <span class="va">patRoon_featureGroups</span>,</span>
+<span>  patRoon_featureGroups <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  patRoon_featureGroups_file_name <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  patRoon_MFsummary <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  patRoon_MFsummary_file_name <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  MFsummary_score_columns <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"individualMoNAScore"</span>, <span class="st">"score"</span><span class="op">)</span>,</span>
 <span>  add_AnnoLevels <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
@@ -54,11 +56,19 @@
 
 
 <dl><dt id="arg-patroon-featuregroups">patRoon_featureGroups<a class="anchor" aria-label="anchor" href="#arg-patroon-featuregroups"></a></dt>
-<dd><p>dataframe. Features groups and related intensities obtained after XCMS. This table should contain the feature group names in a column named "group", the retention times a column named "ret", the m/z ratio in a column named "mz", and the intensities in all other columns.</p></dd>
+<dd><p>NULL or a dataframe. Features groups and related intensities obtained after XCMS. This table should contain the feature group names in a column named "group", the retention times a column named "ret", the m/z ratio in a column named "mz", and the intensities in all other columns.</p></dd>
+
+
+<dt id="arg-patroon-featuregroups-file-name">patRoon_featureGroups_file_name<a class="anchor" aria-label="anchor" href="#arg-patroon-featuregroups-file-name"></a></dt>
+<dd><p>NULL or a character vector of length 1. If patRoon_featureGroups is NULL, this can be used and directly import the table with the .csv or .txt file name passed.</p></dd>
 
 
 <dt id="arg-patroon-mfsummary">patRoon_MFsummary<a class="anchor" aria-label="anchor" href="#arg-patroon-mfsummary"></a></dt>
 <dd><p>NULL or a dataframe obtained from converting as.data.table the output of the function generateCompounds from patRoon. At least the column named "group" and "score" must be present, and if multiple molecules are annotated for each feature group, the one with the top score as provided in the MFsummary_score_columns argument will be considered.</p></dd>
+
+
+<dt id="arg-patroon-mfsummary-file-name">patRoon_MFsummary_file_name<a class="anchor" aria-label="anchor" href="#arg-patroon-mfsummary-file-name"></a></dt>
+<dd><p>NULL or a character vector of length 1. If patRoon_MFsummary is NULL, this can be used and directly import the table with the .csv or .txt file name passed.</p></dd>
 
 
 <dt id="arg-mfsummary-score-columns">MFsummary_score_columns<a class="anchor" aria-label="anchor" href="#arg-mfsummary-score-columns"></a></dt>

@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">GetFeatistics</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.9.3.7</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -41,7 +41,11 @@
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">get_feat_info_from_MSDial</span><span class="op">(</span><span class="va">MSDIAL_raw_table</span>, add_AnnoLevels <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">get_feat_info_from_MSDial</span><span class="op">(</span></span>
+<span>  MSDIAL_raw_table <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  MSDIAL_raw_table_file_name <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  add_AnnoLevels <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -49,7 +53,11 @@
 
 
 <dl><dt id="arg-msdial-raw-table">MSDIAL_raw_table<a class="anchor" aria-label="anchor" href="#arg-msdial-raw-table"></a></dt>
-<dd><p>a dataframe. Inport on R the exported table using write_tsv or write_csv, then directly pass it in this argument.</p></dd>
+<dd><p>NULL or a dataframe. Load on R the exported table using write_tsv or write_csv, then directly pass it in this argument. This argument will be ignored if the following one is not NULL.</p></dd>
+
+
+<dt id="arg-msdial-raw-table-file-name">MSDIAL_raw_table_file_name<a class="anchor" aria-label="anchor" href="#arg-msdial-raw-table-file-name"></a></dt>
+<dd><p>NULL or a character vector of length 1. The name of the .txt file of the MSDIAL exported table to import. It is preferred to use this argument instead of the previous, so the table will be also imported with the correct column types and information.</p></dd>
 
 
 <dt id="arg-add-annolevels">add_AnnoLevels<a class="anchor" aria-label="anchor" href="#arg-add-annolevels"></a></dt>
