@@ -20,7 +20,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">GetFeatistics</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.0.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.1.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -890,7 +890,9 @@ the documentation with <em>?Volcano_ttest_FC</em> first!</p>
 <span>                                          line2_position <span class="op">=</span> <span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log10</a></span><span class="op">(</span><span class="fl">0.0001</span><span class="op">)</span>,</span>
 <span>                                          names_to_plot <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>                                          category <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>                                          col_pal <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
+<span>                                          col_pal <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span>
+<span><span class="va">Volcano_plot_ttest_FC</span></span></code></pre></div>
+<p><img src="GF_vignette_files/figure-html/unnamed-chunk-39-1.png" width="480"></p>
 <p>We could do also some box-plots already, but I will describe them in
 the next section!</p>
 </div>
@@ -898,12 +900,12 @@ the next section!</p>
 <h3 id="univariate-statistics-with-3-or-more-groups">3.4. Univariate statistics with 3 or more groups<a class="anchor" aria-label="anchor" href="#univariate-statistics-with-3-or-more-groups"></a>
 </h3>
 <p>Very similarly to the t-test, we can do a one-way ANOVA, with
-posthocTurkeyHSD for pairwise group comparison. The argument are similar
+posthocTukeyHSD for pairwise group comparison. The argument are similar
 to the <em>gentab_P.t.test</em> function, obviously in the third one we
 need to put the name of a categorical variable with three or more
 levels:</p>
 <div class="sourceCode" id="cb39"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">EXAMPLE_ANOVA_1WAY</span> <span class="op">&lt;-</span>  <span class="fu"><a href="../reference/gentab_P.1wayANOVA_posthocTurkeyHSD.html">gentab_P.1wayANOVA_posthocTurkeyHSD</a></span><span class="op">(</span>DF <span class="op">=</span> <span class="va">EXAMPLE_TABLE_FOR_STATISTICAL_ANALYSES_transf_cleaned</span>,</span>
+<code class="sourceCode R"><span><span class="va">EXAMPLE_ANOVA_1WAY</span> <span class="op">&lt;-</span>  <span class="fu"><a href="../reference/gentab_P.1wayANOVA_posthocTukeyHSD.html">gentab_P.1wayANOVA_posthocTukeyHSD</a></span><span class="op">(</span>DF <span class="op">=</span> <span class="va">EXAMPLE_TABLE_FOR_STATISTICAL_ANALYSES_transf_cleaned</span>,</span>
 <span>                                                           v <span class="op">=</span> <span class="va">ALL_POTENTIAL_COMPOUNDS</span>,</span>
 <span>                                                           f <span class="op">=</span> <span class="st">"factor_condition3lev"</span>,</span>
 <span>                                                           FDR <span class="op">=</span> <span class="cn">TRUE</span>,</span>
@@ -968,7 +970,7 @@ and can be obtained with the following function, specifying the two
 categorical factor in the third argument and if we want interactions in
 the <em>interact</em> argument:</p>
 <div class="sourceCode" id="cb43"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">EXAMPLE_ANOVA_2WAY</span> <span class="op">&lt;-</span>  <span class="fu"><a href="../reference/gentab_P.2wayANOVA_posthocTurkeyHSD.html">gentab_P.2wayANOVA_posthocTurkeyHSD</a></span><span class="op">(</span>DF <span class="op">=</span> <span class="va">EXAMPLE_TABLE_FOR_STATISTICAL_ANALYSES_transf_cleaned</span>,</span>
+<code class="sourceCode R"><span><span class="va">EXAMPLE_ANOVA_2WAY</span> <span class="op">&lt;-</span>  <span class="fu"><a href="../reference/gentab_P.2wayANOVA_posthocTukeyHSD.html">gentab_P.2wayANOVA_posthocTukeyHSD</a></span><span class="op">(</span>DF <span class="op">=</span> <span class="va">EXAMPLE_TABLE_FOR_STATISTICAL_ANALYSES_transf_cleaned</span>,</span>
 <span>                                                           v <span class="op">=</span> <span class="va">ALL_POTENTIAL_COMPOUNDS</span>,</span>
 <span>                                                           f <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"factor_condition3lev"</span>, <span class="st">"factor_condition4lev"</span><span class="op">)</span>,</span>
 <span>                                                           interact <span class="op">=</span> <span class="cn">FALSE</span>,</span>
@@ -1458,7 +1460,7 @@ generically useful.</p>
 <em>zero_prefixing</em> (to get some names ordered by name correctly),
 <em>fix_duplicated</em>, <em>fix_names</em> (to remove special
 characters) and the related <em>check_if_fix_names_needed</em>. I am
-also particularly produ of <em>get_phase_amount</em> (to know the exact
+also particularly proud of <em>get_phase_amount</em> (to know the exact
 amount mobile phases needed for a gradient) and of
 <em>GetCombined_featTable_MSDial</em> (to combine three feature
 intensity tables from different batches into a single one)</p>
@@ -1493,7 +1495,7 @@ first, so <em>decreasing</em> should set to FALSE</li>
 <em>name_new_column</em> with the combined results (and also printing
 what happpened in case of duplicated to the console!)</li>
 </ul>
-<div class="sourceCode" id="cb59"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb59-1"><a href="#cb59-1" tabindex="-1"></a>MARGED_TABLE <span class="ot">&lt;-</span> <span class="fu">merge_results</span>(<span class="at">results_list =</span> <span class="fu">list</span>(<span class="at">HILIC_POS =</span> _A_DF_WTIH_RESULTS_, <span class="at">RPLC_NEG =</span> _ANOTHER_DF_WITH_RESULTS_),</span>
+<div class="sourceCode" id="cb59"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb59-1"><a href="#cb59-1" tabindex="-1"></a>MERGED_TABLE <span class="ot">&lt;-</span> <span class="fu">merge_results</span>(<span class="at">results_list =</span> <span class="fu">list</span>(<span class="at">HILIC_POS =</span> _A_DF_WTIH_RESULTS_, <span class="at">RPLC_NEG =</span> _ANOTHER_DF_WITH_RESULTS_),</span>
 <span id="cb59-2"><a href="#cb59-2" tabindex="-1"></a>                              <span class="at">strings_in_colnames_to_remove =</span> <span class="fu">c</span>(<span class="st">"HILIC_POS"</span>, <span class="st">"RPLC_NEG"</span>),</span>
 <span id="cb59-3"><a href="#cb59-3" tabindex="-1"></a>                              <span class="at">by_column =</span> <span class="st">"variables"</span>,</span>
 <span id="cb59-4"><a href="#cb59-4" tabindex="-1"></a>                              <span class="at">if_duplicated_consider_columns =</span> <span class="fu">c</span>(<span class="st">"PvaluesFDR"</span>, <span class="st">"Pvalues"</span>),</span>
