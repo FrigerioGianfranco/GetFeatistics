@@ -493,16 +493,17 @@ Volcano_plot_ttest_FC <- Volcano_ttest_FC(ttest_results = EXAMPLE_T_TEST,
                                           names_to_plot = NULL,
                                           category = NULL,
                                           col_pal = NULL)
+Volcano_plot_ttest_FC
 ```
 
 We could do also some box-plots already, but I will describe them in the next section!
 
 ## 3.4. Univariate statistics with 3 or more groups
 
-Very similarly to the t-test, we can do a one-way ANOVA, with posthocTurkeyHSD for pairwise group comparison. The argument are similar to the _gentab_P.t.test_ function, obviously in the third one we need to put the name of a categorical variable with three or more levels:
+Very similarly to the t-test, we can do a one-way ANOVA, with posthocTukeyHSD for pairwise group comparison. The argument are similar to the _gentab_P.t.test_ function, obviously in the third one we need to put the name of a categorical variable with three or more levels:
 
 ```{r}
-EXAMPLE_ANOVA_1WAY <-  gentab_P.1wayANOVA_posthocTurkeyHSD(DF = EXAMPLE_TABLE_FOR_STATISTICAL_ANALYSES_transf_cleaned,
+EXAMPLE_ANOVA_1WAY <-  gentab_P.1wayANOVA_posthocTukeyHSD(DF = EXAMPLE_TABLE_FOR_STATISTICAL_ANALYSES_transf_cleaned,
                                                            v = ALL_POTENTIAL_COMPOUNDS,
                                                            f = "factor_condition3lev",
                                                            FDR = TRUE,
@@ -551,7 +552,7 @@ glimpse(EXAMPLE_multiple_FC)
 Ah! ...and why, just one-way ANOVA?? Two-ways ANOVA are also an option and can be obtained with the following function, specifying the two categorical factor in the third argument and if we want interactions in the _interact_ argument:
 
 ```{r}
-EXAMPLE_ANOVA_2WAY <-  gentab_P.2wayANOVA_posthocTurkeyHSD(DF = EXAMPLE_TABLE_FOR_STATISTICAL_ANALYSES_transf_cleaned,
+EXAMPLE_ANOVA_2WAY <-  gentab_P.2wayANOVA_posthocTukeyHSD(DF = EXAMPLE_TABLE_FOR_STATISTICAL_ANALYSES_transf_cleaned,
                                                            v = ALL_POTENTIAL_COMPOUNDS,
                                                            f = c("factor_condition3lev", "factor_condition4lev"),
                                                            interact = FALSE,
@@ -847,7 +848,7 @@ do_FELLA_enrichment_analysis(organism_code = "hsa",
 There are some miscellaneous functions that I prepared that can be generically useful.
 
 Some are to adjust variable or sample names like: _zero_prefixing_ (to get some names ordered by name correctly), _fix_duplicated_, _fix_names_ (to remove special characters) and the related _check_if_fix_names_needed_.
-I am also particularly produ of _get_phase_amount_ (to know the exact amount mobile phases needed for a gradient) and of _GetCombined_featTable_MSDial_ (to combine three feature intensity tables from different batches into a single one)
+I am also particularly proud of _get_phase_amount_ (to know the exact amount mobile phases needed for a gradient) and of _GetCombined_featTable_MSDial_ (to combine three feature intensity tables from different batches into a single one)
 
 I would particularly speak here in more details of _merge_results_.
 Suppose you perform your untargeted analyses, and then the statistical analyses, on different combinations of chromatographic runs and mass polarity (such as HILIC POS, RPLC NEG). Wouldn't you like to combine the results into a single table?
@@ -861,7 +862,7 @@ Your wish will be granted with _merge_results_:
 - A new table will be returned with a column called _name_new_column_ with the combined results (and also printing what happpened in case of duplicated to the console!)
   
 ```{r, eval = FALSE}
-MARGED_TABLE <- merge_results(results_list = list(HILIC_POS = _A_DF_WTIH_RESULTS_, RPLC_NEG = _ANOTHER_DF_WITH_RESULTS_),
+MERGED_TABLE <- merge_results(results_list = list(HILIC_POS = _A_DF_WTIH_RESULTS_, RPLC_NEG = _ANOTHER_DF_WITH_RESULTS_),
                               strings_in_colnames_to_remove = c("HILIC_POS", "RPLC_NEG"),
                               by_column = "variables",
                               if_duplicated_consider_columns = c("PvaluesFDR", "Pvalues"),
