@@ -20,7 +20,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">GetFeatistics</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.1.3</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.1.4.2</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -413,19 +413,19 @@ seconds or minutes, is consistent!)</p>
 <span>                                                  rt_to_search <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>                                                  rt_window <span class="op">=</span> <span class="fl">12</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">CHECKED_MOLECULES</span><span class="op">[</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"molecule"</span>, <span class="st">"featname"</span>, <span class="st">"rt_confirmed"</span><span class="op">)</span><span class="op">]</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 9 × 3</span></span></span>
-<span><span class="co">#&gt;   molecule      featname   rt_confirmed</span></span>
-<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span>       </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> Alanine       NOT_FOUND  <span style="color: #BB0000;">NA</span>          </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> Asparagine    NOT_FOUND  <span style="color: #BB0000;">NA</span>          </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> Cysteine      feature001 TRUE        </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> Glutamate     feature002 TRUE        </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> Glycine       NOT_FOUND  <span style="color: #BB0000;">NA</span>          </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> Leucine       NOT_FOUND  <span style="color: #BB0000;">NA</span>          </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">7</span> Methionine    feature004 FALSE       </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">8</span> Phenylalanine feature005 TRUE        </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">9</span> Phenylalanine feature006 TRUE</span></span></code></pre></div>
+<span><span class="va">CHECKED_MOLECULES</span><span class="op">[</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"coumpound"</span>, <span class="st">"featname"</span>, <span class="st">"rt_confirmed"</span>, <span class="st">"rt"</span>, <span class="st">"rt_shift"</span>, <span class="st">"mz"</span>, <span class="st">"mz_shift"</span><span class="op">)</span><span class="op">]</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 9 × 7</span></span></span>
+<span><span class="co">#&gt;   coumpound     featname   rt_confirmed    rt rt_shift    mz  mz_shift</span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> Alanine       NOT_FOUND  <span style="color: #BB0000;">NA</span>              <span style="color: #BB0000;">NA</span>       <span style="color: #BB0000;">NA</span>   <span style="color: #BB0000;">NA</span>  <span style="color: #BB0000;">NA</span>       </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> Asparagine    NOT_FOUND  <span style="color: #BB0000;">NA</span>              <span style="color: #BB0000;">NA</span>       <span style="color: #BB0000;">NA</span>   <span style="color: #BB0000;">NA</span>  <span style="color: #BB0000;">NA</span>       </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> Cysteine      feature001 TRUE           242       -<span style="color: #BB0000;">1</span>  120. -<span style="color: #BB0000;">0.000</span><span style="color: #BB0000; text-decoration: underline;">300</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> Glutamate     feature002 TRUE           288       -<span style="color: #BB0000;">2</span>  146. -<span style="color: #BB0000;">0.000</span><span style="color: #BB0000; text-decoration: underline;">200</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> Glycine       NOT_FOUND  <span style="color: #BB0000;">NA</span>              <span style="color: #BB0000;">NA</span>       <span style="color: #BB0000;">NA</span>   <span style="color: #BB0000;">NA</span>  <span style="color: #BB0000;">NA</span>       </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> Leucine       NOT_FOUND  <span style="color: #BB0000;">NA</span>              <span style="color: #BB0000;">NA</span>       <span style="color: #BB0000;">NA</span>   <span style="color: #BB0000;">NA</span>  <span style="color: #BB0000;">NA</span>       </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">7</span> Methionine    feature004 FALSE          528      270  148.  0.000<span style="text-decoration: underline;">200</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">8</span> Phenylalanine feature005 TRUE           465       -<span style="color: #BB0000;">6</span>  164.  0.000<span style="text-decoration: underline;">200</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">9</span> Phenylalanine feature006 TRUE           476        5  164.  0.000<span style="text-decoration: underline;">300</span></span></span></code></pre></div>
 <p>Amazing!! Now, if you are a good metabolomer, you know how much is
 important to clean the dataset using well-established methods such as
 pooled quality controls (QCs). If you want to filter the feature data

@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">GetFeatistics</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.1.3</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.1.4.2</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -50,7 +50,8 @@
 <span>  error_type <span class="op">=</span> <span class="st">"ppm"</span>,</span>
 <span>  check_rt <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  rt_to_search <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  rt_window <span class="op">=</span> <span class="fl">12</span></span>
+<span>  rt_window <span class="op">=</span> <span class="fl">12</span>,</span>
+<span>  return_as_featinfo_lev1 <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -63,11 +64,11 @@
 
 
 <dt id="arg-featinfo">featinfo<a class="anchor" aria-label="anchor" href="#arg-featinfo"></a></dt>
-<dd><p>a dataframe. A table with at least three columns, in this order: feature names, retention times, and masss-to-charge ratios. It can be obtained with the get_feat_info_from_MSDial function of the present package.</p></dd>
+<dd><p>a dataframe. A table with at least three columns, in this order: feature names, retention times, and mass-to-charge ratios. It can be obtained with the get_feat_info_from_MSDial function of the present package.</p></dd>
 
 
 <dt id="arg-molecules-list">molecules_list<a class="anchor" aria-label="anchor" href="#arg-molecules-list"></a></dt>
-<dd><p>a dataframe containing the molecules to search. The first column must contain the names of the molecule. ALso it should contain at least another column with the m/z to look for.</p></dd>
+<dd><p>a dataframe containing the molecules to search. The first column must contain the names of the molecule. Also, it should contain at least another column with the m/z to look for.</p></dd>
 
 
 <dt id="arg-mz-to-search">mz_to_search<a class="anchor" aria-label="anchor" href="#arg-mz-to-search"></a></dt>
@@ -93,10 +94,14 @@
 <dt id="arg-rt-window">rt_window<a class="anchor" aria-label="anchor" href="#arg-rt-window"></a></dt>
 <dd><p>numeric of length 1. It is the retention time window to consider centered to the known molecules to check the experimental ones. Please check that the unit (seconds or minutes) is the same in all the tables.</p></dd>
 
+
+<dt id="arg-return-as-featinfo-lev-">return_as_featinfo_lev1<a class="anchor" aria-label="anchor" href="#arg-return-as-featinfo-lev-"></a></dt>
+<dd><p>logical. If TRUE, and if also check_rt is TRUE, the function will return the featinfo with the found molecules as level 1 in the AnnoLevel column.</p></dd>
+
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>A tibble with the matching feature intensities.</p>
+    <p>A tibble with the matching feature intensities. If return_as_featinfo_lev1 is TRUE, the output is instead the featinfo with the found compound as level 1 in the AnnoLevel column.</p>
     </div>
 
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
