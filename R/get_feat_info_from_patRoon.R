@@ -45,6 +45,16 @@ get_feat_info_from_patRoon <- function(patRoon_featureGroups = NULL, patRoon_fea
   
   feat_info_output <- select(patRoon_featureGroups, group, ret, mz)
   
+  if ("adduct" %in% colnames(patRoon_featureGroups)) {
+    feat_info_output <- add_column(feat_info_output,
+                                   adduct = patRoon_featureGroups$adduct)
+  }
+  if ("neutralMass" %in% colnames(patRoon_featureGroups)) {
+    feat_info_output <- add_column(feat_info_output,
+                                   neutralMass = patRoon_featureGroups$neutralMass)
+  }
+  
+  
   if (!is.null(patRoon_MFsummary)) {
     if (!is.data.frame(patRoon_MFsummary)) {stop("if not NULL, patRoon_MFsummary must be a data frame")}
   } else if (!is.null(patRoon_MFsummary_file_name)) {
@@ -82,6 +92,17 @@ get_feat_info_from_patRoon <- function(patRoon_featureGroups = NULL, patRoon_fea
     
     feat_info_output <- left_join(x = feat_info_output, y = patRoon_MFsummary_fil, by = "group", suffix = c("_featGroup", "_MFsummary"))
     
+    if (any(grepl("_featGroup", colnames(feat_info_output)))) {
+      for (a in str_remove(colnames(feat_info_output)[grepl("_featGroup", colnames(feat_info_output))], "_featGroup")) {
+        a_featGroup <- paste0(a, "_featGroup")
+        a_MFsummary <- paste0(a, "_MFsummary")
+        
+        if (identical(pull(feat_info_output, a_featGroup), pull(feat_info_output, a_MFsummary))) {
+          feat_info_output <- feat_info_output[,which(colnames(feat_info_output) != a_MFsummary)]
+          colnames(feat_info_output)[which(colnames(feat_info_output)==a_featGroup)] <- a
+        }
+      }
+    }
     
     
     if (length(add_AnnoLevels)!=1) {stop("add_AnnoLevels must be exclusively TRUE or FALSE")}
@@ -95,7 +116,8 @@ get_feat_info_from_patRoon <- function(patRoon_featureGroups = NULL, patRoon_fea
       if (!"neutral_formula"%in%colnames(patRoon_MFsummary)) {stop("Since add_AnnoLevels is TRUE, the patRoon_MFsummary must have a column named neutral_formula")}
       if ("AnnoLevel"%in%colnames(feat_info_output)) {warning("A column named AnnoLevel was already present. Please, note that it has been completely replaced here")}
       
-      feat_info_output <- add_column(feat_info_output, AnnoLevel = factor(as.character(rep(NA, length(pull(feat_info_output, 1)))), levels = c("2a", "3a", "3b", "4a", "5")), .after = 3)
+      feat_info_output <- add_column(feat_info_output,
+                                     AnnoLevel = factor(as.character(rep(NA, length(pull(feat_info_output, 1)))), levels = c("1", "2a", "3a", "3b", "4a", "5")))
       
       for (i in 1:length(feat_info_output$group)) {
         if (feat_info_output$group[i] %in% patRoon_MFsummary_score_columns_arranged$group) {

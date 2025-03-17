@@ -61,7 +61,9 @@ The work has been conducted by Gianfranco Frigerio, during his work at three dif
 
 **Acknowledgement**:
 
-Albina Rastoder, in the frame of her 2 months internship at the Luxembourg Centre for Systems Biomedicine (LCSB) of the University of Luxembourg, helped with some testing of some functions.
+I thank the Proteomics and Metabolomics group of the Center for Omics Sciences (COSR), IRCCS San Raffaele Scientific Institute, for the support.
+
+I acknowledge Albina Rastoder for helping with the testing of some functions, during her 2 months internship at the Luxembourg Centre for Systems Biomedicine (LCSB) of the University of Luxembourg.
 
 I also acknowledge Prof. Dr. Emma Schymanski for the support and suggestions and the entire Environmental Cheminformatics group of the Luxembourg Centre for Systems Biomedicine (LCSB) of the University of Luxembourg for the help and feedback.
 

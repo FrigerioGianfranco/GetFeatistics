@@ -39,6 +39,14 @@ get_feat_table_from_patRoon <- function(patRoon_featureGroups = NULL, patRoon_fe
   
   feat_table_output <- select(patRoon_featureGroups, -ret, -mz)
   
+  if ("adduct" %in% colnames(feat_table_output)) {
+    feat_table_output <- select(feat_table_output, -adduct)
+  }
+  if ("neutralMass" %in% colnames(feat_table_output)) {
+    feat_table_output <- select(feat_table_output, -neutralMass)
+  }
+  
+  
   return(feat_table_output)
 }
 

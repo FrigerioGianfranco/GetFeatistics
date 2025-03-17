@@ -25,7 +25,7 @@ get_AnnoLevels_MSDial <- function(feat_info_table_MSDial) {
   if (!is.logical(feat_info_table_MSDial$MS_MS_assigned)) { feat_info_table_MSDial$MS_MS_assigned <- as.logical(feat_info_table_MSDial$MS_MS_assigned) }
   if ("AnnoLevel"%in%colnames(feat_info_table_MSDial)) {warning("feat_info_table_MSDial already contains a column named AnnoLevel. Please, note that it has been completely replaced here")}
   
-  feat_info_table_MSDial_annolevels <- add_column(feat_info_table_MSDial, AnnoLevel = as.character(NA), .after = 3) %>%
+  feat_info_table_MSDial_annolevels <- add_column(feat_info_table_MSDial, AnnoLevel = as.character(NA)) %>%
     mutate(AnnoLevel = ifelse(MS_MS_assigned == TRUE & !is.na(Matched_peaks_count) & Matched_peaks_count >= 3 & !is.na(Weighted_dot_product) & Weighted_dot_product >= 0.7 & !is.na(Matched_peaks_percentage) & Matched_peaks_percentage >= 0.5 & !is.na(INCHIKEY), "2a",
                               ifelse(MS_MS_assigned == TRUE & !is.na(Matched_peaks_count) & Matched_peaks_count >= 3 & !is.na(Weighted_dot_product) & Weighted_dot_product >= 0.7 & !is.na(Matched_peaks_percentage) & Matched_peaks_percentage >= 0.5 & is.na(INCHIKEY), "2b",
                                      ifelse(MS_MS_assigned == TRUE & !is.na(Matched_peaks_count) & Matched_peaks_count >= 3 & !is.na(Weighted_dot_product) & Weighted_dot_product >= 0.5 & Weighted_dot_product < 0.7 & !is.na(Matched_peaks_percentage) & Matched_peaks_percentage >= 0.5, "3a",
