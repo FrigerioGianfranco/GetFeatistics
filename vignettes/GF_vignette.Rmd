@@ -220,7 +220,7 @@ CHECKED_MOLECULES <- checkmolecules_in_feat_table(featmatrix = df_example_feat_i
                                                   rt_to_search = NULL,
                                                   rt_window = 12)
 
-CHECKED_MOLECULES[,c("coumpound", "featname", "rt_confirmed", "rt rt_shift", "mz", "mz_shift")]
+CHECKED_MOLECULES[,c("coumpound", "featname", "rt_confirmed", "rt", "rt_shift", "mz", "mz_shift")]
 ```
 
 
