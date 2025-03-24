@@ -15,6 +15,10 @@
 #' @import ggdendro
 #' @import ggdendroplot
 #' @import ggnewscale
+#' @import httr
+#' @import jsonlite
+#' @import utils
+#' @import classyfireR
 
 .onLoad <- function(libname, pkgname) {
   library(tidyverse)
@@ -32,4 +36,8 @@
   library(ggdendro)
   library(ggdendroplot)
   library(ggnewscale)
+  library(httr)
+  library(jsonlite)
+  library(utils)
+  library(classyfireR)
 }
