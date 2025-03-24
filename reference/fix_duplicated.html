@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">GetFeatistics</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.1.4.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.2</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -41,7 +41,14 @@
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">fix_duplicated</span><span class="op">(</span><span class="va">x</span>, zeros <span class="op">=</span> <span class="cn">TRUE</span>, NA_as_character <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">fix_duplicated</span><span class="op">(</span></span>
+<span>  <span class="va">x</span>,</span>
+<span>  zeros <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  define_highest_for_zeros <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  start_with_zero <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  exclude_the_first <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  NA_as_character <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -54,6 +61,18 @@
 
 <dt id="arg-zeros">zeros<a class="anchor" aria-label="anchor" href="#arg-zeros"></a></dt>
 <dd><p>logical. Should leading zero be added?</p></dd>
+
+
+<dt id="arg-define-highest-for-zeros">define_highest_for_zeros<a class="anchor" aria-label="anchor" href="#arg-define-highest-for-zeros"></a></dt>
+<dd><p>NULL or an numeric integer of length 1. If zeros is TRUE, you can decide the highest number to define the number of zeros. If this argument is NULL, the highest number will be defined based on the highest number of duplicated.</p></dd>
+
+
+<dt id="arg-start-with-zero">start_with_zero<a class="anchor" aria-label="anchor" href="#arg-start-with-zero"></a></dt>
+<dd><p>logical. If TRUE, the first number added for solving the duplicated will be 0, if FALSE will be 1.</p></dd>
+
+
+<dt id="arg-exclude-the-first">exclude_the_first<a class="anchor" aria-label="anchor" href="#arg-exclude-the-first"></a></dt>
+<dd><p>logical. If TRUE, the suffix will not be added only from the second duplicated on.</p></dd>
 
 
 <dt id="arg-na-as-character">NA_as_character<a class="anchor" aria-label="anchor" href="#arg-na-as-character"></a></dt>
