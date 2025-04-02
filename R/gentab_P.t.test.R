@@ -134,6 +134,10 @@ gentab_P.t.test <- function(df, v, f, paired = FALSE, FDR = FALSE, cutPval = FAL
     }
   }
   
+  if ("PvaluesFDR" %in% colnames(df_P_final)) {
+    names(df_P_final$PvaluesFDR) <- NULL
+  }
+  
   return(df_P_final)
 }
 

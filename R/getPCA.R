@@ -120,7 +120,7 @@ getPCA <- function(df, v, s = NULL, f = NULL, dfv = NULL, sv = NULL, fv = NULL, 
     if (is.null(names(colors_of_groups))) {
       names(colors_of_groups) <- levels(pull(df, f))
     } else {
-      if (any(duplicated(names(colors_of_groups)))) {"col_pal has some duplicated in the names"}
+      if (any(duplicated(names(colors_of_groups)))) {stop("col_pal has some duplicated in the names")}
       if (!all(names(colors_of_groups) %in% levels(pull(df, f)) & levels(pull(df, f)) %in% names(colors_of_groups))) {stop("the names of col_pal don't correspond to the levels of f")}
     }
     

@@ -1,6 +1,6 @@
 Package: GetFeatistics
 Title: Getting streamlined elaboration of metabolomics data
-Version: 0.3.2
+Version: 0.3.2.1
 Authors@R: 
     person("Gianfranco", "Frigerio", email = "frigerio.gianfranco@hsr.it", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0002-3538-1443"))
