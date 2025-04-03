@@ -123,21 +123,12 @@ getPCA <- function(df, v, s = NULL, f = NULL, dfv = NULL, sv = NULL, fv = NULL, 
       if (any(duplicated(names(colors_of_groups)))) {stop("col_pal has some duplicated in the names")}
       if (!all(names(colors_of_groups) %in% levels(pull(df, f)) & levels(pull(df, f)) %in% names(colors_of_groups))) {stop("the names of col_pal don't correspond to the levels of f")}
     }
-    
-    
-    
-    
   }
   
   if (length(PC_to_plot) != 2) {stop("PC_to_plot must contain exactly 2 elements")}
   if (!is.character(PC_to_plot)) {stop("PC_to_plot must be a character vector")}
   if (any(is.na(PC_to_plot))) {stop("PC_to_plot must not contain NAs")}
-  if (PC_to_plot[1] %in% colnames(df)) {stop(paste0("df already contains a column named ", PC_to_plot[1]))}
-  if (PC_to_plot[2] %in% colnames(df)) {stop(paste0("df already contains a column named ", PC_to_plot[2]))}
-  if (!is.null(dfv)) {
-    if (PC_to_plot[1] %in% colnames(dfv)) {stop(paste0("dfv already contains a column named ", PC_to_plot[1]))}
-    if (PC_to_plot[2] %in% colnames(dfv)) {stop(paste0("dfv already contains a column named ", PC_to_plot[2]))}
-  }
+  
   
   if (!is.null(dfv) & !is.null(fv)) {
     if (!is.null(col_pal_fv)) {
@@ -186,6 +177,13 @@ getPCA <- function(df, v, s = NULL, f = NULL, dfv = NULL, sv = NULL, fv = NULL, 
   
   pca_res <- prcomp(df_fil, retx = TRUE, center = FALSE, scale. = FALSE)
   
+  if (any(colnames(as_tibble(pca_res$x)) %in% colnames(df))) {
+    warning(paste0("The following column were already present in df, and they are replaced with this function!\n",
+                   paste0(colnames(as_tibble(pca_res$x))[which(colnames(as_tibble(pca_res$x)) %in% colnames(df))], collapse = " ")))
+    
+    df <- df[, colnames(df)[which(!colnames(df)%in%colnames(as_tibble(pca_res$x)))]]
+  }
+  
   df_with_scores_table <- bind_cols(df, as_tibble(pca_res$x))
   
   
@@ -200,6 +198,14 @@ getPCA <- function(df, v, s = NULL, f = NULL, dfv = NULL, sv = NULL, fv = NULL, 
     dfv_with_loadings_table_fil <- dfv_with_loadings_table
   } else {
     colnames(loadings_table)[1] <- colnames(dfv)[1]
+    
+    if (any(colnames(loadings_table)[-1] %in% colnames(dfv))) {
+      warning(paste0("The following column were already present in dfv, and they are replaced with this function!\n",
+                     paste0(colnames(loadings_table)[-1][which(colnames(loadings_table)[-1] %in% colnames(dfv))], collapse = " ")))
+      
+      dfv <- dfv[, colnames(dfv)[which(!colnames(dfv)%in%colnames(loadings_table)[-1])]]
+    }
+    
     dfv_with_loadings_table <- left_join(dfv, loadings_table, by = colnames(dfv)[1])
     dfv_with_loadings_table_fil <- dfv_with_loadings_table[which(pull(dfv, 1) %in% v),]
   }

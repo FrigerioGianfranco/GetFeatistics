@@ -1,4 +1,3 @@
-
 #' Get an Heat Map.
 #'
 #' Given a table containing data, it creates an heat map graph.
@@ -48,6 +47,7 @@ getHeatMap <- function(df, v, s = NULL, f = NULL, dfv = NULL, sv = NULL, fv = NU
     if (!is.character(f)) {stop("if not NULL, f must be a character")}
     if (any(is.na(f))) {stop("if not NULL, f must not contain mising values")}
     if (!all(f %in% colnames(df))) {stop("if not NULL, the names you indicate in f must correspond to names of columns in df")}
+    if (any(c("rownames_in_use", "rownames_wanted", "colnames_in_use", "colnames_wanted", "rowid", "variable")%in%f)) {stop('f must not contain any of the following: "rownames_in_use", "rownames_wanted", "colnames_in_use", "colnames_wanted", "rowid", "variable". \n Please change column names, thank you!')}
   }
   
   if (!is.null(dfv)) {
@@ -80,6 +80,10 @@ getHeatMap <- function(df, v, s = NULL, f = NULL, dfv = NULL, sv = NULL, fv = NU
       if (!is.character(fv)) {stop("if not NULL, fv must be a character")}
       if (any(is.na(fv))) {stop("if not NULL, fv must not contain mising values")}
       if (!all(fv %in% colnames(dfv))) {stop("if not NULL, the names you indicate in fv must correspond to names of columns in dfv")}
+      if (any(c("rownames_in_use", "rownames_wanted", "colnames_in_use", "colnames_wanted", "rowid", "variable")%in%fv)) {stop('fv must not contain any of the following: "rownames_in_use", "rownames_wanted", "colnames_in_use", "colnames_wanted", "rowid", "variable". \n Please change column names, thank you!')}
+      if (!is.null(f)) {
+        if (any(f %in% fv) | any(fv %in% f)) {"f and fv must not have same names. \n Please change column names, thank you!"}
+      }
     }
     
     if (!is.null(order_dfv_by)) {
@@ -158,11 +162,41 @@ getHeatMap <- function(df, v, s = NULL, f = NULL, dfv = NULL, sv = NULL, fv = NU
   if (!is.numeric(df_fil_matrix)) {stop("v must be column names of numeric variables in df")}
   
   if (!is.null(s)) {
-    rownames(df_fil_matrix) <- pull(df, s)
+    rownames(df_fil_matrix) <- paste0("r", 1:length(pull(df, s)))
+    
+    rownames_df <- tibble(rownames_in_use = rownames(df_fil_matrix),
+                          rownames_wanted = pull(df, s))
+    
+  } else {
+    rownames(df_fil_matrix) <- paste0("r", 1:nrow(df_fil_matrix))
+    
+    rownames_df <- tibble(rownames_in_use = rownames(df_fil_matrix),
+                          rownames_wanted = as.character(1:nrow(df_fil_matrix)))
   }
   
+  if (!is.null(f)) {
+    for (ff in f) {
+      rownames_df[, ff] <- pull(df, ff)
+    }
+  }
+  
+  
   if (!is.null(dfv) & !is.null(sv)) {
-    colnames(df_fil_matrix) <- pull(dfv_fil, sv)
+    colnames(df_fil_matrix) <- paste0("c", 1:length(pull(dfv_fil, sv)))
+    
+    colnames_df <- tibble(colnames_in_use = colnames(df_fil_matrix),
+                          colnames_wanted = pull(dfv_fil, sv))
+  } else {
+    colnames(df_fil_matrix) <- paste0("c", 1:ncol(df_fil_matrix))
+    
+    colnames_df <- tibble(colnames_in_use = colnames(df_fil_matrix),
+                          colnames_wanted = as.character(1:ncol(df_fil_matrix)))
+  }
+  
+  if (!is.null(dfv) & !is.null(fv)) {
+    for (ffv in fv) {
+      colnames_df[, ffv] <- pull(dfv_fil, ffv)
+    }
   }
   
   
@@ -188,6 +222,16 @@ getHeatMap <- function(df, v, s = NULL, f = NULL, dfv = NULL, sv = NULL, fv = NU
   
   if (trnsp) {
     df_fil_matrix <- t(df_fil_matrix)
+    
+    rownames_df_t <- colnames_df
+    colnames(rownames_df_t)[which(colnames(rownames_df_t)=="colnames_in_use")] <- "rownames_in_use"
+    colnames(rownames_df_t)[which(colnames(rownames_df_t)=="colnames_wanted")] <- "rownames_wanted"
+    colnames_df_t <- rownames_df
+    colnames(colnames_df_t)[which(colnames(colnames_df_t)=="rownames_in_use")] <- "colnames_in_use"
+    colnames(colnames_df_t)[which(colnames(colnames_df_t)=="rownames_wanted")] <- "colnames_wanted"
+    
+    rownames_df <- rownames_df_t
+    colnames_df <- colnames_df_t
   }
   
   
@@ -209,125 +253,54 @@ getHeatMap <- function(df, v, s = NULL, f = NULL, dfv = NULL, sv = NULL, fv = NU
     rowclus <- hclust(dist(df_fil_matrix))
     colclus <- hclust(dist(t(df_fil_matrix)))
     
-    hm <- hmReady(df_fil_matrix, rowclus = rowclus, colclus = colclus)
+    hm <- hmReady(as.data.frame(df_fil_matrix), rowclus = rowclus, colclus = colclus)
     
   } else if (cluster_rows) {
     
     rowclus <- hclust(dist(df_fil_matrix))
     
-    hm <- hmReady(df_fil_matrix, rowclus = rowclus, colclus = NULL)
+    hm <- hmReady(as.data.frame(df_fil_matrix), rowclus = rowclus, colclus = NULL)
     
   } else if (cluster_columns) {
     
     colclus <- hclust(dist(t(df_fil_matrix)))
     
-    hm <- hmReady(df_fil_matrix, rowclus = NULL, colclus = colclus)
+    hm <- hmReady(as.data.frame(df_fil_matrix), rowclus = NULL, colclus = colclus)
     
   } else {
     
-    hm <- hmReady(df_fil_matrix, rowclus = NULL, colclus = NULL)
+    hm <- hmReady(as.data.frame(df_fil_matrix), rowclus = NULL, colclus = NULL)
     
   }
+  
+  
+  colnames(rownames_df)[1] <- "rowid"
+  colnames(colnames_df)[1] <- "variable"
+  
+  hm <- left_join(hm, rownames_df, by = "rowid")
+  hm <- left_join(hm, colnames_df, by = "variable")
+  
   
   
   bar_col_names <- NULL
   bar_row_names <- NULL
   
   if (!is.null(f)) {
-    
-    if (any(colnames(hm) %in% f)) {
-      stop(paste0('Inside f, there are some names that generate conflicts.. If possible change these colum names: "',
-                  paste0(colnames(hm)[which(colnames(hm) %in% f)], collapse = ", "), '"'))
-    }
-    
-    if (!is.null(s)) {
-      df_to_join <- df[,c(s,f)]
-    } else {
-      df_to_join <- df[,f] %>%
-        add_column(THE_VERY_FIRST_COLUMN_NO_NAME_LIKE_THIS_HOPEFULLY = paste0("V", 1:nrow(df)),
-                   .before = 1)
-    }
-    
-    
     if (trnsp) {
-      
-      colnames(df_to_join)[1] <- "variable"
-      
-      if (is.character(pull(hm, "variable")) & !is.character(pull(df_to_join, "variable"))) {
-        df_to_join[, "variable"] <- as.character(pull(df_to_join, "variable"))
-      }
-      if (is.factor(pull(hm, "variable")) & !is.factor(pull(df_to_join, "variable"))) {
-        df_to_join[, "variable"] <- as.factor(pull(df_to_join, "variable"))
-      }
-      
-      hm <- left_join(hm, df_to_join, by = "variable")
-      
       bar_col_names <- f
-      
     } else {
-      
-      colnames(df_to_join)[1] <- "rowid"
-      
-      if (is.character(pull(hm, "rowid")) & !is.character(pull(df_to_join, "rowid"))) {
-        df_to_join[, "rowid"] <- as.character(pull(df_to_join, "rowid"))
-      }
-      if (is.factor(pull(hm, "rowid")) & !is.factor(pull(df_to_join, "rowid"))) {
-        df_to_join[, "rowid"] <- as.factor(pull(df_to_join, "rowid"))
-      }
-      
-      
-      hm <- left_join(hm, df_to_join, by = "rowid")
-      
       bar_row_names <- f
-      
     }
   }
   
   if (!is.null(dfv) & !is.null(fv)) {
-    if (any(colnames(hm) %in% fv)) {
-      stop(paste0('Inside fv, there are some names that generate conflicts.. If possible change these colum names: ',
-                  paste0(colnames(hm)[which(colnames(hm) %in% fv)], collapse = ", "), '"'))
-    }
-    
-    dfv_to_join <- dfv_fil[,c(1, which(colnames(dfv_fil) %in% fv))]
     
     if (trnsp) {
-      
-      colnames(dfv_to_join)[1] <- "rowid"
-      
-      if (is.character(pull(hm, "rowid")) & !is.character(pull(dfv_to_join, "rowid"))) {
-        dfv_to_join[, "rowid"] <- as.character(pull(dfv_to_join, "rowid"))
-      }
-      if (is.factor(pull(hm, "rowid")) & !is.factor(pull(dfv_to_join, "rowid"))) {
-        dfv_to_join[, "rowid"] <- as.factor(pull(dfv_to_join, "rowid"))
-      }
-      
-      
-      hm <- left_join(hm, dfv_to_join, by = "rowid")
-      
       bar_row_names <- fv
-      
     } else {
-      
-      colnames(dfv_to_join)[1] <- "variable"
-      
-      if (is.character(pull(hm, "variable")) & !is.character(pull(dfv_to_join, "variable"))) {
-        dfv_to_join[, "variable"] <- as.character(pull(dfv_to_join, "variable"))
-      }
-      if (is.factor(pull(hm, "variable")) & !is.factor(pull(dfv_to_join, "variable"))) {
-        dfv_to_join[, "variable"] <- as.factor(pull(dfv_to_join, "variable"))
-      }
-      
-      
-      hm <- left_join(hm, dfv_to_join, by = "variable")
-      
       bar_col_names <- fv
-      
     }
   }
-  
-  
-  
   
   
   the_heatmap_plot <- ggplot() + 
@@ -341,7 +314,7 @@ getHeatMap <- function(df, v, s = NULL, f = NULL, dfv = NULL, sv = NULL, fv = NU
   
   if (name_rows) {
     the_heatmap_plot <- the_heatmap_plot +
-      scale_y_continuous(expand=c(0,0), breaks=unique(hm$y), labels=unique(hm$rowid), position = "right") +
+      scale_y_continuous(expand=c(0,0), breaks=hm[which(!duplicated(hm$y)),]$y, labels=hm[which(!duplicated(hm$y)),]$rownames_wanted, position = "right") +
       theme(axis.text.y=element_text(angle = 0, vjust = 0.5, hjust = 0.5))
   } else {
     the_heatmap_plot <- the_heatmap_plot +
@@ -351,11 +324,11 @@ getHeatMap <- function(df, v, s = NULL, f = NULL, dfv = NULL, sv = NULL, fv = NU
   if (name_columns) {
     if (rotate_name_columns) {
       the_heatmap_plot <- the_heatmap_plot +
-        scale_x_continuous(expand=c(0,0), breaks=unique(hm$x), labels=unique(hm$variable)) +
+        scale_x_continuous(expand=c(0,0), breaks=hm[which(!duplicated(hm$x)),]$x, labels=hm[which(!duplicated(hm$x)),]$colnames_wanted) +
         theme(axis.text.x=element_text(angle = 270, vjust = 0.5, hjust = 0.5))
     } else {
       the_heatmap_plot <- the_heatmap_plot +
-        scale_x_continuous(expand=c(0,0), breaks=unique(hm$x), labels=unique(hm$variable)) +
+        scale_x_continuous(expand=c(0,0), breaks=hm[which(!duplicated(hm$x)),]$x, labels=hm[which(!duplicated(hm$x)),]$colnames_wanted) +
         theme(axis.text.x=element_text(angle = 0, vjust = 0.5, hjust = 0.5))
     }
   } else {
@@ -501,8 +474,6 @@ getHeatMap <- function(df, v, s = NULL, f = NULL, dfv = NULL, sv = NULL, fv = NU
     the_heatmap_plot <- the_heatmap_plot +
       geom_dendro(colclus, ylim=c(y1_cluster_position, y2_cluster_position), pointing="updown", axis.labels = FALSE)
   }
-  
-  
   
   
   return(the_heatmap_plot)
