@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">GetFeatistics</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.2.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.3</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -60,11 +60,11 @@
 
 
 <dl><dt id="arg-featmatrix">featmatrix<a class="anchor" aria-label="anchor" href="#arg-featmatrix"></a></dt>
-<dd><p>a dataframe: first column the featname, each other column is a sample with feature intensities. Each row is a feature. It can be obtained with the get_feat_table_from_MSDial function of the present package.</p></dd>
+<dd><p>a dataframe: first column the featname, each other column is a sample with feature intensities. Each row is a feature. (It can be obtained with the get_feat_table_from_MSDial or get_feat_table_from_patRoon function).</p></dd>
 
 
 <dt id="arg-featinfo">featinfo<a class="anchor" aria-label="anchor" href="#arg-featinfo"></a></dt>
-<dd><p>a dataframe. A table with at least three columns, in this order: feature names, retention times, and mass-to-charge ratios. It can be obtained with the get_feat_info_from_MSDial function of the present package.</p></dd>
+<dd><p>a dataframe. A table with at least three columns, in this order: feature names, retention times, and mass-to-charge ratios. (It can be obtained with the get_feat_info_from_MSDial or get_feat_info_from_patRoon function).</p></dd>
 
 
 <dt id="arg-molecules-list">molecules_list<a class="anchor" aria-label="anchor" href="#arg-molecules-list"></a></dt>
@@ -72,7 +72,7 @@
 
 
 <dt id="arg-mz-to-search">mz_to_search<a class="anchor" aria-label="anchor" href="#arg-mz-to-search"></a></dt>
-<dd><p>character vector of length 1. It is the column name of the molecules_list data-frame with the m/z values to look for (it not provided the third column will be used).</p></dd>
+<dd><p>character vector of length 1. It is the column name of the molecules_list data-frame with the m/z values to look for (If not provided the third column will be used).</p></dd>
 
 
 <dt id="arg-error">error<a class="anchor" aria-label="anchor" href="#arg-error"></a></dt>
@@ -88,7 +88,7 @@
 
 
 <dt id="arg-rt-to-search">rt_to_search<a class="anchor" aria-label="anchor" href="#arg-rt-to-search"></a></dt>
-<dd><p>if check_rt is TRUE, it is the column name of the molecules_list data-frame with the rt values to look for. (it not provided the second column will be used)</p></dd>
+<dd><p>if check_rt is TRUE, it is the column name of the molecules_list data-frame with the rt values to look for. (If not provided the second column will be used)</p></dd>
 
 
 <dt id="arg-rt-window">rt_window<a class="anchor" aria-label="anchor" href="#arg-rt-window"></a></dt>
@@ -101,7 +101,7 @@
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>A tibble with the matching feature intensities. If return_as_featinfo_lev1 is TRUE, the output is instead the featinfo with the found compound as level 1 in the AnnoLevel column.</p>
+    <p>A tibble with the matching feature intensities. If return_as_featinfo_lev1 is TRUE, the output is instead the featinfo with the compounds found as level 1 in the AnnoLevel column.</p>
     </div>
 
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

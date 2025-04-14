@@ -20,7 +20,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">GetFeatistics</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.2.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.3</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -58,7 +58,7 @@
                         <h4 data-toc-skip class="author">Gianfranco
 Frigerio</h4>
             
-            <h4 data-toc-skip class="date">2025-03-06</h4>
+            <h4 data-toc-skip class="date">2025-04-14</h4>
       
 
       <div class="d-none name"><code>GF_vignette.Rmd</code></div>
@@ -303,7 +303,8 @@ object:</li>
 </h2>
 <p>This package is supposed to be used after obtaining a feature table
 using open source tools such as XCMS and MS-Dial. In particular, we need
-a table of feature intensities like this:</p>
+a table of feature intensities like this (This is just a simple example,
+usually there are many more features!):</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">df_example_feat_intensities</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 9 × 78</span></span></span>
@@ -343,7 +344,7 @@ such as this one:</p>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">7</span> feature007   342  204.</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">8</span> feature008   221  104.</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">9</span> feature009   593  425.</span></span></code></pre></div>
-<p>If you worked with MS-dial, you just need to export the areas or the
+<p>If you worked with MS-Dial, you just need to export the areas or the
 normalized areas, and then use the functions
 <em>get_feat_table_from_MSDial</em> and
 <em>get_feat_info_from_MSDial</em>. For example, something like that:
@@ -378,59 +379,73 @@ standards are present in your feature tables. To do so, you need to
 prepare a table like <em>df_example_melecules_to_search</em>:</p>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">df_example_melecules_to_search</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 8 × 3</span></span></span>
-<span><span class="co">#&gt;   coumpound        rt    mz</span></span>
-<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> Alanine         146  88.0</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> Asparagine      262 131. </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> Cysteine        243 120. </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> Glutamate       290 146. </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> Glycine         169  74.0</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> Leucine          98 130. </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">7</span> Methionine      258 148. </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">8</span> Phenylalanine   471 164.</span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 8 × 4</span></span></span>
+<span><span class="co">#&gt;   coumpound        rt    mz   CID</span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> Alanine         146  88.0  <span style="text-decoration: underline;">5</span>950</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> Asparagine      262 131.   <span style="text-decoration: underline;">6</span>267</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> Cysteine        243 120.   <span style="text-decoration: underline;">5</span>862</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> Glutamate       290 146.  <span style="text-decoration: underline;">33</span>032</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> Glycine         169  74.0   750</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> Leucine          98 130.   <span style="text-decoration: underline;">6</span>106</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">7</span> Methionine      258 148.   <span style="text-decoration: underline;">6</span>137</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">8</span> Phenylalanine   471 164.   <span style="text-decoration: underline;">6</span>140</span></span></code></pre></div>
 <p>Then, you can use the function <em>checkmolecules_in_feat_table</em>
-passing: - the data frames of feature intensity, feature INFO, and known
-molecules to the first three arguments, respectively; - the name of the
-column of the known molecules data frames containing m/z values to
-<em>mz_to_search</em> (or the third column will be taken as default); -
-the accepted error value in <em>error</em>; - “ppm” or “Da” in
-<em>error_type</em> (which is refering to the <em>error</em> value); -
-TRUE to <em>check_rt</em> if you have retention times and want to also
-check them; - the name of the column of the known molecules data frames
-containing retention time values to <em>rt_to_search </em> (or the
-second column will be taken as default); - the accepted window of
-retention time to <em>rt_window</em> (and be sure that the unit, like
-seconds or minutes, is consistent!)</p>
+passing:</p>
+<ul>
+<li>the data frames of feature intensity, feature INFO, and known
+molecules to the first three arguments, respectively;</li>
+<li>the name of the column of the known molecules data frames containing
+m/z values to <em>mz_to_search</em> (or the third column will be taken
+as default);</li>
+<li>the accepted error value in <em>error</em>;</li>
+<li>“ppm” or “Da” in <em>error_type</em> (which is refering to the
+<em>error</em> value);</li>
+<li>TRUE to <em>check_rt</em> if you have retention times and want to
+also check them;</li>
+<li>the name of the column of the known molecules data frames containing
+retention time values to <em>rt_to_search </em> (or the second column
+will be taken as default);</li>
+<li>the accepted window of retention time to <em>rt_window</em> (and be
+sure that the unit, like seconds or minutes, is consistent!)</li>
+<li>finally, set <em>return_as_featinfo_lev1</em> to TRUE, so the the
+confirmed molecules will be marked as AnnoLevel “1” in the featINFO
+table.</li>
+</ul>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">CHECKED_MOLECULES</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/checkmolecules_in_feat_table.html">checkmolecules_in_feat_table</a></span><span class="op">(</span>featmatrix <span class="op">=</span> <span class="va">df_example_feat_intensities</span>,</span>
-<span>                                                  featinfo <span class="op">=</span> <span class="va">df_example_feat_info</span>,</span>
-<span>                                                  molecules_list <span class="op">=</span> <span class="va">df_example_melecules_to_search</span>,</span>
-<span>                                                  mz_to_search <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>                                                  error <span class="op">=</span> <span class="fl">20</span>,</span>
-<span>                                                  error_type <span class="op">=</span> <span class="st">"ppm"</span>,</span>
-<span>                                                  check_rt <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>                                                  rt_to_search <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>                                                  rt_window <span class="op">=</span> <span class="fl">12</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">df_example_feat_info_withLev1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/checkmolecules_in_feat_table.html">checkmolecules_in_feat_table</a></span><span class="op">(</span>featmatrix <span class="op">=</span> <span class="va">df_example_feat_intensities</span>,</span>
+<span>                                                              featinfo <span class="op">=</span> <span class="va">df_example_feat_info</span>,</span>
+<span>                                                              molecules_list <span class="op">=</span> <span class="va">df_example_melecules_to_search</span>,</span>
+<span>                                                              mz_to_search <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>                                                              error <span class="op">=</span> <span class="fl">20</span>,</span>
+<span>                                                              error_type <span class="op">=</span> <span class="st">"ppm"</span>,</span>
+<span>                                                              check_rt <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>                                                              rt_to_search <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>                                                              rt_window <span class="op">=</span> <span class="fl">12</span>,</span>
+<span>                                                              return_as_featinfo_lev1 <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">CHECKED_MOLECULES</span><span class="op">[</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"coumpound"</span>, <span class="st">"featname"</span>, <span class="st">"rt_confirmed"</span>, <span class="st">"rt"</span>, <span class="st">"rt_shift"</span>, <span class="st">"mz"</span>, <span class="st">"mz_shift"</span><span class="op">)</span><span class="op">]</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 9 × 7</span></span></span>
-<span><span class="co">#&gt;   coumpound     featname   rt_confirmed    rt rt_shift    mz  mz_shift</span></span>
-<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> Alanine       NOT_FOUND  <span style="color: #BB0000;">NA</span>              <span style="color: #BB0000;">NA</span>       <span style="color: #BB0000;">NA</span>   <span style="color: #BB0000;">NA</span>  <span style="color: #BB0000;">NA</span>       </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> Asparagine    NOT_FOUND  <span style="color: #BB0000;">NA</span>              <span style="color: #BB0000;">NA</span>       <span style="color: #BB0000;">NA</span>   <span style="color: #BB0000;">NA</span>  <span style="color: #BB0000;">NA</span>       </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> Cysteine      feature001 TRUE           242       -<span style="color: #BB0000;">1</span>  120. -<span style="color: #BB0000;">0.000</span><span style="color: #BB0000; text-decoration: underline;">300</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> Glutamate     feature002 TRUE           288       -<span style="color: #BB0000;">2</span>  146. -<span style="color: #BB0000;">0.000</span><span style="color: #BB0000; text-decoration: underline;">200</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> Glycine       NOT_FOUND  <span style="color: #BB0000;">NA</span>              <span style="color: #BB0000;">NA</span>       <span style="color: #BB0000;">NA</span>   <span style="color: #BB0000;">NA</span>  <span style="color: #BB0000;">NA</span>       </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> Leucine       NOT_FOUND  <span style="color: #BB0000;">NA</span>              <span style="color: #BB0000;">NA</span>       <span style="color: #BB0000;">NA</span>   <span style="color: #BB0000;">NA</span>  <span style="color: #BB0000;">NA</span>       </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">7</span> Methionine    feature004 FALSE          528      270  148.  0.000<span style="text-decoration: underline;">200</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">8</span> Phenylalanine feature005 TRUE           465       -<span style="color: #BB0000;">6</span>  164.  0.000<span style="text-decoration: underline;">200</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">9</span> Phenylalanine feature006 TRUE           476        5  164.  0.000<span style="text-decoration: underline;">300</span></span></span></code></pre></div>
-<p>Amazing!! Now, if you are a good metabolomer, you know how much is
-important to clean the dataset using well-established methods such as
-pooled quality controls (QCs). If you want to filter the feature data
-table considering defined cut-offs from the analyses of pooled QCs, you
-might want to read the next step carefully!</p>
+<span><span class="va">df_example_feat_info_withLev1</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 9 × 10</span></span></span>
+<span><span class="co">#&gt;   featname      rt    mz coumpound     rt_molecule_list mz_molecule_list   CID</span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>            <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> feature001   242  120. Cysteine                   243             120.  <span style="text-decoration: underline;">5</span>862</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> feature002   288  146. Glutamate                  290             146. <span style="text-decoration: underline;">33</span>032</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> feature003   408  203. <span style="color: #BB0000;">NA</span>                          <span style="color: #BB0000;">NA</span>              <span style="color: #BB0000;">NA</span>     <span style="color: #BB0000;">NA</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> feature004   528  148. <span style="color: #BB0000;">NA</span>                          <span style="color: #BB0000;">NA</span>              <span style="color: #BB0000;">NA</span>     <span style="color: #BB0000;">NA</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> feature005   465  164. Phenylalanine              471             164.  <span style="text-decoration: underline;">6</span>140</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> feature006   476  164. Phenylalanine              471             164.  <span style="text-decoration: underline;">6</span>140</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">7</span> feature007   342  204. <span style="color: #BB0000;">NA</span>                          <span style="color: #BB0000;">NA</span>              <span style="color: #BB0000;">NA</span>     <span style="color: #BB0000;">NA</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">8</span> feature008   221  104. <span style="color: #BB0000;">NA</span>                          <span style="color: #BB0000;">NA</span>              <span style="color: #BB0000;">NA</span>     <span style="color: #BB0000;">NA</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">9</span> feature009   593  425. <span style="color: #BB0000;">NA</span>                          <span style="color: #BB0000;">NA</span>              <span style="color: #BB0000;">NA</span>     <span style="color: #BB0000;">NA</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 3 more variables: AnnoLevel &lt;chr&gt;, rt_shift &lt;dbl&gt;, mz_shift &lt;dbl&gt;</span></span></span></code></pre></div>
+<p>Amazing!! Note that if you had a featINFO from MS-Dial or patRoon,
+instead of this example featINFO, you would the AnnoLevel for all the
+other features!</p>
+<p>Now, if you are a good metabolomer, you know how much is important to
+clean the dataset using well-established methods such as pooled quality
+controls (QCs). If you want to filter the feature data table considering
+defined cut-offs from the analyses of pooled QCs, you might want to read
+the next step carefully!</p>
 <p>First, you need to prepare a table containing the following
 information:</p>
 <ul>
@@ -509,7 +524,7 @@ kept.</li>
 <p>I’d suggest also to filter the featINFO table accordingly, you could
 run something like this:</p>
 <div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">UNTARGETED_FEAT_INFO_QC_FILTERED</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">df_example_feat_info</span>,</span>
+<code class="sourceCode R"><span><span class="va">UNTARGETED_FEAT_INFO_QC_FILTERED</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">df_example_feat_info_withLev1</span>,</span>
 <span>                                           <span class="va">featname</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="va">UNTARGETED_FEAT_TABLE_QC_FILTERED</span><span class="op">$</span><span class="va">featname</span><span class="op">)</span></span></code></pre></div>
 <p>Brilliant. Last step of this chapter is to prepare what we need for
 the following statistical elaborations. Statistically speaking,
@@ -676,53 +691,53 @@ for the pareto scaling:</p>
 <code class="sourceCode R"><span><span class="fu">glimpse</span><span class="op">(</span><span class="va">EXAMPLE_TABLE_FOR_STATISTICAL_ANALYSES_transf</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Rows: 52</span></span>
 <span><span class="co">#&gt; Columns: 47</span></span>
-<span><span class="co">#&gt; $ samples                   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "unkwon_sample_001", "unkwon_sample_002", "u…</span></span>
-<span><span class="co">#&gt; $ factor_condition2lev      <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span> F2A, F2A, F2A, F2A, F2A, F2A, F2A, F2A, F2A,…</span></span>
-<span><span class="co">#&gt; $ factor_condition3lev      <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span> F3A, F3A, F3A, F3A, F3A, F3A, F3A, F3A, F3A,…</span></span>
-<span><span class="co">#&gt; $ factor_condition4lev      <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span> F4A, F4A, F4A, F4A, F4A, F4A, F4A, F4A, F4A,…</span></span>
-<span><span class="co">#&gt; $ numerical_condition_a     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 4144.84, 2730.27, 1830.29, 3890.55, 1894.76,…</span></span>
-<span><span class="co">#&gt; $ numerical_condition_b     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 4.9, 4.0, 5.9, 6.1, 14.8, 27.1, 23.0, 23.8, …</span></span>
-<span><span class="co">#&gt; $ sample_type               <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "unknown", "unknown", "unknown", "unknown", …</span></span>
-<span><span class="co">#&gt; $ molecule01                <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 64.01434, 35.47336, 163.16339, 172.53414, 90…</span></span>
-<span><span class="co">#&gt; $ molecule02                <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 71.660272, 45.573955, 30.358801, 72.010810, …</span></span>
-<span><span class="co">#&gt; $ molecule03                <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 0.036142724, 0.437926820, 0.290853901, 0.014…</span></span>
-<span><span class="co">#&gt; $ molecule04                <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 78.6898920, 52.6804134, 37.6598743, 79.10643…</span></span>
-<span><span class="co">#&gt; $ feature002                <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 1041717, 1838405, 1833003, 2283669, 2295150,…</span></span>
-<span><span class="co">#&gt; $ feature003                <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 123288, 178957, 147968, 136045, 156292, 1620…</span></span>
-<span><span class="co">#&gt; $ feature004                <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 9409, 7624, 8385, 7474, 8628, 8940, 7626, 85…</span></span>
-<span><span class="co">#&gt; $ feature005                <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 115952, 104632, 106887, 241976, 43063, 15679…</span></span>
-<span><span class="co">#&gt; $ feature007                <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 43897, 36940, 185687, 134781, 39105, 228596,…</span></span>
-<span><span class="co">#&gt; $ feature009                <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 27104212, 39761464, 25144541, 32142174, 2883…</span></span>
-<span><span class="co">#&gt; $ molecule01_mr             <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 64.01434, 35.47336, 163.16339, 172.53414, 90…</span></span>
-<span><span class="co">#&gt; $ molecule02_mr             <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 71.660272, 45.573955, 30.358801, 72.010810, …</span></span>
-<span><span class="co">#&gt; $ molecule03_mr             <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 0.036142724, 0.437926820, 0.290853901, 0.014…</span></span>
-<span><span class="co">#&gt; $ molecule04_mr             <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 78.6898920, 52.6804134, 37.6598743, 79.10643…</span></span>
-<span><span class="co">#&gt; $ feature002_mr             <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 1041717, 1838405, 1833003, 2283669, 2295150,…</span></span>
-<span><span class="co">#&gt; $ feature003_mr             <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 123288, 178957, 147968, 136045, 156292, 1620…</span></span>
-<span><span class="co">#&gt; $ feature004_mr             <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 9409, 7624, 8385, 7474, 8628, 8940, 7626, 85…</span></span>
-<span><span class="co">#&gt; $ feature005_mr             <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 115952, 104632, 106887, 241976, 43063, 15679…</span></span>
-<span><span class="co">#&gt; $ feature007_mr             <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 43897, 36940, 185687, 134781, 39105, 228596,…</span></span>
-<span><span class="co">#&gt; $ feature009_mr             <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 27104212, 39761464, 25144541, 32142174, 2883…</span></span>
-<span><span class="co">#&gt; $ molecule01_mr_ln          <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 4.159107, 3.568782, 5.094752, 5.150595, 4.51…</span></span>
-<span><span class="co">#&gt; $ molecule02_mr_ln          <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 4.271937, 3.819336, 3.413086, 4.276816, 3.30…</span></span>
-<span><span class="co">#&gt; $ molecule03_mr_ln          <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> -3.3202796, -0.8257035, -1.2349342, -4.26511…</span></span>
-<span><span class="co">#&gt; $ molecule04_mr_ln          <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 4.365515, 3.964244, 3.628595, 4.370794, 3.53…</span></span>
-<span><span class="co">#&gt; $ feature002_mr_ln          <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 13.85638, 14.42441, 14.42147, 14.64129, 14.6…</span></span>
-<span><span class="co">#&gt; $ feature003_mr_ln          <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 11.72228, 12.09490, 11.90475, 11.82074, 11.9…</span></span>
-<span><span class="co">#&gt; $ feature004_mr_ln          <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 9.149422, 8.939056, 9.034200, 8.919186, 9.06…</span></span>
-<span><span class="co">#&gt; $ feature005_mr_ln          <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 11.660932, 11.558205, 11.579527, 12.396594, …</span></span>
-<span><span class="co">#&gt; $ feature007_mr_ln          <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 10.68960, 10.51705, 12.13182, 11.81141, 10.5…</span></span>
-<span><span class="co">#&gt; $ feature009_mr_ln          <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 17.11520, 17.49841, 17.04015, 17.28568, 17.1…</span></span>
-<span><span class="co">#&gt; $ molecule01_mr_ln_paretosc <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> -0.095654618, -0.766251137, 0.967217623, 1.0…</span></span>
-<span><span class="co">#&gt; $ molecule02_mr_ln_paretosc <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 1.08532715, 0.58954061, 0.14452697, 1.090672…</span></span>
-<span><span class="co">#&gt; $ molecule03_mr_ln_paretosc <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> -2.9491548, -1.4902254, -1.7295601, -3.50173…</span></span>
-<span><span class="co">#&gt; $ molecule04_mr_ln_paretosc <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 0.90019580, 0.51688222, 0.19625440, 0.905239…</span></span>
-<span><span class="co">#&gt; $ feature002_mr_ln_paretosc <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> -1.7080635, -1.3542181, -1.3560513, -1.21911…</span></span>
-<span><span class="co">#&gt; $ feature003_mr_ln_paretosc <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> -2.297112, -2.089123, -2.195260, -2.242153, …</span></span>
-<span><span class="co">#&gt; $ feature004_mr_ln_paretosc <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> -2.1304636, -2.2603710, -2.2016170, -2.27264…</span></span>
-<span><span class="co">#&gt; $ feature005_mr_ln_paretosc <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 0.137588664, 0.040306189, 0.060498877, 0.834…</span></span>
-<span><span class="co">#&gt; $ feature007_mr_ln_paretosc <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> -0.59936838, -0.85153551, 1.50829588, 1.0400…</span></span>
-<span><span class="co">#&gt; $ feature009_mr_ln_paretosc <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 0.13079507, 0.66197920, 0.02676705, 0.367105…</span></span></code></pre></div>
+<span><span class="co">#&gt; $ samples                   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "unkwon_sample_001"<span style="color: #949494;">, </span>"unkwon_sample_002"<span style="color: #949494;">, </span>"u…</span></span>
+<span><span class="co">#&gt; $ factor_condition2lev      <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span> F2A<span style="color: #949494;">, </span>F2A<span style="color: #949494;">, </span>F2A<span style="color: #949494;">, </span>F2A<span style="color: #949494;">, </span>F2A<span style="color: #949494;">, </span>F2A<span style="color: #949494;">, </span>F2A<span style="color: #949494;">, </span>F2A<span style="color: #949494;">, </span>F2A<span style="color: #949494;">,</span>…</span></span>
+<span><span class="co">#&gt; $ factor_condition3lev      <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span> F3A<span style="color: #949494;">, </span>F3A<span style="color: #949494;">, </span>F3A<span style="color: #949494;">, </span>F3A<span style="color: #949494;">, </span>F3A<span style="color: #949494;">, </span>F3A<span style="color: #949494;">, </span>F3A<span style="color: #949494;">, </span>F3A<span style="color: #949494;">, </span>F3A<span style="color: #949494;">,</span>…</span></span>
+<span><span class="co">#&gt; $ factor_condition4lev      <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span> F4A<span style="color: #949494;">, </span>F4A<span style="color: #949494;">, </span>F4A<span style="color: #949494;">, </span>F4A<span style="color: #949494;">, </span>F4A<span style="color: #949494;">, </span>F4A<span style="color: #949494;">, </span>F4A<span style="color: #949494;">, </span>F4A<span style="color: #949494;">, </span>F4A<span style="color: #949494;">,</span>…</span></span>
+<span><span class="co">#&gt; $ numerical_condition_a     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 4144.84<span style="color: #949494;">, </span>2730.27<span style="color: #949494;">, </span>1830.29<span style="color: #949494;">, </span>3890.55<span style="color: #949494;">, </span>1894.76<span style="color: #949494;">,</span>…</span></span>
+<span><span class="co">#&gt; $ numerical_condition_b     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 4.9<span style="color: #949494;">, </span>4.0<span style="color: #949494;">, </span>5.9<span style="color: #949494;">, </span>6.1<span style="color: #949494;">, </span>14.8<span style="color: #949494;">, </span>27.1<span style="color: #949494;">, </span>23.0<span style="color: #949494;">, </span>23.8<span style="color: #949494;">, </span>…</span></span>
+<span><span class="co">#&gt; $ sample_type               <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "unknown"<span style="color: #949494;">, </span>"unknown"<span style="color: #949494;">, </span>"unknown"<span style="color: #949494;">, </span>"unknown"<span style="color: #949494;">, </span>…</span></span>
+<span><span class="co">#&gt; $ molecule01                <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 64.01434<span style="color: #949494;">, </span>35.47336<span style="color: #949494;">, </span>163.16339<span style="color: #949494;">, </span>172.53414<span style="color: #949494;">, </span>90…</span></span>
+<span><span class="co">#&gt; $ molecule02                <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 71.660272<span style="color: #949494;">, </span>45.573955<span style="color: #949494;">, </span>30.358801<span style="color: #949494;">, </span>72.010810<span style="color: #949494;">, </span>…</span></span>
+<span><span class="co">#&gt; $ molecule03                <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 0.036142724<span style="color: #949494;">, </span>0.437926820<span style="color: #949494;">, </span>0.290853901<span style="color: #949494;">, </span>0.014…</span></span>
+<span><span class="co">#&gt; $ molecule04                <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 78.6898920<span style="color: #949494;">, </span>52.6804134<span style="color: #949494;">, </span>37.6598743<span style="color: #949494;">, </span>79.10643…</span></span>
+<span><span class="co">#&gt; $ feature002                <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 1041717<span style="color: #949494;">, </span>1838405<span style="color: #949494;">, </span>1833003<span style="color: #949494;">, </span>2283669<span style="color: #949494;">, </span>2295150<span style="color: #949494;">,</span>…</span></span>
+<span><span class="co">#&gt; $ feature003                <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 123288<span style="color: #949494;">, </span>178957<span style="color: #949494;">, </span>147968<span style="color: #949494;">, </span>136045<span style="color: #949494;">, </span>156292<span style="color: #949494;">, </span>1620…</span></span>
+<span><span class="co">#&gt; $ feature004                <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 9409<span style="color: #949494;">, </span>7624<span style="color: #949494;">, </span>8385<span style="color: #949494;">, </span>7474<span style="color: #949494;">, </span>8628<span style="color: #949494;">, </span>8940<span style="color: #949494;">, </span>7626<span style="color: #949494;">, </span>85…</span></span>
+<span><span class="co">#&gt; $ feature005                <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 115952<span style="color: #949494;">, </span>104632<span style="color: #949494;">, </span>106887<span style="color: #949494;">, </span>241976<span style="color: #949494;">, </span>43063<span style="color: #949494;">, </span>15679…</span></span>
+<span><span class="co">#&gt; $ feature007                <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 43897<span style="color: #949494;">, </span>36940<span style="color: #949494;">, </span>185687<span style="color: #949494;">, </span>134781<span style="color: #949494;">, </span>39105<span style="color: #949494;">, </span>228596<span style="color: #949494;">,</span>…</span></span>
+<span><span class="co">#&gt; $ feature009                <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 27104212<span style="color: #949494;">, </span>39761464<span style="color: #949494;">, </span>25144541<span style="color: #949494;">, </span>32142174<span style="color: #949494;">, </span>2883…</span></span>
+<span><span class="co">#&gt; $ molecule01_mr             <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 64.01434<span style="color: #949494;">, </span>35.47336<span style="color: #949494;">, </span>163.16339<span style="color: #949494;">, </span>172.53414<span style="color: #949494;">, </span>90…</span></span>
+<span><span class="co">#&gt; $ molecule02_mr             <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 71.660272<span style="color: #949494;">, </span>45.573955<span style="color: #949494;">, </span>30.358801<span style="color: #949494;">, </span>72.010810<span style="color: #949494;">, </span>…</span></span>
+<span><span class="co">#&gt; $ molecule03_mr             <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 0.036142724<span style="color: #949494;">, </span>0.437926820<span style="color: #949494;">, </span>0.290853901<span style="color: #949494;">, </span>0.014…</span></span>
+<span><span class="co">#&gt; $ molecule04_mr             <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 78.6898920<span style="color: #949494;">, </span>52.6804134<span style="color: #949494;">, </span>37.6598743<span style="color: #949494;">, </span>79.10643…</span></span>
+<span><span class="co">#&gt; $ feature002_mr             <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 1041717<span style="color: #949494;">, </span>1838405<span style="color: #949494;">, </span>1833003<span style="color: #949494;">, </span>2283669<span style="color: #949494;">, </span>2295150<span style="color: #949494;">,</span>…</span></span>
+<span><span class="co">#&gt; $ feature003_mr             <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 123288<span style="color: #949494;">, </span>178957<span style="color: #949494;">, </span>147968<span style="color: #949494;">, </span>136045<span style="color: #949494;">, </span>156292<span style="color: #949494;">, </span>1620…</span></span>
+<span><span class="co">#&gt; $ feature004_mr             <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 9409<span style="color: #949494;">, </span>7624<span style="color: #949494;">, </span>8385<span style="color: #949494;">, </span>7474<span style="color: #949494;">, </span>8628<span style="color: #949494;">, </span>8940<span style="color: #949494;">, </span>7626<span style="color: #949494;">, </span>85…</span></span>
+<span><span class="co">#&gt; $ feature005_mr             <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 115952<span style="color: #949494;">, </span>104632<span style="color: #949494;">, </span>106887<span style="color: #949494;">, </span>241976<span style="color: #949494;">, </span>43063<span style="color: #949494;">, </span>15679…</span></span>
+<span><span class="co">#&gt; $ feature007_mr             <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 43897<span style="color: #949494;">, </span>36940<span style="color: #949494;">, </span>185687<span style="color: #949494;">, </span>134781<span style="color: #949494;">, </span>39105<span style="color: #949494;">, </span>228596<span style="color: #949494;">,</span>…</span></span>
+<span><span class="co">#&gt; $ feature009_mr             <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 27104212<span style="color: #949494;">, </span>39761464<span style="color: #949494;">, </span>25144541<span style="color: #949494;">, </span>32142174<span style="color: #949494;">, </span>2883…</span></span>
+<span><span class="co">#&gt; $ molecule01_mr_ln          <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 4.159107<span style="color: #949494;">, </span>3.568782<span style="color: #949494;">, </span>5.094752<span style="color: #949494;">, </span>5.150595<span style="color: #949494;">, </span>4.51…</span></span>
+<span><span class="co">#&gt; $ molecule02_mr_ln          <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 4.271937<span style="color: #949494;">, </span>3.819336<span style="color: #949494;">, </span>3.413086<span style="color: #949494;">, </span>4.276816<span style="color: #949494;">, </span>3.30…</span></span>
+<span><span class="co">#&gt; $ molecule03_mr_ln          <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> -3.3202796<span style="color: #949494;">, </span>-0.8257035<span style="color: #949494;">, </span>-1.2349342<span style="color: #949494;">, </span>-4.26511…</span></span>
+<span><span class="co">#&gt; $ molecule04_mr_ln          <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 4.365515<span style="color: #949494;">, </span>3.964244<span style="color: #949494;">, </span>3.628595<span style="color: #949494;">, </span>4.370794<span style="color: #949494;">, </span>3.53…</span></span>
+<span><span class="co">#&gt; $ feature002_mr_ln          <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 13.85638<span style="color: #949494;">, </span>14.42441<span style="color: #949494;">, </span>14.42147<span style="color: #949494;">, </span>14.64129<span style="color: #949494;">, </span>14.6…</span></span>
+<span><span class="co">#&gt; $ feature003_mr_ln          <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 11.72228<span style="color: #949494;">, </span>12.09490<span style="color: #949494;">, </span>11.90475<span style="color: #949494;">, </span>11.82074<span style="color: #949494;">, </span>11.9…</span></span>
+<span><span class="co">#&gt; $ feature004_mr_ln          <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 9.149422<span style="color: #949494;">, </span>8.939056<span style="color: #949494;">, </span>9.034200<span style="color: #949494;">, </span>8.919186<span style="color: #949494;">, </span>9.06…</span></span>
+<span><span class="co">#&gt; $ feature005_mr_ln          <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 11.660932<span style="color: #949494;">, </span>11.558205<span style="color: #949494;">, </span>11.579527<span style="color: #949494;">, </span>12.396594<span style="color: #949494;">, </span>…</span></span>
+<span><span class="co">#&gt; $ feature007_mr_ln          <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 10.68960<span style="color: #949494;">, </span>10.51705<span style="color: #949494;">, </span>12.13182<span style="color: #949494;">, </span>11.81141<span style="color: #949494;">, </span>10.5…</span></span>
+<span><span class="co">#&gt; $ feature009_mr_ln          <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 17.11520<span style="color: #949494;">, </span>17.49841<span style="color: #949494;">, </span>17.04015<span style="color: #949494;">, </span>17.28568<span style="color: #949494;">, </span>17.1…</span></span>
+<span><span class="co">#&gt; $ molecule01_mr_ln_paretosc <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> -0.095654618<span style="color: #949494;">, </span>-0.766251137<span style="color: #949494;">, </span>0.967217623<span style="color: #949494;">, </span>1.0…</span></span>
+<span><span class="co">#&gt; $ molecule02_mr_ln_paretosc <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 1.08532715<span style="color: #949494;">, </span>0.58954061<span style="color: #949494;">, </span>0.14452697<span style="color: #949494;">, </span>1.090672…</span></span>
+<span><span class="co">#&gt; $ molecule03_mr_ln_paretosc <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> -2.9491548<span style="color: #949494;">, </span>-1.4902254<span style="color: #949494;">, </span>-1.7295601<span style="color: #949494;">, </span>-3.50173…</span></span>
+<span><span class="co">#&gt; $ molecule04_mr_ln_paretosc <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 0.90019580<span style="color: #949494;">, </span>0.51688222<span style="color: #949494;">, </span>0.19625440<span style="color: #949494;">, </span>0.905239…</span></span>
+<span><span class="co">#&gt; $ feature002_mr_ln_paretosc <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> -1.7080635<span style="color: #949494;">, </span>-1.3542181<span style="color: #949494;">, </span>-1.3560513<span style="color: #949494;">, </span>-1.21911…</span></span>
+<span><span class="co">#&gt; $ feature003_mr_ln_paretosc <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> -2.297112<span style="color: #949494;">, </span>-2.089123<span style="color: #949494;">, </span>-2.195260<span style="color: #949494;">, </span>-2.242153<span style="color: #949494;">, </span>…</span></span>
+<span><span class="co">#&gt; $ feature004_mr_ln_paretosc <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> -2.1304636<span style="color: #949494;">, </span>-2.2603710<span style="color: #949494;">, </span>-2.2016170<span style="color: #949494;">, </span>-2.27264…</span></span>
+<span><span class="co">#&gt; $ feature005_mr_ln_paretosc <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 0.137588664<span style="color: #949494;">, </span>0.040306189<span style="color: #949494;">, </span>0.060498877<span style="color: #949494;">, </span>0.834…</span></span>
+<span><span class="co">#&gt; $ feature007_mr_ln_paretosc <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> -0.59936838<span style="color: #949494;">, </span>-0.85153551<span style="color: #949494;">, </span>1.50829588<span style="color: #949494;">, </span>1.0400…</span></span>
+<span><span class="co">#&gt; $ feature009_mr_ln_paretosc <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 0.13079507<span style="color: #949494;">, </span>0.66197920<span style="color: #949494;">, </span>0.02676705<span style="color: #949494;">, </span>0.367105…</span></span></code></pre></div>
 <p>Those name are also saved in different objects:</p>
 <div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">ALL_POTENTIAL_COMPOUNDS_transf_mr</span></span>
@@ -752,23 +767,23 @@ the function: <em>clean_transf_colnames</em></p>
 <span><span class="fu">glimpse</span><span class="op">(</span><span class="va">EXAMPLE_TABLE_FOR_STATISTICAL_ANALYSES_transf_cleaned</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Rows: 52</span></span>
 <span><span class="co">#&gt; Columns: 17</span></span>
-<span><span class="co">#&gt; $ samples               <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "unkwon_sample_001", "unkwon_sample_002", "unkwo…</span></span>
-<span><span class="co">#&gt; $ factor_condition2lev  <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span> F2A, F2A, F2A, F2A, F2A, F2A, F2A, F2A, F2A, F2A…</span></span>
-<span><span class="co">#&gt; $ factor_condition3lev  <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span> F3A, F3A, F3A, F3A, F3A, F3A, F3A, F3A, F3A, F3A…</span></span>
-<span><span class="co">#&gt; $ factor_condition4lev  <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span> F4A, F4A, F4A, F4A, F4A, F4A, F4A, F4A, F4A, F4A…</span></span>
-<span><span class="co">#&gt; $ numerical_condition_a <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 4144.84, 2730.27, 1830.29, 3890.55, 1894.76, 299…</span></span>
-<span><span class="co">#&gt; $ numerical_condition_b <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 4.9, 4.0, 5.9, 6.1, 14.8, 27.1, 23.0, 23.8, 24.8…</span></span>
-<span><span class="co">#&gt; $ sample_type           <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "unknown", "unknown", "unknown", "unknown", "unk…</span></span>
-<span><span class="co">#&gt; $ molecule01            <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> -0.095654618, -0.766251137, 0.967217623, 1.03065…</span></span>
-<span><span class="co">#&gt; $ molecule02            <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 1.08532715, 0.58954061, 0.14452697, 1.09067249, …</span></span>
-<span><span class="co">#&gt; $ molecule03            <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> -2.9491548, -1.4902254, -1.7295601, -3.5017350, …</span></span>
-<span><span class="co">#&gt; $ molecule04            <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 0.90019580, 0.51688222, 0.19625440, 0.90523908, …</span></span>
-<span><span class="co">#&gt; $ feature002            <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> -1.7080635, -1.3542181, -1.3560513, -1.2191125, …</span></span>
-<span><span class="co">#&gt; $ feature003            <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> -2.297112, -2.089123, -2.195260, -2.242153, -2.1…</span></span>
-<span><span class="co">#&gt; $ feature004            <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> -2.1304636, -2.2603710, -2.2016170, -2.2726418, …</span></span>
-<span><span class="co">#&gt; $ feature005            <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 0.137588664, 0.040306189, 0.060498877, 0.8342616…</span></span>
-<span><span class="co">#&gt; $ feature007            <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> -0.59936838, -0.85153551, 1.50829588, 1.04004490…</span></span>
-<span><span class="co">#&gt; $ feature009            <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 0.13079507, 0.66197920, 0.02676705, 0.36710523, …</span></span></code></pre></div>
+<span><span class="co">#&gt; $ samples               <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "unkwon_sample_001"<span style="color: #949494;">, </span>"unkwon_sample_002"<span style="color: #949494;">, </span>"unkwo…</span></span>
+<span><span class="co">#&gt; $ factor_condition2lev  <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span> F2A<span style="color: #949494;">, </span>F2A<span style="color: #949494;">, </span>F2A<span style="color: #949494;">, </span>F2A<span style="color: #949494;">, </span>F2A<span style="color: #949494;">, </span>F2A<span style="color: #949494;">, </span>F2A<span style="color: #949494;">, </span>F2A<span style="color: #949494;">, </span>F2A<span style="color: #949494;">, </span>F2A…</span></span>
+<span><span class="co">#&gt; $ factor_condition3lev  <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span> F3A<span style="color: #949494;">, </span>F3A<span style="color: #949494;">, </span>F3A<span style="color: #949494;">, </span>F3A<span style="color: #949494;">, </span>F3A<span style="color: #949494;">, </span>F3A<span style="color: #949494;">, </span>F3A<span style="color: #949494;">, </span>F3A<span style="color: #949494;">, </span>F3A<span style="color: #949494;">, </span>F3A…</span></span>
+<span><span class="co">#&gt; $ factor_condition4lev  <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span> F4A<span style="color: #949494;">, </span>F4A<span style="color: #949494;">, </span>F4A<span style="color: #949494;">, </span>F4A<span style="color: #949494;">, </span>F4A<span style="color: #949494;">, </span>F4A<span style="color: #949494;">, </span>F4A<span style="color: #949494;">, </span>F4A<span style="color: #949494;">, </span>F4A<span style="color: #949494;">, </span>F4A…</span></span>
+<span><span class="co">#&gt; $ numerical_condition_a <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 4144.84<span style="color: #949494;">, </span>2730.27<span style="color: #949494;">, </span>1830.29<span style="color: #949494;">, </span>3890.55<span style="color: #949494;">, </span>1894.76<span style="color: #949494;">, </span>299…</span></span>
+<span><span class="co">#&gt; $ numerical_condition_b <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 4.9<span style="color: #949494;">, </span>4.0<span style="color: #949494;">, </span>5.9<span style="color: #949494;">, </span>6.1<span style="color: #949494;">, </span>14.8<span style="color: #949494;">, </span>27.1<span style="color: #949494;">, </span>23.0<span style="color: #949494;">, </span>23.8<span style="color: #949494;">, </span>24.8…</span></span>
+<span><span class="co">#&gt; $ sample_type           <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "unknown"<span style="color: #949494;">, </span>"unknown"<span style="color: #949494;">, </span>"unknown"<span style="color: #949494;">, </span>"unknown"<span style="color: #949494;">, </span>"unk…</span></span>
+<span><span class="co">#&gt; $ molecule01            <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> -0.095654618<span style="color: #949494;">, </span>-0.766251137<span style="color: #949494;">, </span>0.967217623<span style="color: #949494;">, </span>1.03065…</span></span>
+<span><span class="co">#&gt; $ molecule02            <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 1.08532715<span style="color: #949494;">, </span>0.58954061<span style="color: #949494;">, </span>0.14452697<span style="color: #949494;">, </span>1.09067249<span style="color: #949494;">, </span>…</span></span>
+<span><span class="co">#&gt; $ molecule03            <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> -2.9491548<span style="color: #949494;">, </span>-1.4902254<span style="color: #949494;">, </span>-1.7295601<span style="color: #949494;">, </span>-3.5017350<span style="color: #949494;">, </span>…</span></span>
+<span><span class="co">#&gt; $ molecule04            <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 0.90019580<span style="color: #949494;">, </span>0.51688222<span style="color: #949494;">, </span>0.19625440<span style="color: #949494;">, </span>0.90523908<span style="color: #949494;">, </span>…</span></span>
+<span><span class="co">#&gt; $ feature002            <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> -1.7080635<span style="color: #949494;">, </span>-1.3542181<span style="color: #949494;">, </span>-1.3560513<span style="color: #949494;">, </span>-1.2191125<span style="color: #949494;">, </span>…</span></span>
+<span><span class="co">#&gt; $ feature003            <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> -2.297112<span style="color: #949494;">, </span>-2.089123<span style="color: #949494;">, </span>-2.195260<span style="color: #949494;">, </span>-2.242153<span style="color: #949494;">, </span>-2.1…</span></span>
+<span><span class="co">#&gt; $ feature004            <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> -2.1304636<span style="color: #949494;">, </span>-2.2603710<span style="color: #949494;">, </span>-2.2016170<span style="color: #949494;">, </span>-2.2726418<span style="color: #949494;">, </span>…</span></span>
+<span><span class="co">#&gt; $ feature005            <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 0.137588664<span style="color: #949494;">, </span>0.040306189<span style="color: #949494;">, </span>0.060498877<span style="color: #949494;">, </span>0.8342616…</span></span>
+<span><span class="co">#&gt; $ feature007            <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> -0.59936838<span style="color: #949494;">, </span>-0.85153551<span style="color: #949494;">, </span>1.50829588<span style="color: #949494;">, </span>1.04004490…</span></span>
+<span><span class="co">#&gt; $ feature009            <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 0.13079507<span style="color: #949494;">, </span>0.66197920<span style="color: #949494;">, </span>0.02676705<span style="color: #949494;">, </span>0.36710523<span style="color: #949494;">, </span>…</span></span></code></pre></div>
 <p>Voilà! Only what we need, transformed, and with cleaned names!</p>
 </div>
 <div class="section level3">
@@ -916,18 +931,18 @@ levels:</p>
 <span><span class="fu">glimpse</span><span class="op">(</span><span class="va">EXAMPLE_ANOVA_1WAY</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Rows: 10</span></span>
 <span><span class="co">#&gt; Columns: 12</span></span>
-<span><span class="co">#&gt; $ Dependent                      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "molecule01", "molecule02", "molecule03…</span></span>
-<span><span class="co">#&gt; $ factor_condition3lev_Pvalue    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 1.215946e-03, 2.574197e-01, 2.153475e-3…</span></span>
-<span><span class="co">#&gt; $ F3B_vs_F3A_Pvalue              <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 1.623657e-01, 2.376120e-01, 0.000000e+0…</span></span>
-<span><span class="co">#&gt; $ F3C_vs_F3A_Pvalue              <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 0.0007683746, 0.5422966698, 0.000000000…</span></span>
-<span><span class="co">#&gt; $ F3C_vs_F3B_Pvalue              <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 9.449651e-02, 8.558039e-01, 2.724086e-0…</span></span>
-<span><span class="co">#&gt; $ factor_condition3lev_PvalueFDR <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 2.431892e-03, 3.677425e-01, 1.076738e-2…</span></span>
-<span><span class="co">#&gt; $ F3B_vs_F3A_PvalueFDR           <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 2.706096e-01, 3.394457e-01, 0.000000e+0…</span></span>
-<span><span class="co">#&gt; $ F3C_vs_F3A_PvalueFDR           <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 0.001536749, 0.774709528, 0.000000000, …</span></span>
-<span><span class="co">#&gt; $ F3C_vs_F3B_PvalueFDR           <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 1.889930e-01, 9.841331e-01, 6.810215e-0…</span></span>
-<span><span class="co">#&gt; $ F3B_vs_F3A                     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #BB0000;">NA</span>, <span style="color: #BB0000;">NA</span>, "F3B &gt; F3A", <span style="color: #BB0000;">NA</span>, "F3B &gt; F3A", "…</span></span>
-<span><span class="co">#&gt; $ F3C_vs_F3A                     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "F3A &gt; F3C", <span style="color: #BB0000;">NA</span>, "F3C &gt; F3A", <span style="color: #BB0000;">NA</span>, "F3C …</span></span>
-<span><span class="co">#&gt; $ F3C_vs_F3B                     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #BB0000;">NA</span>, <span style="color: #BB0000;">NA</span>, "F3C &gt; F3B", <span style="color: #BB0000;">NA</span>, "F3C &gt; F3B", "…</span></span></code></pre></div>
+<span><span class="co">#&gt; $ Dependent                      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "molecule01"<span style="color: #949494;">, </span>"molecule02"<span style="color: #949494;">, </span>"molecule03…</span></span>
+<span><span class="co">#&gt; $ factor_condition3lev_Pvalue    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 1.215946e-03<span style="color: #949494;">, </span>2.574197e-01<span style="color: #949494;">, </span>2.153475e-3…</span></span>
+<span><span class="co">#&gt; $ F3B_vs_F3A_Pvalue              <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 1.623657e-01<span style="color: #949494;">, </span>2.376120e-01<span style="color: #949494;">, </span>0.000000e+0…</span></span>
+<span><span class="co">#&gt; $ F3C_vs_F3A_Pvalue              <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 0.0007683746<span style="color: #949494;">, </span>0.5422966698<span style="color: #949494;">, </span>0.000000000…</span></span>
+<span><span class="co">#&gt; $ F3C_vs_F3B_Pvalue              <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 9.449651e-02<span style="color: #949494;">, </span>8.558039e-01<span style="color: #949494;">, </span>2.724086e-0…</span></span>
+<span><span class="co">#&gt; $ factor_condition3lev_PvalueFDR <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 2.431892e-03<span style="color: #949494;">, </span>3.677425e-01<span style="color: #949494;">, </span>1.076738e-2…</span></span>
+<span><span class="co">#&gt; $ F3B_vs_F3A_PvalueFDR           <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 2.706096e-01<span style="color: #949494;">, </span>3.394457e-01<span style="color: #949494;">, </span>0.000000e+0…</span></span>
+<span><span class="co">#&gt; $ F3C_vs_F3A_PvalueFDR           <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 0.001536749<span style="color: #949494;">, </span>0.774709528<span style="color: #949494;">, </span>0.000000000<span style="color: #949494;">, </span>…</span></span>
+<span><span class="co">#&gt; $ F3C_vs_F3B_PvalueFDR           <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 1.889930e-01<span style="color: #949494;">, </span>9.841331e-01<span style="color: #949494;">, </span>6.810215e-0…</span></span>
+<span><span class="co">#&gt; $ F3B_vs_F3A                     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span>"F3B &gt; F3A"<span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span>"F3B &gt; F3A"<span style="color: #949494;">, </span>"…</span></span>
+<span><span class="co">#&gt; $ F3C_vs_F3A                     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "F3A &gt; F3C"<span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span>"F3C &gt; F3A"<span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span>"F3C …</span></span>
+<span><span class="co">#&gt; $ F3C_vs_F3B                     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span>"F3C &gt; F3B"<span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span>"F3C &gt; F3B"<span style="color: #949494;">, </span>"…</span></span></code></pre></div>
 <p>A nice graphical visualisation of the distribution of the data can be
 obtained with the following function that generate some boxplots:</p>
 <div class="sourceCode" id="cb40"><pre class="downlit sourceCode r">
@@ -958,13 +973,13 @@ positive data.</p>
 <span><span class="fu">glimpse</span><span class="op">(</span><span class="va">EXAMPLE_multiple_FC</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Rows: 10</span></span>
 <span><span class="co">#&gt; Columns: 7</span></span>
-<span><span class="co">#&gt; $ variables        <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "molecule01", "molecule02", "molecule03", "molecule04…</span></span>
-<span><span class="co">#&gt; $ F3A_vs_F3B_FC    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 0.6012417, 0.6853129, 145.8960113, 0.6952361, 69.0272…</span></span>
-<span><span class="co">#&gt; $ F3A_vs_F3B_logFC <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> -0.7339830, -0.5451652, 7.1887966, -0.5244251, 6.1090…</span></span>
-<span><span class="co">#&gt; $ F3A_vs_F3C_FC    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 0.3122194, 0.6735777, 356.2687121, 0.7191330, 168.164…</span></span>
-<span><span class="co">#&gt; $ F3A_vs_F3C_logFC <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> -1.67936792, -0.57008366, 8.47682198, -0.47566941, 7.…</span></span>
-<span><span class="co">#&gt; $ F3B_vs_F3C_FC    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 0.51929098, 0.98287615, 2.44193593, 1.03437242, 2.436…</span></span>
-<span><span class="co">#&gt; $ F3B_vs_F3C_logFC <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> -0.94538494, -0.02491845, 1.28802535, 0.04875571, 1.2…</span></span></code></pre></div>
+<span><span class="co">#&gt; $ variables        <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "molecule01"<span style="color: #949494;">, </span>"molecule02"<span style="color: #949494;">, </span>"molecule03"<span style="color: #949494;">, </span>"molecule04…</span></span>
+<span><span class="co">#&gt; $ F3A_vs_F3B_FC    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 0.6012417<span style="color: #949494;">, </span>0.6853129<span style="color: #949494;">, </span>145.8960113<span style="color: #949494;">, </span>0.6952361<span style="color: #949494;">, </span>69.0272…</span></span>
+<span><span class="co">#&gt; $ F3A_vs_F3B_logFC <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> -0.7339830<span style="color: #949494;">, </span>-0.5451652<span style="color: #949494;">, </span>7.1887966<span style="color: #949494;">, </span>-0.5244251<span style="color: #949494;">, </span>6.1090…</span></span>
+<span><span class="co">#&gt; $ F3A_vs_F3C_FC    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 0.3122194<span style="color: #949494;">, </span>0.6735777<span style="color: #949494;">, </span>356.2687121<span style="color: #949494;">, </span>0.7191330<span style="color: #949494;">, </span>168.164…</span></span>
+<span><span class="co">#&gt; $ F3A_vs_F3C_logFC <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> -1.67936792<span style="color: #949494;">, </span>-0.57008366<span style="color: #949494;">, </span>8.47682198<span style="color: #949494;">, </span>-0.47566941<span style="color: #949494;">, </span>7.…</span></span>
+<span><span class="co">#&gt; $ F3B_vs_F3C_FC    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 0.51929098<span style="color: #949494;">, </span>0.98287615<span style="color: #949494;">, </span>2.44193593<span style="color: #949494;">, </span>1.03437242<span style="color: #949494;">, </span>2.436…</span></span>
+<span><span class="co">#&gt; $ F3B_vs_F3C_logFC <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> -0.94538494<span style="color: #949494;">, </span>-0.02491845<span style="color: #949494;">, </span>1.28802535<span style="color: #949494;">, </span>0.04875571<span style="color: #949494;">, </span>1.2…</span></span></code></pre></div>
 <p>Ah! …and why, just one-way ANOVA?? Two-ways ANOVA are also an option
 and can be obtained with the following function, specifying the two
 categorical factor in the third argument and if we want interactions in
@@ -987,7 +1002,7 @@ statistics!!)</p>
 <div class="sourceCode" id="cb44"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">FINAL_FEAT_INFO_COMBINED_WITH_STATISTICS</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/addINFO_to_table.html">addINFO_to_table</a></span><span class="op">(</span>df1 <span class="op">=</span> <span class="va">EXAMPLE_ANOVA_2WAY</span>,  </span>
 <span>                                                             colfeat_df1 <span class="op">=</span> <span class="st">"Dependent"</span>,</span>
-<span>                                                             dfINFO <span class="op">=</span> <span class="va">df_example_feat_info</span>,</span>
+<span>                                                             dfINFO <span class="op">=</span> <span class="va">UNTARGETED_FEAT_INFO_QC_FILTERED</span>,</span>
 <span>                                                             colfeat_dfINFO <span class="op">=</span> <span class="st">"featname"</span>,</span>
 <span>                                                             add_char_to_INFO <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>                                                             char_to_add_to_INFO <span class="op">=</span> <span class="st">"_INFO"</span><span class="op">)</span></span>
@@ -1010,42 +1025,49 @@ of course!</p>
 <div class="sourceCode" id="cb45"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">glimpse</span><span class="op">(</span><span class="va">FINAL_FEAT_INFO_COMBINED_WITH_STATISTICS</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Rows: 10</span></span>
-<span><span class="co">#&gt; Columns: 35</span></span>
-<span><span class="co">#&gt; $ featname                       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #BB0000;">NA</span>, <span style="color: #BB0000;">NA</span>, <span style="color: #BB0000;">NA</span>, <span style="color: #BB0000;">NA</span>, "feature002", "feature0…</span></span>
-<span><span class="co">#&gt; $ rt                             <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #BB0000;">NA</span>, <span style="color: #BB0000;">NA</span>, <span style="color: #BB0000;">NA</span>, <span style="color: #BB0000;">NA</span>, 288, 408, 528, 465, 342…</span></span>
-<span><span class="co">#&gt; $ mz                             <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #BB0000;">NA</span>, <span style="color: #BB0000;">NA</span>, <span style="color: #BB0000;">NA</span>, <span style="color: #BB0000;">NA</span>, 146.0451, 203.0822, 148…</span></span>
-<span><span class="co">#&gt; $ Dependent                      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "molecule01", "molecule02", "molecule03…</span></span>
-<span><span class="co">#&gt; $ factor_condition3lev_Pvalue    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 2.903638e-04, 2.663669e-01, 7.957449e-2…</span></span>
-<span><span class="co">#&gt; $ factor_condition4lev_Pvalue    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 3.064275e-03, 6.145504e-01, 7.452104e-0…</span></span>
-<span><span class="co">#&gt; $ F3B_vs_F3A_Pvalue              <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 0.1034203, 0.2463463, 0.0000000, 0.1071…</span></span>
-<span><span class="co">#&gt; $ F3C_vs_F3A_Pvalue              <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 0.0001736245, 0.5505073106, 0.000000000…</span></span>
-<span><span class="co">#&gt; $ F3C_vs_F3B_Pvalue              <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 0.053220429, 0.859040194, 0.003416264, …</span></span>
-<span><span class="co">#&gt; $ F4B_vs_F4A_Pvalue              <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 0.1329561, 0.9999989, 0.8263569, 0.9994…</span></span>
-<span><span class="co">#&gt; $ F4C_vs_F4A_Pvalue              <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 0.3763481, 0.9647013, 0.9995633, 0.9984…</span></span>
-<span><span class="co">#&gt; $ F4D_vs_F4A_Pvalue              <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 0.9254239, 0.9573175, 0.9936826, 0.9909…</span></span>
-<span><span class="co">#&gt; $ F4C_vs_F4B_Pvalue              <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 2.643875e-03, 9.617315e-01, 8.895006e-0…</span></span>
-<span><span class="co">#&gt; $ F4D_vs_F4B_Pvalue              <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 0.4376553, 0.9604912, 0.9424541, 0.9776…</span></span>
-<span><span class="co">#&gt; $ F4D_vs_F4C_Pvalue              <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 1.498325e-01, 7.820065e-01, 9.988015e-0…</span></span>
-<span><span class="co">#&gt; $ factor_condition3lev_PvalueFDR <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 5.807275e-04, 3.805241e-01, 1.989362e-2…</span></span>
-<span><span class="co">#&gt; $ factor_condition4lev_PvalueFDR <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 1.021425e-02, 8.669941e-01, 8.669941e-0…</span></span>
-<span><span class="co">#&gt; $ F3B_vs_F3A_PvalueFDR           <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 0.1786649, 0.3519233, 0.0000000, 0.1786…</span></span>
-<span><span class="co">#&gt; $ F3C_vs_F3A_PvalueFDR           <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 0.0003472491, 0.7864390152, 0.000000000…</span></span>
-<span><span class="co">#&gt; $ F3C_vs_F3B_PvalueFDR           <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 0.106440857, 0.984814311, 0.008540661, …</span></span>
-<span><span class="co">#&gt; $ F4B_vs_F4A_PvalueFDR           <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 0.4431869, 0.9999989, 0.9999989, 0.9999…</span></span>
-<span><span class="co">#&gt; $ F4C_vs_F4A_PvalueFDR           <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 0.9995633, 0.9995633, 0.9995633, 0.9995…</span></span>
-<span><span class="co">#&gt; $ F4D_vs_F4A_PvalueFDR           <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 0.9999925, 0.9999925, 0.9999925, 0.9999…</span></span>
-<span><span class="co">#&gt; $ F4C_vs_F4B_PvalueFDR           <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 0.0088129161, 0.9999351962, 0.999935196…</span></span>
-<span><span class="co">#&gt; $ F4D_vs_F4B_PvalueFDR           <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 0.9986349, 0.9986349, 0.9986349, 0.9986…</span></span>
-<span><span class="co">#&gt; $ F4D_vs_F4C_PvalueFDR           <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 4.994418e-01, 9.999897e-01, 9.999897e-0…</span></span>
-<span><span class="co">#&gt; $ F3B_vs_F3A                     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #BB0000;">NA</span>, <span style="color: #BB0000;">NA</span>, "F3B &gt; F3A", <span style="color: #BB0000;">NA</span>, "F3B &gt; F3A", "…</span></span>
-<span><span class="co">#&gt; $ F3C_vs_F3A                     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "F3A &gt; F3C", <span style="color: #BB0000;">NA</span>, "F3C &gt; F3A", <span style="color: #BB0000;">NA</span>, "F3C …</span></span>
-<span><span class="co">#&gt; $ F3C_vs_F3B                     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #BB0000;">NA</span>, <span style="color: #BB0000;">NA</span>, "F3C &gt; F3B", <span style="color: #BB0000;">NA</span>, "F3C &gt; F3B", "…</span></span>
-<span><span class="co">#&gt; $ F4B_vs_F4A                     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #BB0000;">NA</span>, <span style="color: #BB0000;">NA</span>, <span style="color: #BB0000;">NA</span>, <span style="color: #BB0000;">NA</span>, "F4A &gt; F4B", <span style="color: #BB0000;">NA</span>, "F4B &gt;…</span></span>
-<span><span class="co">#&gt; $ F4C_vs_F4A                     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #BB0000;">NA</span>, <span style="color: #BB0000;">NA</span>, <span style="color: #BB0000;">NA</span>, <span style="color: #BB0000;">NA</span>, "F4C &gt; F4A", <span style="color: #BB0000;">NA</span>, "F4C &gt;…</span></span>
-<span><span class="co">#&gt; $ F4D_vs_F4A                     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #BB0000;">NA</span>, <span style="color: #BB0000;">NA</span>, <span style="color: #BB0000;">NA</span>, <span style="color: #BB0000;">NA</span>, <span style="color: #BB0000;">NA</span>, <span style="color: #BB0000;">NA</span>, "F4D &gt; F4A", <span style="color: #BB0000;">NA</span>…</span></span>
-<span><span class="co">#&gt; $ F4C_vs_F4B                     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "F4B &gt; F4C", <span style="color: #BB0000;">NA</span>, <span style="color: #BB0000;">NA</span>, <span style="color: #BB0000;">NA</span>, "F4C &gt; F4B", <span style="color: #BB0000;">N</span>…</span></span>
-<span><span class="co">#&gt; $ F4D_vs_F4B                     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #BB0000;">NA</span>, <span style="color: #BB0000;">NA</span>, <span style="color: #BB0000;">NA</span>, <span style="color: #BB0000;">NA</span>, "F4D &gt; F4B", <span style="color: #BB0000;">NA</span>, "F4D &gt;…</span></span>
-<span><span class="co">#&gt; $ F4D_vs_F4C                     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #BB0000;">NA</span>, <span style="color: #BB0000;">NA</span>, <span style="color: #BB0000;">NA</span>, <span style="color: #BB0000;">NA</span>, "F4C &gt; F4D", <span style="color: #BB0000;">NA</span>, "F4D &gt;…</span></span></code></pre></div>
+<span><span class="co">#&gt; Columns: 42</span></span>
+<span><span class="co">#&gt; $ featname                       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span>"feature002"<span style="color: #949494;">, </span>"feature0…</span></span>
+<span><span class="co">#&gt; $ rt                             <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span>288<span style="color: #949494;">, </span>408<span style="color: #949494;">, </span>528<span style="color: #949494;">, </span>465<span style="color: #949494;">, </span>342…</span></span>
+<span><span class="co">#&gt; $ mz                             <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span>146.0451<span style="color: #949494;">, </span>203.0822<span style="color: #949494;">, </span>148…</span></span>
+<span><span class="co">#&gt; $ coumpound                      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span>"Glutamate"<span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span>"P…</span></span>
+<span><span class="co">#&gt; $ rt_molecule_list               <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span>290<span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span>471<span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span></span></span>
+<span><span class="co">#&gt; $ mz_molecule_list               <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span>146.0453<span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span>164.0…</span></span>
+<span><span class="co">#&gt; $ CID                            <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span>33032<span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span>6140<span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span>…</span></span>
+<span><span class="co">#&gt; $ AnnoLevel                      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span>"1"<span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span>"1"<span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span></span></span>
+<span><span class="co">#&gt; $ rt_shift                       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span>-2<span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span>-6<span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span></span></span>
+<span><span class="co">#&gt; $ mz_shift                       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span>-2e-04<span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span>2e-04<span style="color: #949494;">, </span>…</span></span>
+<span><span class="co">#&gt; $ Dependent                      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "molecule01"<span style="color: #949494;">, </span>"molecule02"<span style="color: #949494;">, </span>"molecule03…</span></span>
+<span><span class="co">#&gt; $ factor_condition3lev_Pvalue    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 2.903638e-04<span style="color: #949494;">, </span>2.663669e-01<span style="color: #949494;">, </span>7.957449e-2…</span></span>
+<span><span class="co">#&gt; $ factor_condition4lev_Pvalue    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 3.064275e-03<span style="color: #949494;">, </span>6.145504e-01<span style="color: #949494;">, </span>7.452104e-0…</span></span>
+<span><span class="co">#&gt; $ F3B_vs_F3A_Pvalue              <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 0.1034203<span style="color: #949494;">, </span>0.2463463<span style="color: #949494;">, </span>0.0000000<span style="color: #949494;">, </span>0.1071…</span></span>
+<span><span class="co">#&gt; $ F3C_vs_F3A_Pvalue              <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 0.0001736245<span style="color: #949494;">, </span>0.5505073106<span style="color: #949494;">, </span>0.000000000…</span></span>
+<span><span class="co">#&gt; $ F3C_vs_F3B_Pvalue              <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 0.053220429<span style="color: #949494;">, </span>0.859040194<span style="color: #949494;">, </span>0.003416264<span style="color: #949494;">, </span>…</span></span>
+<span><span class="co">#&gt; $ F4B_vs_F4A_Pvalue              <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 0.1329561<span style="color: #949494;">, </span>0.9999989<span style="color: #949494;">, </span>0.8263569<span style="color: #949494;">, </span>0.9994…</span></span>
+<span><span class="co">#&gt; $ F4C_vs_F4A_Pvalue              <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 0.3763481<span style="color: #949494;">, </span>0.9647013<span style="color: #949494;">, </span>0.9995633<span style="color: #949494;">, </span>0.9984…</span></span>
+<span><span class="co">#&gt; $ F4D_vs_F4A_Pvalue              <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 0.9254239<span style="color: #949494;">, </span>0.9573175<span style="color: #949494;">, </span>0.9936826<span style="color: #949494;">, </span>0.9909…</span></span>
+<span><span class="co">#&gt; $ F4C_vs_F4B_Pvalue              <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 2.643875e-03<span style="color: #949494;">, </span>9.617315e-01<span style="color: #949494;">, </span>8.895006e-0…</span></span>
+<span><span class="co">#&gt; $ F4D_vs_F4B_Pvalue              <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 0.4376553<span style="color: #949494;">, </span>0.9604912<span style="color: #949494;">, </span>0.9424541<span style="color: #949494;">, </span>0.9776…</span></span>
+<span><span class="co">#&gt; $ F4D_vs_F4C_Pvalue              <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 1.498325e-01<span style="color: #949494;">, </span>7.820065e-01<span style="color: #949494;">, </span>9.988015e-0…</span></span>
+<span><span class="co">#&gt; $ factor_condition3lev_PvalueFDR <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 5.807275e-04<span style="color: #949494;">, </span>3.805241e-01<span style="color: #949494;">, </span>1.989362e-2…</span></span>
+<span><span class="co">#&gt; $ factor_condition4lev_PvalueFDR <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 1.021425e-02<span style="color: #949494;">, </span>8.669941e-01<span style="color: #949494;">, </span>8.669941e-0…</span></span>
+<span><span class="co">#&gt; $ F3B_vs_F3A_PvalueFDR           <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 0.1786649<span style="color: #949494;">, </span>0.3519233<span style="color: #949494;">, </span>0.0000000<span style="color: #949494;">, </span>0.1786…</span></span>
+<span><span class="co">#&gt; $ F3C_vs_F3A_PvalueFDR           <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 0.0003472491<span style="color: #949494;">, </span>0.7864390152<span style="color: #949494;">, </span>0.000000000…</span></span>
+<span><span class="co">#&gt; $ F3C_vs_F3B_PvalueFDR           <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 0.106440857<span style="color: #949494;">, </span>0.984814311<span style="color: #949494;">, </span>0.008540661<span style="color: #949494;">, </span>…</span></span>
+<span><span class="co">#&gt; $ F4B_vs_F4A_PvalueFDR           <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 0.4431869<span style="color: #949494;">, </span>0.9999989<span style="color: #949494;">, </span>0.9999989<span style="color: #949494;">, </span>0.9999…</span></span>
+<span><span class="co">#&gt; $ F4C_vs_F4A_PvalueFDR           <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 0.9995633<span style="color: #949494;">, </span>0.9995633<span style="color: #949494;">, </span>0.9995633<span style="color: #949494;">, </span>0.9995…</span></span>
+<span><span class="co">#&gt; $ F4D_vs_F4A_PvalueFDR           <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 0.9999925<span style="color: #949494;">, </span>0.9999925<span style="color: #949494;">, </span>0.9999925<span style="color: #949494;">, </span>0.9999…</span></span>
+<span><span class="co">#&gt; $ F4C_vs_F4B_PvalueFDR           <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 0.0088129161<span style="color: #949494;">, </span>0.9999351962<span style="color: #949494;">, </span>0.999935196…</span></span>
+<span><span class="co">#&gt; $ F4D_vs_F4B_PvalueFDR           <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 0.9986349<span style="color: #949494;">, </span>0.9986349<span style="color: #949494;">, </span>0.9986349<span style="color: #949494;">, </span>0.9986…</span></span>
+<span><span class="co">#&gt; $ F4D_vs_F4C_PvalueFDR           <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 4.994418e-01<span style="color: #949494;">, </span>9.999897e-01<span style="color: #949494;">, </span>9.999897e-0…</span></span>
+<span><span class="co">#&gt; $ F3B_vs_F3A                     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span>"F3B &gt; F3A"<span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span>"F3B &gt; F3A"<span style="color: #949494;">, </span>"…</span></span>
+<span><span class="co">#&gt; $ F3C_vs_F3A                     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "F3A &gt; F3C"<span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span>"F3C &gt; F3A"<span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span>"F3C …</span></span>
+<span><span class="co">#&gt; $ F3C_vs_F3B                     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span>"F3C &gt; F3B"<span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span>"F3C &gt; F3B"<span style="color: #949494;">, </span>"…</span></span>
+<span><span class="co">#&gt; $ F4B_vs_F4A                     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span>"F4A &gt; F4B"<span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span>"F4B &gt;…</span></span>
+<span><span class="co">#&gt; $ F4C_vs_F4A                     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span>"F4C &gt; F4A"<span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span>"F4C &gt;…</span></span>
+<span><span class="co">#&gt; $ F4D_vs_F4A                     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span>"F4D &gt; F4A"<span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span>…</span></span>
+<span><span class="co">#&gt; $ F4C_vs_F4B                     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "F4B &gt; F4C"<span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span>"F4C &gt; F4B"<span style="color: #949494;">, </span><span style="color: #BB0000;">N</span>…</span></span>
+<span><span class="co">#&gt; $ F4D_vs_F4B                     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span>"F4D &gt; F4B"<span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span>"F4D &gt;…</span></span>
+<span><span class="co">#&gt; $ F4D_vs_F4C                     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span>"F4C &gt; F4D"<span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span>"F4D &gt;…</span></span></code></pre></div>
 <p>Which we can finally export it this way:</p>
 <div class="sourceCode" id="cb46"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/export_the_table.html">export_the_table</a></span><span class="op">(</span><span class="va">FINAL_FEAT_INFO_COMBINED_WITH_STATISTICS</span><span class="op">)</span></span></code></pre></div>
@@ -1291,19 +1313,19 @@ and <em>negative_log10fdr</em> are the negative log-transformed (base
 <code class="sourceCode R"><span><span class="fu">glimpse</span><span class="op">(</span><span class="va">EXAMPLE_LINEAR_MODEL</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Rows: 60</span></span>
 <span><span class="co">#&gt; Columns: 13</span></span>
-<span><span class="co">#&gt; $ Dependent            <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "feature003_mr_ln_paretosc", "feature002_mr_ln_pa…</span></span>
-<span><span class="co">#&gt; $ Independent          <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "(Intercept)", "(Intercept)", "(Intercept)", "(In…</span></span>
-<span><span class="co">#&gt; $ N_observations       <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> 52, 52, 52, 52, 52, 52, 52, 52, 52, 52, 52, 52, 5…</span></span>
-<span><span class="co">#&gt; $ beta                 <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> -2.16471000, -1.44534693, -2.00260774, -1.7145888…</span></span>
-<span><span class="co">#&gt; $ beta_95confint_lower <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> -2.275528779, -1.624986904, -2.349320186, -2.1992…</span></span>
-<span><span class="co">#&gt; $ beta_95confint_upper <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> -2.05389122, -1.26570695, -1.65589530, -1.2299462…</span></span>
-<span><span class="co">#&gt; $ SE                   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 0.05505441, 0.08924456, 0.17224562, 0.24076890, 0…</span></span>
-<span><span class="co">#&gt; $ adj_R_sqrd           <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 0.99469949, 0.98265234, 0.94304115, 0.87591788, 0…</span></span>
-<span><span class="co">#&gt; $ Pvalue               <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 4.708802e-37, 1.256317e-20, 2.728724e-15, 5.99511…</span></span>
-<span><span class="co">#&gt; $ FDR_Pvalue           <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 4.708802e-36, 6.281586e-20, 9.095747e-15, 1.49877…</span></span>
-<span><span class="co">#&gt; $ negative_log10p      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 36.32708957, 19.90090070, 14.56404035, 8.22220279…</span></span>
-<span><span class="co">#&gt; $ negative_log10fdr    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 35.32708957, 19.20193069, 14.04116161, 7.82426278…</span></span>
-<span><span class="co">#&gt; $ variation_perc       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> -88.521678, -76.433570, -86.501718, -81.996228, -…</span></span></code></pre></div>
+<span><span class="co">#&gt; $ Dependent            <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "feature003_mr_ln_paretosc"<span style="color: #949494;">, </span>"feature002_mr_ln_pa…</span></span>
+<span><span class="co">#&gt; $ Independent          <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "(Intercept)"<span style="color: #949494;">, </span>"(Intercept)"<span style="color: #949494;">, </span>"(Intercept)"<span style="color: #949494;">, </span>"(In…</span></span>
+<span><span class="co">#&gt; $ N_observations       <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> 52<span style="color: #949494;">, </span>52<span style="color: #949494;">, </span>52<span style="color: #949494;">, </span>52<span style="color: #949494;">, </span>52<span style="color: #949494;">, </span>52<span style="color: #949494;">, </span>52<span style="color: #949494;">, </span>52<span style="color: #949494;">, </span>52<span style="color: #949494;">, </span>52<span style="color: #949494;">, </span>52<span style="color: #949494;">, </span>52<span style="color: #949494;">, </span>5…</span></span>
+<span><span class="co">#&gt; $ beta                 <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> -2.16471000<span style="color: #949494;">, </span>-1.44534693<span style="color: #949494;">, </span>-2.00260774<span style="color: #949494;">, </span>-1.7145888…</span></span>
+<span><span class="co">#&gt; $ beta_95confint_lower <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> -2.275528779<span style="color: #949494;">, </span>-1.624986904<span style="color: #949494;">, </span>-2.349320186<span style="color: #949494;">, </span>-2.1992…</span></span>
+<span><span class="co">#&gt; $ beta_95confint_upper <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> -2.05389122<span style="color: #949494;">, </span>-1.26570695<span style="color: #949494;">, </span>-1.65589530<span style="color: #949494;">, </span>-1.2299462…</span></span>
+<span><span class="co">#&gt; $ SE                   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 0.05505441<span style="color: #949494;">, </span>0.08924456<span style="color: #949494;">, </span>0.17224562<span style="color: #949494;">, </span>0.24076890<span style="color: #949494;">, </span>0…</span></span>
+<span><span class="co">#&gt; $ adj_R_sqrd           <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 0.99469949<span style="color: #949494;">, </span>0.98265234<span style="color: #949494;">, </span>0.94304115<span style="color: #949494;">, </span>0.87591788<span style="color: #949494;">, </span>0…</span></span>
+<span><span class="co">#&gt; $ Pvalue               <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 4.708802e-37<span style="color: #949494;">, </span>1.256317e-20<span style="color: #949494;">, </span>2.728724e-15<span style="color: #949494;">, </span>5.99511…</span></span>
+<span><span class="co">#&gt; $ FDR_Pvalue           <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 4.708802e-36<span style="color: #949494;">, </span>6.281586e-20<span style="color: #949494;">, </span>9.095747e-15<span style="color: #949494;">, </span>1.49877…</span></span>
+<span><span class="co">#&gt; $ negative_log10p      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 36.32708957<span style="color: #949494;">, </span>19.90090070<span style="color: #949494;">, </span>14.56404035<span style="color: #949494;">, </span>8.22220279…</span></span>
+<span><span class="co">#&gt; $ negative_log10fdr    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 35.32708957<span style="color: #949494;">, </span>19.20193069<span style="color: #949494;">, </span>14.04116161<span style="color: #949494;">, </span>7.82426278…</span></span>
+<span><span class="co">#&gt; $ variation_perc       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> -88.521678<span style="color: #949494;">, </span>-76.433570<span style="color: #949494;">, </span>-86.501718<span style="color: #949494;">, </span>-81.996228<span style="color: #949494;">, </span>-…</span></span></code></pre></div>
 <p>These are great data for a Volcano plot! Considering an independent
 variable, a Volcano plot will allow us to see the associations with it
 of all the dependent variables at once:</p>
@@ -1421,9 +1443,57 @@ data, we shoudl transforme these data as well:</li>
 <div class="section level3">
 <h3 id="pathway-enrichment-analysis">3.7. Pathway Enrichment Analysis<a class="anchor" aria-label="anchor" href="#pathway-enrichment-analysis"></a>
 </h3>
-<p>Concluding the workflow of this package, a pathway enrichment
-analysis can be performed following the workflow of this package using
-the tool FELLA (<a href="https://doi.org/10.1186/s12859-018-2487-5" class="external-link uri">https://doi.org/10.1186/s12859-018-2487-5</a>). I wrapped
+<p>To perform a Pathway Enrichment Analysis, we need first to have the
+KEGG codes of the known molecules. No, you don’t need to manually look
+for them, I have a function also for that, of course:
+<em>getChemData</em> and <em>add_ChemData_to_featINFO</em> and .They are
+basically the same function, but the second one is specifically coded to
+add the retrieved chemical data to the featINFO table, so we’ll be
+looking at it and to its arguments:</p>
+<ul>
+<li>
+<em>featINFO</em>: the feat table you want to augment with the
+chemical data.</li>
+<li>
+<em>name_column_id</em>: The name of the column of <em>featINFO</em>
+containing a starting identifier, that needs to be indicated in the next
+argument.</li>
+<li>
+<em>idtype</em>: The type of identifier reported in the column
+<em>name_column_id</em> of the <em>featINFO</em> table. It must be one
+of the following: “CID”, “SMILES”, “InChI”, “InChIKey”. (Just for your
+to know: if “CID”, the function will already use it for retrieving the
+following chemical data from PubChem; otherwise, it will first retrieve
+the CID, and then use it).</li>
+<li>
+<em>properties</em>: it can be NULL (default), “all”, or a character
+vector with chemical properties to be retrieved from PubChem (for
+example: “Title”, “SMILES”, “InChI”, “InChIKey”, “IUPACName”,
+“MolecularWeight”, “ExactMass”, “MonoisotopicMass”) .</li>
+<li>
+<em>otheridentifiers</em>: NULL (default), “all”, or a character
+vector with the desired other identifiers you want to retrieve from
+PubChem, such as “CAS”, “HMDB”, “KEGG”, “ChEBI”, “ChEMBL”, “DrugBank”,
+“DSSTox”.</li>
+<li>
+<em>synonyms</em> NULL (default) of an integer number with the
+number of synonyms you want to retrieve from PubChem (max is 999!)</li>
+<li>
+<em>ClassiFire</em> NULL (default), “all”, or a character vector
+with wanted classification levels from ClassiFireR, such as: “kingdom”,
+“superclass”, “class”, “subclass”, “level 5”, “level 6”, “level 7”,
+“level 8”.</li>
+</ul>
+<p>Ah, you need to have a stable internet connection to run this
+function! And it can take quite some time if you have hundreds of
+compounds to fetch!</p>
+<div class="sourceCode" id="cb58"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">FINAL_FEAT_INFO_COMBINED_WITH_STATISTICS_WITH_KEGG</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/add_ChemData_to_featINFO.html">add_ChemData_to_featINFO</a></span><span class="op">(</span>featINFO <span class="op">=</span> <span class="va">FINAL_FEAT_INFO_COMBINED_WITH_STATISTICS</span>,</span>
+<span>                                                                               name_column_id <span class="op">=</span> <span class="st">"CID"</span>,</span>
+<span>                                                                               idtype <span class="op">=</span> <span class="st">"CID"</span>,</span>
+<span>                                                                               otheridentifiers <span class="op">=</span> <span class="st">"KEGG"</span><span class="op">)</span></span></code></pre></div>
+<p>So, a pathway enrichment analysis can be performed following the
+workflow of this package using the tool FELLA (<a href="https://doi.org/10.1186/s12859-018-2487-5" class="external-link uri">https://doi.org/10.1186/s12859-018-2487-5</a>). I wrapped
 everything we need to do that in the function
 <em>do_FELLA_enrichment_analysis</em>:</p>
 <ul>
@@ -1432,9 +1502,7 @@ everything we need to do that in the function
 “hsa” is for human (<a href="https://www.genome.jp/kegg/tables/br08606.html" class="external-link uri">https://www.genome.jp/kegg/tables/br08606.html</a>).</li>
 <li>
 <em>KEGG_codes</em> are the KEGG codes of the metabolites of
-interest (like the one you found statistically significant). In the
-following examples they are the codes of cysteine, glutamate,
-phenylalanine.</li>
+interest (like the one you found statistically significant).</li>
 <li>
 <em>path_databases</em> is were you have the FELLA database and if
 you don’t have already, where they will be automatically created.</li>
@@ -1443,11 +1511,11 @@ and also exporting csv table and png picture in the working directory.
 <em>output_prefix</em> and <em>output_suffix</em> can add some other
 characters to those object and file names.</li>
 </ul>
-<div class="sourceCode" id="cb58"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb59"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/do_FELLA_enrichment_analysis.html">do_FELLA_enrichment_analysis</a></span><span class="op">(</span>organism_code <span class="op">=</span> <span class="st">"hsa"</span>,</span>
-<span>                             KEGG_codes <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"C00097"</span>, <span class="st">"C00025"</span>, <span class="st">"C00079"</span><span class="op">)</span>,</span>
+<span>                             KEGG_codes <span class="op">=</span> <span class="va">FINAL_FEAT_INFO_COMBINED_WITH_STATISTICS_WITH_KEGG</span><span class="op">$</span><span class="va">KEGG</span>,</span>
 <span>                             path_databases <span class="op">=</span> <span class="st">"C:/databases/FELLA/"</span>,</span>
-<span>                             output_prefix <span class="op">=</span> <span class="st">"SomeAA_"</span>,</span>
+<span>                             output_prefix <span class="op">=</span> <span class="st">"FELLA_enrichment_an_"</span>,</span>
 <span>                             output_suffix <span class="op">=</span> <span class="st">""</span><span class="op">)</span></span></code></pre></div>
 </div>
 </div>
@@ -1456,6 +1524,8 @@ characters to those object and file names.</li>
 </h2>
 <p>There are some miscellaneous functions that I prepared that can be
 generically useful.</p>
+<p>I already mentioned <em>getChemData</em> (and particularly its
+wrapper <em>add_ChemData_to_featINFO</em>).</p>
 <p>Some are to adjust variable or sample names like:
 <em>zero_prefixing</em> (to get some names ordered by name correctly),
 <em>fix_duplicated</em>, <em>fix_names</em> (to remove special
@@ -1495,12 +1565,12 @@ first, so <em>decreasing</em> should set to FALSE</li>
 <em>name_new_column</em> with the combined results (and also printing
 what happpened in case of duplicated to the console!)</li>
 </ul>
-<div class="sourceCode" id="cb59"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb59-1"><a href="#cb59-1" tabindex="-1"></a>MERGED_TABLE <span class="ot">&lt;-</span> <span class="fu">merge_results</span>(<span class="at">results_list =</span> <span class="fu">list</span>(<span class="at">HILIC_POS =</span> _A_DF_WTIH_RESULTS_, <span class="at">RPLC_NEG =</span> _ANOTHER_DF_WITH_RESULTS_),</span>
-<span id="cb59-2"><a href="#cb59-2" tabindex="-1"></a>                              <span class="at">strings_in_colnames_to_remove =</span> <span class="fu">c</span>(<span class="st">"HILIC_POS"</span>, <span class="st">"RPLC_NEG"</span>),</span>
-<span id="cb59-3"><a href="#cb59-3" tabindex="-1"></a>                              <span class="at">by_column =</span> <span class="st">"variables"</span>,</span>
-<span id="cb59-4"><a href="#cb59-4" tabindex="-1"></a>                              <span class="at">if_duplicated_consider_columns =</span> <span class="fu">c</span>(<span class="st">"PvaluesFDR"</span>, <span class="st">"Pvalues"</span>),</span>
-<span id="cb59-5"><a href="#cb59-5" tabindex="-1"></a>                              <span class="at">decreasing =</span> <span class="fu">c</span>(<span class="cn">FALSE</span>, <span class="cn">FALSE</span>),</span>
-<span id="cb59-6"><a href="#cb59-6" tabindex="-1"></a>                              <span class="at">name_new_column =</span> <span class="st">"chromatographic_run"</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb60"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1" tabindex="-1"></a>MERGED_TABLE <span class="ot">&lt;-</span> <span class="fu">merge_results</span>(<span class="at">results_list =</span> <span class="fu">list</span>(<span class="at">HILIC_POS =</span> _A_DF_WTIH_RESULTS_, <span class="at">RPLC_NEG =</span> _ANOTHER_DF_WITH_RESULTS_),</span>
+<span id="cb60-2"><a href="#cb60-2" tabindex="-1"></a>                              <span class="at">strings_in_colnames_to_remove =</span> <span class="fu">c</span>(<span class="st">"HILIC_POS"</span>, <span class="st">"RPLC_NEG"</span>),</span>
+<span id="cb60-3"><a href="#cb60-3" tabindex="-1"></a>                              <span class="at">by_column =</span> <span class="st">"variables"</span>,</span>
+<span id="cb60-4"><a href="#cb60-4" tabindex="-1"></a>                              <span class="at">if_duplicated_consider_columns =</span> <span class="fu">c</span>(<span class="st">"PvaluesFDR"</span>, <span class="st">"Pvalues"</span>),</span>
+<span id="cb60-5"><a href="#cb60-5" tabindex="-1"></a>                              <span class="at">decreasing =</span> <span class="fu">c</span>(<span class="cn">FALSE</span>, <span class="cn">FALSE</span>),</span>
+<span id="cb60-6"><a href="#cb60-6" tabindex="-1"></a>                              <span class="at">name_new_column =</span> <span class="st">"chromatographic_run"</span>)</span></code></pre></div>
 <div class="section level3">
 <h3 id="conclusion">Conclusion<a class="anchor" aria-label="anchor" href="#conclusion"></a>
 </h3>
