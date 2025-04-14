@@ -1,4 +1,3 @@
-
 #' Create example datasets
 #'
 #' It create mock datasets that can be used to test other functions of this package.
@@ -334,7 +333,8 @@ create_df_examples <- function(datasets = c("all", "df_example_generic", "df_exa
            
            tibble(coumpound = c("Alanine", "Asparagine", "Cysteine", "Glutamate", "Glycine", "Leucine", "Methionine", "Phenylalanine"),
                   rt = c(146, 262, 243, 290, 169, 98, 258, 471),
-                  mz = c(88.0399, 131.0457, 120.0119, 146.0453, 74.0242, 130.0868, 148.0432, 164.0712)),
+                  mz = c(88.0399, 131.0457, 120.0119, 146.0453, 74.0242, 130.0868, 148.0432, 164.0712),
+                  CID = c(5950, 6267, 5862, 33032, 750, 6106, 6137, 6140)),
            
            envir=.GlobalEnv)
     

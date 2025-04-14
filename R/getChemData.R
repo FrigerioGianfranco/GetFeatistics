@@ -4,7 +4,7 @@
 #library(utils)
 #library(classyfireR)
 
-#' Get Chemical data from PuhChem.
+#' Get Chemical data from PubChem.
 #'
 #' Given a set of molecules with at least a known identifier code for each one, it first retrieve the PubChem CID (unless that was the passed identifier), then it gets from PubChem the desired proprierties and other identifier, and can also classify the compounds based on ClassiFire classification. This function needs a stable internet connection and might take several time (depending on the number of compounds and information to retrieve).
 #'
@@ -13,16 +13,15 @@
 #' @param properties NULL or a character. If "all" is passed, all the PubChem properties will be fetched. The most wanted properties you might want to get are: "Title", "SMILES", "InChI", "InChIKey", "IUPACName", "MolecularWeight", "ExactMass", "MonoisotopicMass". To know all the PubChem properties run all_PubChem_properties(), and you can also read the full description here: https://pubchem.ncbi.nlm.nih.gov/docs/pug-rest#section=Compound-Property-Tables.
 #' @param otheridentifiers NULL or a character. If "all" is passed, all the other identifiers available in PubChem will be fetched. The most common other identifiers you might want to pass here are: "CAS", "HMDB", "KEGG", "ChEBI", "ChEMBL", "DrugBank", "DSSTox".
 #' @param synonyms NULL or an integer. If Inf is passed, all the synonyms available in PubChem will be fetched (with a maximum of 999). Otherwise, pass the number of top synonyms reported in PubChem to retrieve.
-#' @param ClassiFire NULL or a character. If "all" is passed, all the 7 levels of the ClassiFire classification will be retrieved; otherwise you can pass here only the desired ones. The levels are: "kingdom", "superclass", "class", "subclass", "level 5", "level 6", "level 7", "level 8".
+#' @param ClassiFire NULL or a character. If "all" is passed, all the levels of the ClassiFire classification will be retrieved; otherwise you can pass here only the desired ones. The levels are: "kingdom", "superclass", "class", "subclass", "level 5", "level 6", "level 7", "level 8".
 #'
 #' @return A data frame (tibble) in which each row is a compound as provided in id. The first column is the id provided, the second column is the PubChem CID, all other columns contain the desired information retrieved. On the console it will be also printed the status of the retrival.
 #'
 #' @export
-getChemData <- function(id, idtype, properties = "all", otheridentifiers = "all", synonyms = 10, ClassiFire = "all") {
+getChemData <- function(id, idtype, properties = NULL, otheridentifiers = NULL, synonyms = NULL, ClassiFire = NULL) {
   
   if (length(id) < 1) {stop("id must contain at least a value!")}
   if (!is.character(id) & !is.integer(id) & !is.numeric(id) & !is.factor(id)) {stop("id must be a valid vector with compound identifier codes")}
-  if (any(is.na(id))) {stop("id must not contain NAs")}
   
   change_messy_case_and_check <- function(the_char_vector, the_names_with_wanted_case) {
     tibble_output <- tibble(char_initial = the_char_vector,
@@ -144,7 +143,7 @@ getChemData <- function(id, idtype, properties = "all", otheridentifiers = "all"
     } else if (the_status == 202) {
       cat("Accepted (asynchronous operation pending)!")
       the_output <- the_data
-    } else {                                                 ######### forse qua aggiungere opzione che se server time put, aspetta tipo 2 secondi e poi riprova?!
+    } else {
       cat(paste0(the_message, ". ", the_data$Fault$Message))
       the_output <- NULL
     } 
@@ -199,7 +198,10 @@ getChemData <- function(id, idtype, properties = "all", otheridentifiers = "all"
   for (i in 1:nrow(output_tibble)) {
     cat("\n -- compound ", i, "/", nrow(output_tibble), ":")
     
-    if (output_tibble$idtype[i] == "CID") {
+    if (is.na(output_tibble$id[i])) {
+      this_CID <- as.integer(NA)
+      cat("\nNA")
+    } else if (output_tibble$idtype[i] == "CID") {
       this_CID <- as.integer(output_tibble$id[i])
     } else if (output_tibble$idtype[i] == "SMILES") {
       
@@ -451,11 +453,30 @@ getChemData <- function(id, idtype, properties = "all", otheridentifiers = "all"
       tibble_for_otheridentifiers[i, names(this_total_vector_of_identifier)] <- as_tibble(matrix(this_total_vector_of_identifier, nrow = 1, ncol = length(this_total_vector_of_identifier), dimnames = list(row = NULL, col = names(this_total_vector_of_identifier))))
     }
     
-    output_tibble_before <- output_tibble[,1:which(colnames(output_tibble)==lastcolumn_before_otheridentif)]
-    output_tibble_after <- output_tibble[,(which(colnames(output_tibble)==lastcolumn_before_otheridentif)+1):ncol(output_tibble)]
+    if ((which(colnames(output_tibble)==lastcolumn_before_otheridentif)+1) > ncol(output_tibble)) {
+      output_tibble <- bind_cols(output_tibble, tibble_for_otheridentifiers)
+    } else {
+      output_tibble_before <- output_tibble[,1:which(colnames(output_tibble)==lastcolumn_before_otheridentif)]
+      output_tibble_after <- output_tibble[,(which(colnames(output_tibble)==lastcolumn_before_otheridentif)+1):ncol(output_tibble)]
+      
+      output_tibble <- bind_cols(output_tibble_before, tibble_for_otheridentifiers)
+      output_tibble <- bind_cols(output_tibble, output_tibble_after)
+    }
+  }
+  
+  cat("\n")
+  
+  
+  if (any(grepl("^KEGG", colnames(output_tibble)))) {
+    KEGG_columns <- colnames(output_tibble)[which(grepl("^KEGG", colnames(output_tibble)))]
     
-    output_tibble <- bind_cols(output_tibble_before, tibble_for_otheridentifiers)
-    output_tibble <- bind_cols(output_tibble, output_tibble_after)
+    for (i in 1:nrow(output_tibble)) {
+      KEGG_vector_sorted <- sort(as.character(output_tibble[i, KEGG_columns]), na.last = TRUE)
+      
+      for (ki in 1:length(KEGG_vector_sorted)) {
+        output_tibble[i, which(grepl("^KEGG", colnames(output_tibble)))[ki]] <- KEGG_vector_sorted[ki]
+      }
+    }
   }
   
   return(output_tibble)

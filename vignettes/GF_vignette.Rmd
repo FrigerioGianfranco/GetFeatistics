@@ -1,7 +1,7 @@
 ---
 title: "Vignette of the GetFeatistics package"
 author: "Gianfranco Frigerio"
-date: "2025-03-06"
+date: "2025-04-14"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{GF_vignette}
@@ -157,7 +157,7 @@ TARGETED_MOLECULES <- TARGETED_EXAMPLE_RESULTS$compound_legend$compounds
 # 2. Non-targeted analyses
 
 This package is supposed to be used after obtaining a feature table using open source tools such as XCMS and MS-Dial.
-In particular, we need a table of feature intensities like this:
+In particular, we need a table of feature intensities like this (This is just a simple example, usually there are many more features!):
 
 ```{r}
 df_example_feat_intensities
@@ -169,7 +169,7 @@ and a featINFO table, whose first column must be identical to the first column o
 df_example_feat_info
 ```
 
-If you worked with MS-dial, you just need to export the areas or the normalized areas, and then use the functions _get_feat_table_from_MSDial_ and _get_feat_info_from_MSDial_. For example, something like that: (check the full documentation of the functions if you want to know more!)
+If you worked with MS-Dial, you just need to export the areas or the normalized areas, and then use the functions _get_feat_table_from_MSDial_ and _get_feat_info_from_MSDial_. For example, something like that: (check the full documentation of the functions if you want to know more!)
 
 ```{r, eval=FALSE}
 
@@ -201,6 +201,7 @@ df_example_melecules_to_search
 ```
 
 Then, you can use the function _checkmolecules_in_feat_table_ passing:
+
 - the data frames of feature intensity, feature INFO, and known molecules to the first three arguments, respectively;
 - the name of the column of the known molecules data frames containing m/z values to _mz_to_search_ (or the third column will be taken as default);
 - the accepted error value in _error_;
@@ -208,23 +209,27 @@ Then, you can use the function _checkmolecules_in_feat_table_ passing:
 - TRUE to _check_rt_ if you have retention times and want to also check them;
 - the name of the column of the known molecules data frames containing retention time values to _rt_to_search _ (or the second column will be taken as default);
 - the accepted window of retention time to _rt_window_ (and be sure that the unit, like seconds or minutes, is consistent!)
+- finally, set _return_as_featinfo_lev1_ to TRUE, so the the confirmed molecules will be marked as AnnoLevel "1" in the featINFO table.
 
 ```{r}
-CHECKED_MOLECULES <- checkmolecules_in_feat_table(featmatrix = df_example_feat_intensities,
-                                                  featinfo = df_example_feat_info,
-                                                  molecules_list = df_example_melecules_to_search,
-                                                  mz_to_search = NULL,
-                                                  error = 20,
-                                                  error_type = "ppm",
-                                                  check_rt = TRUE,
-                                                  rt_to_search = NULL,
-                                                  rt_window = 12)
+df_example_feat_info_withLev1 <- checkmolecules_in_feat_table(featmatrix = df_example_feat_intensities,
+                                                              featinfo = df_example_feat_info,
+                                                              molecules_list = df_example_melecules_to_search,
+                                                              mz_to_search = NULL,
+                                                              error = 20,
+                                                              error_type = "ppm",
+                                                              check_rt = TRUE,
+                                                              rt_to_search = NULL,
+                                                              rt_window = 12,
+                                                              return_as_featinfo_lev1 = TRUE)
 
-CHECKED_MOLECULES[,c("coumpound", "featname", "rt_confirmed", "rt", "rt_shift", "mz", "mz_shift")]
+df_example_feat_info_withLev1
 ```
 
 
 Amazing!!
+Note that if you had a featINFO from MS-Dial or patRoon, instead of this example featINFO, you would the AnnoLevel for all the other features!
+
 Now, if you are a good metabolomer, you know how much is important to clean the dataset using well-established methods such as pooled quality controls (QCs).
 If you want to filter the feature data table considering defined cut-offs from the analyses of pooled QCs, you might want to read the next step carefully!
 
@@ -268,7 +273,7 @@ UNTARGETED_FEAT_TABLE_QC_FILTERED <- QCs_process(featmatrix = df_example_feat_in
 I'd suggest also to filter the featINFO table accordingly, you could run something like this:
 
 ```{r}
-UNTARGETED_FEAT_INFO_QC_FILTERED <- filter(df_example_feat_info,
+UNTARGETED_FEAT_INFO_QC_FILTERED <- filter(df_example_feat_info_withLev1,
                                            featname %in% UNTARGETED_FEAT_TABLE_QC_FILTERED$featname)
 ```
 
@@ -573,7 +578,7 @@ You can do that with the _addINFO_to_table_ function:
 ```{r}
 FINAL_FEAT_INFO_COMBINED_WITH_STATISTICS <- addINFO_to_table(df1 = EXAMPLE_ANOVA_2WAY,  
                                                              colfeat_df1 = "Dependent",
-                                                             dfINFO = df_example_feat_info,
+                                                             dfINFO = UNTARGETED_FEAT_INFO_QC_FILTERED,
                                                              colfeat_dfINFO = "featname",
                                                              add_char_to_INFO = FALSE,
                                                              char_to_add_to_INFO = "_INFO")
@@ -825,20 +830,40 @@ EXAMPLE_TOBIT_LINEAR_MODEL <- gentab_lm_long(df = EXAMPLE_TABLE_FOR_STATISTICAL_
 
 
 ## 3.7. Pathway Enrichment Analysis
+To perform a Pathway Enrichment Analysis, we need first to have the KEGG codes of the known molecules.
+No, you don't need to manually look for them, I have a function also for that, of course: _getChemData_ and _add_ChemData_to_featINFO_ and .They are basically the same function, but the second one is specifically coded to add the retrieved chemical data to the featINFO table, so we'll be looking at it and to its arguments:
 
-Concluding the workflow of this package, a pathway enrichment analysis can be performed following the workflow of this package using the tool FELLA (https://doi.org/10.1186/s12859-018-2487-5).
+- _featINFO_: the feat table you want to augment with the chemical data.
+- _name_column_id_: The name of the column of _featINFO_ containing a starting identifier, that needs to be indicated in the next argument.
+- _idtype_: The type of identifier reported in the column _name_column_id_ of the _featINFO_ table. It must be one of the following: "CID", "SMILES", "InChI", "InChIKey". (Just for your to know: if "CID", the function will already use it for retrieving the following chemical data from PubChem; otherwise, it will first retrieve the CID, and then use it).
+- _properties_: it can be NULL (default), "all", or a character vector with chemical properties to be retrieved from PubChem (for example: "Title", "SMILES", "InChI", "InChIKey", "IUPACName", "MolecularWeight", "ExactMass", "MonoisotopicMass") .
+- _otheridentifiers_: NULL (default), "all", or a character vector with the desired other identifiers you want to retrieve from PubChem, such as "CAS", "HMDB", "KEGG", "ChEBI", "ChEMBL", "DrugBank", "DSSTox".
+- _synonyms_ NULL (default) of an integer number with the number of synonyms you want to retrieve from PubChem (max is 999!)
+- _ClassiFire_ NULL (default), "all", or a character vector with wanted classification levels from ClassiFireR, such as: "kingdom", "superclass", "class", "subclass", "level 5", "level 6", "level 7", "level 8".
+
+Ah, you need to have a stable internet connection to run this function! And it can take quite some time if you have hundreds of compounds to fetch!
+
+```{r, eval = FALSE}
+FINAL_FEAT_INFO_COMBINED_WITH_STATISTICS_WITH_KEGG <- add_ChemData_to_featINFO(featINFO = FINAL_FEAT_INFO_COMBINED_WITH_STATISTICS,
+                                                                               name_column_id = "CID",
+                                                                               idtype = "CID",
+                                                                               otheridentifiers = "KEGG")
+``` 
+
+
+So, a pathway enrichment analysis can be performed following the workflow of this package using the tool FELLA (https://doi.org/10.1186/s12859-018-2487-5).
 I wrapped everything we need to do that in the function _do_FELLA_enrichment_analysis_:
 
 - _organism_code_ is the three letter code of the organism. "hsa" is for human (https://www.genome.jp/kegg/tables/br08606.html).
-- _KEGG_codes_ are the KEGG codes of the metabolites of interest (like the one you found statistically significant). In the following examples they are the codes of cysteine, glutamate, phenylalanine.
+- _KEGG_codes_ are the KEGG codes of the metabolites of interest (like the one you found statistically significant).
 - _path_databases_ is were you have the FELLA database and if you don't have already, where they will be automatically created.
 - The function will both creating objects in the global environment and also exporting csv table and png picture in the working directory. _output_prefix_ and _output_suffix_ can add some other characters to those object and file names.
 
 ```{r, eval = FALSE}
 do_FELLA_enrichment_analysis(organism_code = "hsa",
-                             KEGG_codes = c("C00097", "C00025", "C00079"),
+                             KEGG_codes = FINAL_FEAT_INFO_COMBINED_WITH_STATISTICS_WITH_KEGG$KEGG,
                              path_databases = "C:/databases/FELLA/",
-                             output_prefix = "SomeAA_",
+                             output_prefix = "FELLA_enrichment_an_",
                              output_suffix = "")
 ``` 
 
@@ -846,6 +871,8 @@ do_FELLA_enrichment_analysis(organism_code = "hsa",
 # 4. Miscellaneous
 
 There are some miscellaneous functions that I prepared that can be generically useful.
+
+I already mentioned _getChemData_ (and particularly its wrapper _add_ChemData_to_featINFO_).
 
 Some are to adjust variable or sample names like: _zero_prefixing_ (to get some names ordered by name correctly), _fix_duplicated_, _fix_names_ (to remove special characters) and the related _check_if_fix_names_needed_.
 I am also particularly proud of _get_phase_amount_ (to know the exact amount mobile phases needed for a gradient) and of _GetCombined_featTable_MSDial_ (to combine three feature intensity tables from different batches into a single one)

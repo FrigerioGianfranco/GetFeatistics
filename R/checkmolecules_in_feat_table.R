@@ -4,19 +4,19 @@
 #'
 #' Given a featINFO, a feature intensities table, and a table with a list of molecules with known mass, it looks for those molecule in the feature table.
 #'
-#' @param featmatrix a dataframe: first column the featname, each other column is a sample with feature intensities. Each row is a feature. It can be obtained with the get_feat_table_from_MSDial function of the present package.
-#' @param featinfo a dataframe. A table with at least three columns, in this order: feature names, retention times, and mass-to-charge ratios. It can be obtained with the get_feat_info_from_MSDial function of the present package.
+#' @param featmatrix a dataframe: first column the featname, each other column is a sample with feature intensities. Each row is a feature. (It can be obtained with the get_feat_table_from_MSDial or get_feat_table_from_patRoon function).
+#' @param featinfo a dataframe. A table with at least three columns, in this order: feature names, retention times, and mass-to-charge ratios. (It can be obtained with the get_feat_info_from_MSDial or get_feat_info_from_patRoon function).
 #' @param molecules_list a dataframe containing the molecules to search. The first column must contain the names of the molecule. Also, it should contain at least another column with the m/z to look for.
-#' @param mz_to_search character vector of length 1. It is the column name of the molecules_list data-frame with the m/z values to look for (it not provided the third column will be used).
+#' @param mz_to_search character vector of length 1. It is the column name of the molecules_list data-frame with the m/z values to look for (If not provided the third column will be used).
 #' @param error numeric of length 1. Is is the tolerance for the search of m/z in Da or ppm (specified in the error_type argument)
 #' @param error_type one of the following: "ppm", or "Da". It is referred to the value provided in the error argument.
 #' @param check_rt logical. Should also the retention times be checked?
-#' @param rt_to_search if check_rt is TRUE, it is the column name of the molecules_list data-frame with the rt values to look for. (it not provided the second column will be used)
+#' @param rt_to_search if check_rt is TRUE, it is the column name of the molecules_list data-frame with the rt values to look for. (If not provided the second column will be used)
 #' @param rt_window numeric of length 1. It is the retention time window to consider centered to the known molecules to check the experimental ones. Please check that the unit (seconds or minutes) is the same in all the tables.
 #' @param return_as_featinfo_lev1 logical. If TRUE, and if also check_rt is TRUE, the function will return the featinfo with the found molecules as level 1 in the AnnoLevel column.
 #'
 #'
-#' @return A tibble with the matching feature intensities. If return_as_featinfo_lev1 is TRUE, the output is instead the featinfo with the found compound as level 1 in the AnnoLevel column.
+#' @return A tibble with the matching feature intensities. If return_as_featinfo_lev1 is TRUE, the output is instead the featinfo with the compounds found as level 1 in the AnnoLevel column.
 #'
 #' @export
 checkmolecules_in_feat_table <- function(featmatrix, featinfo,
@@ -104,15 +104,23 @@ checkmolecules_in_feat_table <- function(featmatrix, featinfo,
   if (is.na(return_as_featinfo_lev1)) {stop("return_as_featinfo_lev1 must be exclusively TRUE or FALSE")}
   if (return_as_featinfo_lev1 & !check_rt) {stop("if return_as_featinfo_lev1 is TRUE, also check_rt must be TRUE as level 1 compounds can only be confirmed with the retention time!")}
   
+  if (any(c("mz_molecule_list", "rt_molecule_list") %in% colnames(featmatrix))) {stop('please, just do not name in advance any column of featmatrix "mz_molecule_list" or "rt_molecule_list"')}
+  if (any(c("mz_molecule_list", "rt_molecule_list") %in% colnames(featinfo))) {stop('please, just do not name in advance any column of featinfo "mz_molecule_list" or "rt_molecule_list"')}
+  if (any(c("mz_molecule_list", "rt_molecule_list") %in% colnames(molecules_list))) {
+    if (is.null(mz_to_search)) {stop('please, just do not name in advance any column of molecules_list "mz_molecule_list" or "rt_molecule_list", unless they are the columns used for the search')}
+    if (is.null(rt_to_search)) {stop('please, just do not name in advance any column of molecules_list "mz_molecule_list" or "rt_molecule_list", unless they are the columns used for the search')}
+    if (mz_to_search!= "mz_molecule_list" | rt_to_search!="rt_molecule_list") {stop('please, just do not name in advance any column of molecules_list "mz_molecule_list" or "rt_molecule_list", unless they are the columns used for the search')}
+  }
   
+  molecules_list_to_add <- molecules_list
+  colnames(molecules_list_to_add)[which(colnames(molecules_list_to_add) == mz_to_search)] <- "mz_molecule_list"
+  colnames(molecules_list_to_add)[which(colnames(molecules_list_to_add) == rt_to_search)] <- "rt_molecule_list"
   
-  final_table_one_row <-  matrix(NA, nrow = 1, ncol = length(colnames(featmatrix))+5)
-  colnames(final_table_one_row) <-  c(colnames(molecules_list)[1], colnames(featinfo)[1], colnames(featinfo)[2], "rt_shift", colnames(featinfo)[3], "mz_shift", colnames(featmatrix)[-1])
+  final_table_one_row <-  matrix(NA, nrow = 1, ncol = length(colnames(molecules_list_to_add))+length(colnames(featmatrix))+4)
+  colnames(final_table_one_row) <- c(colnames(molecules_list_to_add), colnames(featinfo)[1], colnames(featinfo)[2], "rt_shift", colnames(featinfo)[3], "mz_shift", colnames(featmatrix)[-1])
   final_table_one_row <-  as_tibble(final_table_one_row)
   
-  final_table <-  matrix(NA, nrow = 0, ncol = length(colnames(featmatrix))+5)
-  colnames(final_table) <-  c(colnames(molecules_list)[1], colnames(featinfo)[1], colnames(featinfo)[2], "rt_shift", colnames(featinfo)[3], "mz_shift", colnames(featmatrix)[-1])
-  final_table <-  as_tibble(final_table)
+  final_table <-  final_table_one_row[0,]
   
   
   if (error_type == "ppm") {
@@ -128,13 +136,13 @@ checkmolecules_in_feat_table <- function(featmatrix, featinfo,
         if (pull(featinfo,colnames(featinfo)[3])[u] > low_mass & pull(featinfo,colnames(featinfo)[3])[u] < high_mass) {
           
           new_row_tibble <- final_table_one_row
-          new_row_tibble[1,1] <- pull(molecules_list, colnames(molecules_list)[1])[i]
-          new_row_tibble[1,2] <- pull(featinfo,colnames(featinfo)[1])[u]
-          new_row_tibble[1,3] <- pull(featinfo,colnames(featinfo)[2])[u]
-          new_row_tibble[1,4] <- pull(featinfo,colnames(featinfo)[2])[u] - pull(molecules_list, rt_to_search)[i]
-          new_row_tibble[1,5] <- pull(featinfo,colnames(featinfo)[3])[u]
-          new_row_tibble[1,6] <- pull(featinfo,colnames(featinfo)[3])[u] - theor_mass
-          new_row_tibble[1,7:(length(colnames(featmatrix))+5)] <- featmatrix[u,2:length(colnames(featmatrix))]
+          new_row_tibble[1, colnames(molecules_list_to_add)] <- molecules_list_to_add[i,]
+          new_row_tibble[1,colnames(featinfo)[1]] <- pull(featinfo, colnames(featinfo)[1])[u]
+          new_row_tibble[1,colnames(featinfo)[2]] <- pull(featinfo, colnames(featinfo)[2])[u]
+          if (!is.null(rt_to_search)) {new_row_tibble[1,"rt_shift"] <- pull(featinfo,colnames(featinfo)[2])[u] - pull(molecules_list, rt_to_search)[i]}
+          new_row_tibble[1,colnames(featinfo)[3]] <- pull(featinfo,colnames(featinfo)[3])[u]
+          new_row_tibble[1,"mz_shift"] <- pull(featinfo,colnames(featinfo)[3])[u] - theor_mass
+          new_row_tibble[1, colnames(featmatrix)[-1]] <- featmatrix[u, colnames(featmatrix)[-1]]
           
           final_table <- rbind(final_table, new_row_tibble)
         }
@@ -142,8 +150,8 @@ checkmolecules_in_feat_table <- function(featmatrix, featinfo,
       
       if (!pull(molecules_list, colnames(molecules_list)[1])[i] %in% pull(final_table, colnames(molecules_list)[1])) {
         new_row_tibble <- final_table_one_row
-        new_row_tibble[1,1] <- pull(molecules_list, colnames(molecules_list)[1])[i]
-        new_row_tibble[1,2] <- "NOT_FOUND"
+        new_row_tibble[1, colnames(molecules_list_to_add)] <- molecules_list_to_add[i,]
+        new_row_tibble[1,colnames(featinfo)[1]] <- "NOT_FOUND"
         
         final_table <- rbind(final_table, new_row_tibble)
       }
@@ -159,13 +167,13 @@ checkmolecules_in_feat_table <- function(featmatrix, featinfo,
         if (pull(featinfo,colnames(featinfo)[3])[u] > low_mass & pull(featinfo,colnames(featinfo)[3])[u] < high_mass) {
           
           new_row_tibble <- final_table_one_row
-          new_row_tibble[1,1] <- pull(molecules_list, colnames(molecules_list)[1])[i]
-          new_row_tibble[1,2] <- pull(featinfo,colnames(featinfo)[1])[u]
-          new_row_tibble[1,3] <- pull(featinfo,colnames(featinfo)[2])[u]
-          new_row_tibble[1,4] <- pull(featinfo,colnames(featinfo)[2])[u] - pull(molecules_list, rt_to_search)[i]
-          new_row_tibble[1,5] <- pull(featinfo,colnames(featinfo)[3])[u]
-          new_row_tibble[1,6] <- pull(featinfo,colnames(featinfo)[3])[u] - theor_mass
-          new_row_tibble[1,7:(length(colnames(featmatrix))+5)] <- featmatrix[u,2:length(colnames(featmatrix))]
+          new_row_tibble[1, colnames(molecules_list_to_add)] <- molecules_list_to_add[i,]
+          new_row_tibble[1,colnames(featinfo)[1]] <- pull(featinfo, colnames(featinfo)[1])[u]
+          new_row_tibble[1,colnames(featinfo)[2]] <- pull(featinfo, colnames(featinfo)[2])[u]
+          if (!is.null(rt_to_search)) {new_row_tibble[1,"rt_shift"] <- pull(featinfo,colnames(featinfo)[2])[u] - pull(molecules_list, rt_to_search)[i]}
+          new_row_tibble[1,colnames(featinfo)[3]] <- pull(featinfo,colnames(featinfo)[3])[u]
+          new_row_tibble[1,"mz_shift"] <- pull(featinfo,colnames(featinfo)[3])[u] - theor_mass
+          new_row_tibble[1, colnames(featmatrix)[-1]] <- featmatrix[u, colnames(featmatrix)[-1]]
           
           final_table <- rbind(final_table, new_row_tibble)
         }
@@ -173,8 +181,8 @@ checkmolecules_in_feat_table <- function(featmatrix, featinfo,
       
       if (!pull(molecules_list, colnames(molecules_list)[1])[i] %in% pull(final_table, colnames(molecules_list)[1])) {
         new_row_tibble <- final_table_one_row
-        new_row_tibble[1,1] <- pull(molecules_list, colnames(molecules_list)[1])[i]
-        new_row_tibble[1,2] <- "NOT_FOUND"
+        new_row_tibble[1, colnames(molecules_list_to_add)] <- molecules_list_to_add[i,]
+        new_row_tibble[1,colnames(featinfo)[1]] <- "NOT_FOUND"
         
         final_table <- rbind(final_table, new_row_tibble)
       }
@@ -186,14 +194,14 @@ checkmolecules_in_feat_table <- function(featmatrix, featinfo,
     
     final_table <- add_column(final_table,
                               rt_confirmed = as.logical(rep(NA, length(pull(final_table, colnames(final_table)[1])))),
-                              .after = colnames(final_table)[2])
+                              .before = colnames(featinfo)[1])
     
     for(i in 1:length(pull(final_table, colnames(final_table)[1]))) {
-      if (pull(final_table, colnames(final_table)[2])[i] != "NOT_FOUND") {
+      if (pull(final_table, colnames(featinfo)[1])[i] != "NOT_FOUND") {
         rt_lower_limit <- pull(molecules_list, rt_to_search)[which(pull(molecules_list, colnames(molecules_list)[1])==pull(final_table, colnames(final_table)[1])[i])] - (rt_window/2)
         rt_upper_limit <- pull(molecules_list, rt_to_search)[which(pull(molecules_list, colnames(molecules_list)[1])==pull(final_table, colnames(final_table)[1])[i])] + (rt_window/2)
         
-        if(pull(final_table, colnames(final_table)[4])[i] <= rt_upper_limit & pull(final_table, colnames(final_table)[4])[i] >= rt_lower_limit) {
+        if(pull(final_table, colnames(featinfo)[2])[i] <= rt_upper_limit & pull(final_table, colnames(featinfo)[2])[i] >= rt_lower_limit) {
           final_table$rt_confirmed[i] <- TRUE
         } else {
           final_table$rt_confirmed[i] <- FALSE
@@ -209,14 +217,10 @@ checkmolecules_in_feat_table <- function(featmatrix, featinfo,
     final_table_ret_conf <- filter(final_table, rt_confirmed)
     featinfo_output <- featinfo
     
-    if (any(c("mz_molecule_list", "rt_molecule_list") %in% colnames(molecules_list))) {stop('please, just do not name in advance any column of molecules_list "mz_molecule_list" or "rt_molecule_list"')}
-    molecules_list_to_add <- molecules_list
-    colnames(molecules_list_to_add)[which(colnames(molecules_list_to_add) == mz_to_search)] <- "mz_molecule_list"
-    colnames(molecules_list_to_add)[which(colnames(molecules_list_to_add) == rt_to_search)] <- "rt_molecule_list"
     
-    if (length(which(pull(featinfo, 1) %in% pull(final_table_ret_conf, 2)))>0) {
+    if (length(which(pull(featinfo, 1) %in% pull(final_table_ret_conf, colnames(featinfo)[1])))>0) {
       
-      for (i in which(pull(featinfo, 1) %in% pull(final_table_ret_conf, 2))) {
+      for (i in which(pull(featinfo, 1) %in% pull(final_table_ret_conf, colnames(featinfo)[1]))) {
         
         this_feat <- pull(featinfo, 1)[i]
         
@@ -226,12 +230,23 @@ checkmolecules_in_feat_table <- function(featmatrix, featinfo,
           stop("an enexpected error (error n.001) happened, please ask Gianfranco to solve... (it should not happen)")
         }
         if (nrow(final_table_ret_conf_this_feat) > 1) {
+          
+          if (!all(pull(final_table_ret_conf_this_feat, colnames(featinfo)[1]) == pull(final_table_ret_conf_this_feat, colnames(featinfo)[1])[1])) {
+            stop("an enexpected error (error n.004) happened, please ask Gianfranco to solve... (it should not happen)")
+          }
+          
+          cat(paste0("\nCompounds '", paste0(pull(final_table_ret_conf_this_feat, colnames(molecules_list)[1]), collapse = "', '"), "' were all matched to '", pull(final_table_ret_conf_this_feat, colnames(featinfo)[1])[1], "'"))
+          
           final_table_ret_conf_this_feat <- arrange(final_table_ret_conf_this_feat, abs(rt_shift), abs(mz_shift))
+          
           final_table_ret_conf_this_feat <- final_table_ret_conf_this_feat[1,]
+          
+          cat(paste0("\n - '", pull(final_table_ret_conf_this_feat, colnames(molecules_list)[1]), "' was chosen (likely because of better rt shift or m/z shift)\n"))
+          
         }
         if (nrow(final_table_ret_conf_this_feat) == 1) {
           
-          this_row_of_molecules_list_to_add <- which(pull(molecules_list_to_add, 1) == pull(final_table_ret_conf_this_feat, colnames(molecules_list)[1])[1])
+          this_row_of_molecules_list_to_add <- which(pull(molecules_list_to_add, 1) == pull(final_table_ret_conf_this_feat, 1)[1])
           
           if (length(this_row_of_molecules_list_to_add)!=1) {
             stop("an enexpected error (error n.002) happened, please ask Gianfranco to solve... (it should not happen)")

@@ -23,8 +23,10 @@ do_FELLA_enrichment_analysis <- function(organism_code, KEGG_codes, path_databas
   if (is.na(organism_code)) {stop("organism_code must be a character of length 1, not a missing value")}
   
   if (!is.character(KEGG_codes)) {stop("KEGG_codes must be a character vector")}
-  if (any(is.na(KEGG_codes))) {stop("KEGG_codes must be a character vector, with no missing values")}
-  
+  if (any(is.na(KEGG_codes))) {
+    KEGG_codes <- KEGG_codes[which(!is.na(KEGG_codes))]
+  }
+  if (length(KEGG_codes) < 1) {stop("KEGG_codes must have at least one valid value!")}
   
   
   
