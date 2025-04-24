@@ -20,7 +20,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">GetFeatistics</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.3.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.3.2</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -58,7 +58,7 @@
                         <h4 data-toc-skip class="author">Gianfranco
 Frigerio</h4>
             
-            <h4 data-toc-skip class="date">2025-04-14</h4>
+            <h4 data-toc-skip class="date">2025-04-15</h4>
       
 
       <div class="d-none name"><code>GF_vignette.Rmd</code></div>
@@ -118,10 +118,17 @@ and untargeted metabolomics experiments.</p>
 <span><span class="co">#&gt;  In the Global Environment, created the object  df_example_qc_sampletype</span></span>
 <span><span class="co">#&gt;  In the Global Environment, created the object  df_example_melecules_to_search</span></span>
 <span><span class="co">#&gt;  In the Global Environment, created the object  df_example_gradient</span></span></code></pre></div>
-<p>The vignette is composed of four main chapters: <strong>1. Targeted
-analyses</strong>, <strong>2. Non-targeted analyses</strong>, <strong>3.
-Statistical analyses</strong>, and <strong>4.
-Miscellaneous</strong>.</p>
+<p>The vignette is composed of four main chapters:</p>
+<ul>
+<li>
+<strong>1. Targeted analyses</strong>,</li>
+<li>
+<strong>2. Non-targeted analyses</strong>,</li>
+<li>
+<strong>3. Statistical analyses</strong>,</li>
+<li>
+<strong>4. Miscellaneous</strong>.</li>
+</ul>
 </div>
 <div class="section level2">
 <h2 id="targeted-analyses">1. Targeted analyses<a class="anchor" aria-label="anchor" href="#targeted-analyses"></a>
@@ -754,7 +761,7 @@ for the pareto scaling:</p>
 <span><span class="co">#&gt;  [5] "feature002_mr_ln_paretosc" "feature003_mr_ln_paretosc"</span></span>
 <span><span class="co">#&gt;  [7] "feature004_mr_ln_paretosc" "feature005_mr_ln_paretosc"</span></span>
 <span><span class="co">#&gt;  [9] "feature007_mr_ln_paretosc" "feature009_mr_ln_paretosc"</span></span></code></pre></div>
-<p>I decided to creat the function in a way that it explicates all the
+<p>I decided to create the function in a way that it explicates all the
 results of the different steps of the transformations, to compare and
 have access to the complete information in case of need. …But then I
 realised the dataframe can have just too many columns!! To clean it and
@@ -1278,8 +1285,8 @@ as TRUE is to add the multiple correction to the p-value,
 below what we indicate in <em>pcutoff</em> and <em>cutPval</em> as TRUE
 will replace p-value&lt;0.001 with “&lt;0.001”.</p>
 <div class="sourceCode" id="cb51"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">EXAMPLE_LINEAR_MODEL</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/gentab_lm_long.html">gentab_lm_long</a></span><span class="op">(</span>df <span class="op">=</span> <span class="va">EXAMPLE_TABLE_FOR_STATISTICAL_ANALYSES_transf</span>,</span>
-<span>                                       dep <span class="op">=</span> <span class="va">ALL_POTENTIAL_COMPOUNDS_transf_mr_ln_paretosc</span>,</span>
+<code class="sourceCode R"><span><span class="va">EXAMPLE_LINEAR_MODEL</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/gentab_lm_long.html">gentab_lm_long</a></span><span class="op">(</span>df <span class="op">=</span> <span class="va">EXAMPLE_TABLE_FOR_STATISTICAL_ANALYSES_transf_cleaned</span>,</span>
+<span>                                       dep <span class="op">=</span> <span class="va">ALL_POTENTIAL_COMPOUNDS</span>,</span>
 <span>                                       form_ind <span class="op">=</span> <span class="st">"factor_condition2lev + factor_condition3lev + numerical_condition_a + numerical_condition_b"</span>,</span>
 <span>                                       mdl <span class="op">=</span> <span class="st">"lm"</span>,</span>
 <span>                                       var_perc <span class="op">=</span> <span class="cn">TRUE</span>,</span>
@@ -1313,7 +1320,7 @@ and <em>negative_log10fdr</em> are the negative log-transformed (base
 <code class="sourceCode R"><span><span class="fu">glimpse</span><span class="op">(</span><span class="va">EXAMPLE_LINEAR_MODEL</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Rows: 60</span></span>
 <span><span class="co">#&gt; Columns: 13</span></span>
-<span><span class="co">#&gt; $ Dependent            <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "feature003_mr_ln_paretosc"<span style="color: #949494;">, </span>"feature002_mr_ln_pa…</span></span>
+<span><span class="co">#&gt; $ Dependent            <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "feature003"<span style="color: #949494;">, </span>"feature002"<span style="color: #949494;">, </span>"molecule03"<span style="color: #949494;">, </span>"featur…</span></span>
 <span><span class="co">#&gt; $ Independent          <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "(Intercept)"<span style="color: #949494;">, </span>"(Intercept)"<span style="color: #949494;">, </span>"(Intercept)"<span style="color: #949494;">, </span>"(In…</span></span>
 <span><span class="co">#&gt; $ N_observations       <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> 52<span style="color: #949494;">, </span>52<span style="color: #949494;">, </span>52<span style="color: #949494;">, </span>52<span style="color: #949494;">, </span>52<span style="color: #949494;">, </span>52<span style="color: #949494;">, </span>52<span style="color: #949494;">, </span>52<span style="color: #949494;">, </span>52<span style="color: #949494;">, </span>52<span style="color: #949494;">, </span>52<span style="color: #949494;">, </span>52<span style="color: #949494;">, </span>5…</span></span>
 <span><span class="co">#&gt; $ beta                 <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> -2.16471000<span style="color: #949494;">, </span>-1.44534693<span style="color: #949494;">, </span>-2.00260774<span style="color: #949494;">, </span>-1.7145888…</span></span>
@@ -1354,7 +1361,7 @@ and/or <em>line2_position</em>.</li>
 <span>                                     y_values <span class="op">=</span> <span class="st">"negative_log10fdr"</span>,</span>
 <span>                                     dep_cat <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>                                     category <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>                                     cut_off_names <span class="op">=</span> <span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log10</a></span><span class="op">(</span><span class="fl">0.0001</span><span class="op">)</span>,</span>
+<span>                                     cut_off_names <span class="op">=</span> <span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log10</a></span><span class="op">(</span><span class="fl">0.05</span><span class="op">)</span>,</span>
 <span>                                     line1 <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>                                     line1_position <span class="op">=</span> <span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log10</a></span><span class="op">(</span><span class="fl">0.05</span><span class="op">)</span>,</span>
 <span>                                     line2 <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
@@ -1375,7 +1382,7 @@ the independent variables includes also the group we want to check
 <span>                                     y_values <span class="op">=</span> <span class="st">"negative_log10fdr"</span>,</span>
 <span>                                     dep_cat <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>                                     category <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>                                     cut_off_names <span class="op">=</span> <span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log10</a></span><span class="op">(</span><span class="fl">1e-04</span><span class="op">)</span>,</span>
+<span>                                     cut_off_names <span class="op">=</span> <span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log10</a></span><span class="op">(</span><span class="fl">0.05</span><span class="op">)</span>,</span>
 <span>                                     line1 <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>                                     line1_position <span class="op">=</span> <span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log10</a></span><span class="op">(</span><span class="fl">0.05</span><span class="op">)</span>,</span>
 <span>                                     line2 <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
@@ -1398,9 +1405,9 @@ third argument of the <em>gentab_lm_long</em> function (as multiple
 models will be fitted, each for each dependent variable passed in the
 second argument):</p>
 <div class="sourceCode" id="cb56"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">EXAMPLE_MIXED_LINEAR_MODEL</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/gentab_lm_long.html">gentab_lm_long</a></span><span class="op">(</span>df <span class="op">=</span> <span class="va">EXAMPLE_TABLE_FOR_STATISTICAL_ANALYSES_transf</span>,</span>
-<span>                                             dep <span class="op">=</span> <span class="va">ALL_POTENTIAL_COMPOUNDS_transf_mr_ln_paretosc</span>,</span>
-<span>                                             form_ind <span class="op">=</span> <span class="st">"factor_condition2lev + factor_condition3lev + numerical_condition_a + numerical_condition_b + (1|factor_condition4lev)"</span>,</span>
+<code class="sourceCode R"><span><span class="va">EXAMPLE_MIXED_LINEAR_MODEL</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/gentab_lm_long.html">gentab_lm_long</a></span><span class="op">(</span>df <span class="op">=</span> <span class="va">EXAMPLE_TABLE_FOR_STATISTICAL_ANALYSES_transf_cleaned</span>,</span>
+<span>                                             dep <span class="op">=</span> <span class="va">ALL_POTENTIAL_COMPOUNDS</span>,</span>
+<span>                                             form_ind <span class="op">=</span> <span class="st">"factor_condition2lev + numerical_condition_a + (1|factor_condition4lev)"</span>,</span>
 <span>                                             mdl <span class="op">=</span> <span class="st">"lmer"</span>,</span>
 <span>                                             var_perc <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>                                             base <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">exp</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span>,</span>
@@ -1411,34 +1418,34 @@ second argument):</p>
 <ol start="3" style="list-style-type: decimal">
 <li>“tobit”: TOBIT linear models, using the <em>tobit</em> function of
 the AER package. Particularly useful for the targeted analyses, Tobit
-models are useful to trad dependent variable as in between categorical
-and continuous variables. In particular, if we have value below the
-Lower Limit Of Detection of our analytical method, we can pass those as
+models are useful to treat dependent variable as both categorical and
+continuous variables. In particular, if we have a value below the Lower
+Limit Of Detection of our analytical method, we can pass those as
 left-censored values; and if we have values higher than the the Upper
 Limit Of Detection, we can specify them as right censored values. The
 <em>left_cens</em> and <em>right_cens</em> arguments are made for this:
 we can pass a named numeric vector with those values (the names of the
 vector must be the dependent variables). Of course if we transformed the
-data, we shoudl transforme these data as well:</li>
+data, we should transform these data as well:</li>
 </ol>
-<div class="sourceCode" id="cb57"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1" tabindex="-1"></a></span>
-<span id="cb57-2"><a href="#cb57-2" tabindex="-1"></a>LOD_molecules_ln_paretosc <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="at">molecule01_mr_ln_paretosc =</span> (<span class="fu">log</span>(<span class="dv">10</span>)<span class="sc">-</span><span class="fu">mean</span>(EXAMPLE_TABLE_FOR_STATISTICAL_ANALYSES_transf<span class="sc">$</span>molecule01_mr_ln))<span class="sc">/</span><span class="fu">sqrt</span>(<span class="fu">sd</span>(EXAMPLE_TABLE_FOR_STATISTICAL_ANALYSES_transf<span class="sc">$</span>molecule01_mr_ln)),</span>
-<span id="cb57-3"><a href="#cb57-3" tabindex="-1"></a>                               <span class="at">molecule02_mr_ln_paretosc =</span> (<span class="fu">log</span>(<span class="dv">100</span>)<span class="sc">-</span><span class="fu">mean</span>(EXAMPLE_TABLE_FOR_STATISTICAL_ANALYSES_transf<span class="sc">$</span>molecule02_mr_ln))<span class="sc">/</span><span class="fu">sqrt</span>(<span class="fu">sd</span>(EXAMPLE_TABLE_FOR_STATISTICAL_ANALYSES_transf<span class="sc">$</span>molecule02_mr_ln)),</span>
-<span id="cb57-4"><a href="#cb57-4" tabindex="-1"></a>                               <span class="at">molecule03_mr_ln_paretosc =</span> (<span class="fu">log</span>(<span class="dv">1</span>)<span class="sc">-</span><span class="fu">mean</span>(EXAMPLE_TABLE_FOR_STATISTICAL_ANALYSES_transf<span class="sc">$</span>molecule03_mr_ln))<span class="sc">/</span><span class="fu">sqrt</span>(<span class="fu">sd</span>(EXAMPLE_TABLE_FOR_STATISTICAL_ANALYSES_transf<span class="sc">$</span>molecule03_mr_ln)),</span>
-<span id="cb57-5"><a href="#cb57-5" tabindex="-1"></a>                               <span class="at">molecule04_mr_ln_paretosc =</span> (<span class="fu">log</span>(<span class="dv">10</span>)<span class="sc">-</span><span class="fu">mean</span>(EXAMPLE_TABLE_FOR_STATISTICAL_ANALYSES_transf<span class="sc">$</span>molecule04_mr_ln))<span class="sc">/</span><span class="fu">sqrt</span>(<span class="fu">sd</span>(EXAMPLE_TABLE_FOR_STATISTICAL_ANALYSES_transf<span class="sc">$</span>molecule04_mr_ln)))</span>
-<span id="cb57-6"><a href="#cb57-6" tabindex="-1"></a></span>
-<span id="cb57-7"><a href="#cb57-7" tabindex="-1"></a>EXAMPLE_TOBIT_LINEAR_MODEL <span class="ot">&lt;-</span> <span class="fu">gentab_lm_long</span>(<span class="at">df =</span> EXAMPLE_TABLE_FOR_STATISTICAL_ANALYSES_transf,</span>
-<span id="cb57-8"><a href="#cb57-8" tabindex="-1"></a>                                             <span class="at">dep =</span> <span class="fu">c</span>(<span class="st">"molecule01_mr_ln_paretosc"</span> <span class="st">"molecule02_mr_ln_paretosc"</span> <span class="st">"molecule03_mr_ln_paretosc"</span> <span class="st">"molecule04_mr_ln_paretosc"</span>),</span>
-<span id="cb57-9"><a href="#cb57-9" tabindex="-1"></a>                                             <span class="at">form_ind =</span> <span class="st">"factor_condition2lev + factor_condition3lev + numerical_condition_a + numerical_condition_b"</span>,</span>
-<span id="cb57-10"><a href="#cb57-10" tabindex="-1"></a>                                             <span class="at">mdl =</span> <span class="st">"tobit"</span>,</span>
-<span id="cb57-11"><a href="#cb57-11" tabindex="-1"></a>                                             <span class="at">left_cens =</span> LOD_molecules_ln_paretosc,</span>
-<span id="cb57-12"><a href="#cb57-12" tabindex="-1"></a>                                             <span class="at">right_cens =</span> <span class="cn">NULL</span>,</span>
-<span id="cb57-13"><a href="#cb57-13" tabindex="-1"></a>                                             <span class="at">var_perc =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb57-14"><a href="#cb57-14" tabindex="-1"></a>                                             <span class="at">base =</span> <span class="fu">exp</span>(<span class="dv">1</span>),</span>
-<span id="cb57-15"><a href="#cb57-15" tabindex="-1"></a>                                             <span class="at">FDR =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb57-16"><a href="#cb57-16" tabindex="-1"></a>                                             <span class="at">filter_sign =</span> <span class="cn">FALSE</span>,</span>
-<span id="cb57-17"><a href="#cb57-17" tabindex="-1"></a>                                             <span class="at">pcutoff =</span> <span class="fl">0.05</span>,</span>
-<span id="cb57-18"><a href="#cb57-18" tabindex="-1"></a>                                             <span class="at">cutPval =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb57"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">LOD_molecules_ln_paretosc</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>molecule01 <span class="op">=</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="fl">10</span><span class="op">)</span><span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="va">EXAMPLE_TABLE_FOR_STATISTICAL_ANALYSES</span><span class="op">$</span><span class="va">molecule01</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/sd.html" class="external-link">sd</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="va">EXAMPLE_TABLE_FOR_STATISTICAL_ANALYSES</span><span class="op">$</span><span class="va">molecule01</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>                               molecule02 <span class="op">=</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="fl">100</span><span class="op">)</span><span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="va">EXAMPLE_TABLE_FOR_STATISTICAL_ANALYSES</span><span class="op">$</span><span class="va">molecule02</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/sd.html" class="external-link">sd</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="va">EXAMPLE_TABLE_FOR_STATISTICAL_ANALYSES</span><span class="op">$</span><span class="va">molecule02</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>                               molecule03 <span class="op">=</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span><span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="va">EXAMPLE_TABLE_FOR_STATISTICAL_ANALYSES</span><span class="op">$</span><span class="va">molecule03</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/sd.html" class="external-link">sd</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="va">EXAMPLE_TABLE_FOR_STATISTICAL_ANALYSES</span><span class="op">$</span><span class="va">molecule03</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>                               molecule04 <span class="op">=</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="fl">10</span><span class="op">)</span><span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="va">EXAMPLE_TABLE_FOR_STATISTICAL_ANALYSES</span><span class="op">$</span><span class="va">molecule04</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/sd.html" class="external-link">sd</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="va">EXAMPLE_TABLE_FOR_STATISTICAL_ANALYSES</span><span class="op">$</span><span class="va">molecule04</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">EXAMPLE_TOBIT_LINEAR_MODEL</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/gentab_lm_long.html">gentab_lm_long</a></span><span class="op">(</span>df <span class="op">=</span> <span class="va">EXAMPLE_TABLE_FOR_STATISTICAL_ANALYSES_transf_cleaned</span>,</span>
+<span>                                             dep <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"molecule01"</span>, <span class="st">"molecule02"</span>, <span class="st">"molecule03"</span>, <span class="st">"molecule04"</span><span class="op">)</span>,</span>
+<span>                                             form_ind <span class="op">=</span> <span class="st">"factor_condition2lev + numerical_condition_a"</span>,</span>
+<span>                                             mdl <span class="op">=</span> <span class="st">"tobit"</span>,</span>
+<span>                                             left_cens <span class="op">=</span> <span class="va">LOD_molecules_ln_paretosc</span>,</span>
+<span>                                             right_cens <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>                                             var_perc <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>                                             base <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">exp</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span>,</span>
+<span>                                             FDR <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>                                             filter_sign <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>                                             pcutoff <span class="op">=</span> <span class="fl">0.05</span>,</span>
+<span>                                             cutPval <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="pathway-enrichment-analysis">3.7. Pathway Enrichment Analysis<a class="anchor" aria-label="anchor" href="#pathway-enrichment-analysis"></a>
