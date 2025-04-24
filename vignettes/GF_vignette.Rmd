@@ -1,7 +1,7 @@
 ---
 title: "Vignette of the GetFeatistics package"
 author: "Gianfranco Frigerio"
-date: "2025-04-14"
+date: "2025-04-15"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{GF_vignette}
@@ -56,7 +56,12 @@ In this vignette, we will use some mock data that simulate targeted and untarget
 create_df_examples()
 ```
 
-The vignette is composed of four main chapters: **1. Targeted analyses**, **2. Non-targeted analyses**,  **3. Statistical analyses**, and **4. Miscellaneous**.
+The vignette is composed of four main chapters:
+
+- **1. Targeted analyses**,
+- **2. Non-targeted analyses**, 
+- **3. Statistical analyses**,
+- **4. Miscellaneous**.
 
 
 
@@ -408,7 +413,7 @@ ALL_POTENTIAL_COMPOUNDS_transf_mr_ln_paretosc
 
 ```
 
-I decided to creat the function in a way that it explicates all the results of the different steps of the transformations, to compare and have access to the complete information in case of need.
+I decided to create the function in a way that it explicates all the results of the different steps of the transformations, to compare and have access to the complete information in case of need.
 ...But then I realised the dataframe can have just too many columns!! 
 To clean it and have only the data of interest, and without those wired suffix, just run the function: _clean_transf_colnames_
 
@@ -706,8 +711,8 @@ In this function, different linear models will be fitted, one for each dependent
 
 
 ```{r}
-EXAMPLE_LINEAR_MODEL <- gentab_lm_long(df = EXAMPLE_TABLE_FOR_STATISTICAL_ANALYSES_transf,
-                                       dep = ALL_POTENTIAL_COMPOUNDS_transf_mr_ln_paretosc,
+EXAMPLE_LINEAR_MODEL <- gentab_lm_long(df = EXAMPLE_TABLE_FOR_STATISTICAL_ANALYSES_transf_cleaned,
+                                       dep = ALL_POTENTIAL_COMPOUNDS,
                                        form_ind = "factor_condition2lev + factor_condition3lev + numerical_condition_a + numerical_condition_b",
                                        mdl = "lm",
                                        var_perc = TRUE,
@@ -749,7 +754,7 @@ EXAMPLE_VOLCANO_PLOT_1 <- Volcano_lm(tab = EXAMPLE_LINEAR_MODEL,
                                      y_values = "negative_log10fdr",
                                      dep_cat = FALSE,
                                      category = NULL,
-                                     cut_off_names = -log10(0.0001),
+                                     cut_off_names = -log10(0.05),
                                      line1 = TRUE,
                                      line1_position = -log10(0.05),
                                      line2 = FALSE)
@@ -772,7 +777,7 @@ EXAMPLE_VOLCANO_PLOT_2 <- Volcano_lm(tab = EXAMPLE_LINEAR_MODEL,
                                      y_values = "negative_log10fdr",
                                      dep_cat = FALSE,
                                      category = NULL,
-                                     cut_off_names = -log10(1e-04),
+                                     cut_off_names = -log10(0.05),
                                      line1 = TRUE,
                                      line1_position = -log10(0.05),
                                      line2 = FALSE)
@@ -789,9 +794,9 @@ dependent_variable ~ independent_variable1 + independent_variable2 + (1|variable
 Just as before, everything after the "~" should be passed to the third argument of the _gentab_lm_long_ function (as multiple models will be fitted, each for each dependent variable passed in the second argument):
 
 ```{r, eval = FALSE}
-EXAMPLE_MIXED_LINEAR_MODEL <- gentab_lm_long(df = EXAMPLE_TABLE_FOR_STATISTICAL_ANALYSES_transf,
-                                             dep = ALL_POTENTIAL_COMPOUNDS_transf_mr_ln_paretosc,
-                                             form_ind = "factor_condition2lev + factor_condition3lev + numerical_condition_a + numerical_condition_b + (1|factor_condition4lev)",
+EXAMPLE_MIXED_LINEAR_MODEL <- gentab_lm_long(df = EXAMPLE_TABLE_FOR_STATISTICAL_ANALYSES_transf_cleaned,
+                                             dep = ALL_POTENTIAL_COMPOUNDS,
+                                             form_ind = "factor_condition2lev + numerical_condition_a + (1|factor_condition4lev)",
                                              mdl = "lmer",
                                              var_perc = TRUE,
                                              base = exp(1),
@@ -803,20 +808,19 @@ EXAMPLE_MIXED_LINEAR_MODEL <- gentab_lm_long(df = EXAMPLE_TABLE_FOR_STATISTICAL_
  
 
 3. "tobit": TOBIT linear models, using the _tobit_ function of the AER package.
-Particularly useful for the targeted analyses, Tobit models are useful to trad dependent variable as in between categorical and continuous variables.
-In particular, if we have value below the Lower Limit Of Detection of our analytical method, we can pass those as left-censored values; and if we have values higher than the the Upper Limit Of Detection, we can specify them as right censored values. The _left_cens_ and _right_cens_ arguments are made for this: we can pass a named numeric vector with those values (the names of the vector must be the dependent variables).
-Of course if we transformed the data, we shoudl transforme these data as well:
+Particularly useful for the targeted analyses, Tobit models are useful to treat dependent variable as both categorical and continuous variables.
+In particular, if we have a value below the Lower Limit Of Detection of our analytical method, we can pass those as left-censored values; and if we have values higher than the the Upper Limit Of Detection, we can specify them as right censored values. The _left_cens_ and _right_cens_ arguments are made for this: we can pass a named numeric vector with those values (the names of the vector must be the dependent variables).
+Of course if we transformed the data, we should transform these data as well:
 
 ```{r, eval = FALSE}
+LOD_molecules_ln_paretosc <- c(molecule01 = (log(10)-mean(log(EXAMPLE_TABLE_FOR_STATISTICAL_ANALYSES$molecule01)))/sqrt(sd(log(EXAMPLE_TABLE_FOR_STATISTICAL_ANALYSES$molecule01))),
+                               molecule02 = (log(100)-mean(log(EXAMPLE_TABLE_FOR_STATISTICAL_ANALYSES$molecule02)))/sqrt(sd(log(EXAMPLE_TABLE_FOR_STATISTICAL_ANALYSES$molecule02))),
+                               molecule03 = (log(1)-mean(log(EXAMPLE_TABLE_FOR_STATISTICAL_ANALYSES$molecule03)))/sqrt(sd(log(EXAMPLE_TABLE_FOR_STATISTICAL_ANALYSES$molecule03))),
+                               molecule04 = (log(10)-mean(log(EXAMPLE_TABLE_FOR_STATISTICAL_ANALYSES$molecule04)))/sqrt(sd(log(EXAMPLE_TABLE_FOR_STATISTICAL_ANALYSES$molecule04))))
 
-LOD_molecules_ln_paretosc <- c(molecule01_mr_ln_paretosc = (log(10)-mean(EXAMPLE_TABLE_FOR_STATISTICAL_ANALYSES_transf$molecule01_mr_ln))/sqrt(sd(EXAMPLE_TABLE_FOR_STATISTICAL_ANALYSES_transf$molecule01_mr_ln)),
-                               molecule02_mr_ln_paretosc = (log(100)-mean(EXAMPLE_TABLE_FOR_STATISTICAL_ANALYSES_transf$molecule02_mr_ln))/sqrt(sd(EXAMPLE_TABLE_FOR_STATISTICAL_ANALYSES_transf$molecule02_mr_ln)),
-                               molecule03_mr_ln_paretosc = (log(1)-mean(EXAMPLE_TABLE_FOR_STATISTICAL_ANALYSES_transf$molecule03_mr_ln))/sqrt(sd(EXAMPLE_TABLE_FOR_STATISTICAL_ANALYSES_transf$molecule03_mr_ln)),
-                               molecule04_mr_ln_paretosc = (log(10)-mean(EXAMPLE_TABLE_FOR_STATISTICAL_ANALYSES_transf$molecule04_mr_ln))/sqrt(sd(EXAMPLE_TABLE_FOR_STATISTICAL_ANALYSES_transf$molecule04_mr_ln)))
-
-EXAMPLE_TOBIT_LINEAR_MODEL <- gentab_lm_long(df = EXAMPLE_TABLE_FOR_STATISTICAL_ANALYSES_transf,
-                                             dep = c("molecule01_mr_ln_paretosc" "molecule02_mr_ln_paretosc" "molecule03_mr_ln_paretosc" "molecule04_mr_ln_paretosc"),
-                                             form_ind = "factor_condition2lev + factor_condition3lev + numerical_condition_a + numerical_condition_b",
+EXAMPLE_TOBIT_LINEAR_MODEL <- gentab_lm_long(df = EXAMPLE_TABLE_FOR_STATISTICAL_ANALYSES_transf_cleaned,
+                                             dep = c("molecule01", "molecule02", "molecule03", "molecule04"),
+                                             form_ind = "factor_condition2lev + numerical_condition_a",
                                              mdl = "tobit",
                                              left_cens = LOD_molecules_ln_paretosc,
                                              right_cens = NULL,
