@@ -187,10 +187,8 @@ getHeatMap <- function(df, v, s = NULL, f = NULL, dfv = NULL, sv = NULL, fv = NU
     colnames_df <- tibble(colnames_in_use = colnames(df_fil_matrix),
                           colnames_wanted = pull(dfv_fil, sv))
   } else {
-    colnames(df_fil_matrix) <- paste0("c", 1:ncol(df_fil_matrix))
-    
     colnames_df <- tibble(colnames_in_use = colnames(df_fil_matrix),
-                          colnames_wanted = as.character(1:ncol(df_fil_matrix)))
+                          colnames_wanted = colnames(df_fil_matrix))
   }
   
   if (!is.null(dfv) & !is.null(fv)) {
