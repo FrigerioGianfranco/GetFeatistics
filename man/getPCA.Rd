@@ -13,6 +13,8 @@ getPCA(
   sv = NULL,
   fv = NULL,
   labels_on_loading = TRUE,
+  center = FALSE,
+  scale. = FALSE,
   col_pal = NULL,
   col_pal_fv = NULL,
   PC_to_plot = c("PC1", "PC2"),
@@ -36,6 +38,10 @@ getPCA(
 \item{fv}{NULL or character. The name of the column of dfv containing the factor variable. Pass it only if you want colored points and ellipses on the loading plot.}
 
 \item{labels_on_loading}{logical. Even if dfv and/or sv are NULL, if this argument is set to TRUE, the loading plot will report v as labels.}
+
+\item{center}{logical. Whether the variables should be shifted to be zero centered (as in the prcomp function).}
+
+\item{scale.}{logical. whether the variables should be scaled to have unit variance before the analysis takes place (as in prcomp function).}
 
 \item{col_pal}{a character vector containing colors for f. If NULL, colors from the pals package will be used (see function build_long_vector_of_colors).}
 

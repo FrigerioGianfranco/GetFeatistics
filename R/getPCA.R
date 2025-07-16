@@ -12,6 +12,8 @@
 #' @param sv NULL or character. The name of the column of dfv containing the names you want to put on the loading plot. Pass it only if you want those names on the loading plot.
 #' @param fv NULL or character. The name of the column of dfv containing the factor variable. Pass it only if you want colored points and ellipses on the loading plot.
 #' @param labels_on_loading logical. Even if dfv and/or sv are NULL, if this argument is set to TRUE, the loading plot will report v as labels.
+#' @param center logical. Whether the variables should be shifted to be zero centered (as in the prcomp function).
+#' @param scale. logical. whether the variables should be scaled to have unit variance before the analysis takes place (as in prcomp function).
 #' @param col_pal a character vector containing colors for f. If NULL, colors from the pals package will be used (see function build_long_vector_of_colors).
 #' @param col_pal_fv a character vector containing colors for fv. If NULL, colors from the pals package will be used (see function build_long_vector_of_colors).
 #' @param PC_to_plot character of length 2. The principal components to plots on the score and loading plots.
@@ -31,6 +33,7 @@
 #'
 #' @export
 getPCA <- function(df, v, s = NULL, f = NULL, dfv = NULL, sv = NULL, fv = NULL, labels_on_loading = TRUE,
+                   center = FALSE, scale. = FALSE,
                    col_pal = NULL, col_pal_fv = NULL , PC_to_plot = c("PC1", "PC2"),
                    ellipses_on_score = TRUE, ellipses_on_loading = FALSE) {
   
@@ -80,6 +83,15 @@ getPCA <- function(df, v, s = NULL, f = NULL, dfv = NULL, sv = NULL, fv = NULL, 
   if (length(labels_on_loading)!=1) {stop("labels_on_loading must be exclusively TRUE or FALSE")}
   if (!is.logical(labels_on_loading)) {stop("labels_on_loading must be exclusively TRUE or FALSE")}
   if (is.na(labels_on_loading)) {stop("labels_on_loading must be exclusively TRUE or FALSE")}
+  
+  if (length(center)!=1) {stop("center must be exclusively TRUE or FALSE")}
+  if (!is.logical(center)) {stop("center must be exclusively TRUE or FALSE")}
+  if (is.na(center)) {stop("center must be exclusively TRUE or FALSE")}
+  
+  if (length(scale.)!=1) {stop("scale. must be exclusively TRUE or FALSE")}
+  if (!is.logical(scale.)) {stop("scale. must be exclusively TRUE or FALSE")}
+  if (is.na(scale.)) {stop("scale. must be exclusively TRUE or FALSE")}
+  
   
   used_the_long_vector_of_colors <- FALSE
   
@@ -175,7 +187,7 @@ getPCA <- function(df, v, s = NULL, f = NULL, dfv = NULL, sv = NULL, fv = NULL, 
   
   df_fil <- df[, v]
   
-  pca_res <- prcomp(df_fil, retx = TRUE, center = FALSE, scale. = FALSE)
+  pca_res <- prcomp(df_fil, retx = TRUE, center = center, scale. = scale.)
   
   if (any(colnames(as_tibble(pca_res$x)) %in% colnames(df))) {
     warning(paste0("The following column were already present in df, and they are replaced with this function!\n",
