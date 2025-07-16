@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">GetFeatistics</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.3.3</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.3.4</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -50,6 +50,8 @@
 <span>  sv <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  fv <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  labels_on_loading <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  center <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  scale. <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  col_pal <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  col_pal_fv <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  PC_to_plot <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"PC1"</span>, <span class="st">"PC2"</span><span class="op">)</span>,</span>
@@ -92,6 +94,14 @@
 
 <dt id="arg-labels-on-loading">labels_on_loading<a class="anchor" aria-label="anchor" href="#arg-labels-on-loading"></a></dt>
 <dd><p>logical. Even if dfv and/or sv are NULL, if this argument is set to TRUE, the loading plot will report v as labels.</p></dd>
+
+
+<dt id="arg-center">center<a class="anchor" aria-label="anchor" href="#arg-center"></a></dt>
+<dd><p>logical. Whether the variables should be shifted to be zero centered (as in the prcomp function).</p></dd>
+
+
+<dt id="arg-scale-">scale.<a class="anchor" aria-label="anchor" href="#arg-scale-"></a></dt>
+<dd><p>logical. whether the variables should be scaled to have unit variance before the analysis takes place (as in prcomp function).</p></dd>
 
 
 <dt id="arg-col-pal">col_pal<a class="anchor" aria-label="anchor" href="#arg-col-pal"></a></dt>
