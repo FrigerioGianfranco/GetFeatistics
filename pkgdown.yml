@@ -3,7 +3,7 @@ pkgdown: 2.1.3
 pkgdown_sha: ~
 articles:
   GF_vignette: GF_vignette.html
-last_built: 2025-07-16T12:50Z
+last_built: 2025-07-16T13:14Z
 urls:
   reference: https://frigeriogianfranco.github.io/GetFeatistics/reference
   article: https://frigeriogianfranco.github.io/GetFeatistics/articles
