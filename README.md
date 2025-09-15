@@ -61,10 +61,14 @@ The work has been conducted by Gianfranco Frigerio, during his work at three dif
 
 **Acknowledgement**:
 
-I thank the Proteomics and Metabolomics group of the Center for Omics Sciences (COSR), IRCCS San Raffaele Scientific Institute, for the support.
+All the people of the Proteomics and Metabolomics group (ProMeFa) of the Center for Omics Sciences (COSR), IRCCS San Raffaele Scientific Institute, are acknowledged for the support.
 
-I acknowledge Albina Rastoder for helping with the testing of some functions, during her 2 months internship at the Luxembourg Centre for Systems Biomedicine (LCSB) of the University of Luxembourg.
+Albina Rastoder is acknowledged for helping with the testing of some functions during her 2 months internship at the Luxembourg Centre for Systems Biomedicine (LCSB) of the University of Luxembourg.
+Prof. Dr. Emma Schymanski is thanked for the support and suggestions, and the entire Environmental Cheminformatics group of the LCSB is acknowledged for the help and feedback.
 
-I also acknowledge Prof. Dr. Emma Schymanski for the support and suggestions and the entire Environmental Cheminformatics group of the Luxembourg Centre for Systems Biomedicine (LCSB) of the University of Luxembourg for the help and feedback.
+Prof. Dr. Silvia Fustinoni and the group of the Laboratory of Environmental and Industrial Toxicology at the Department of Clinical Sciences and Community Health, University of Milan, and Fondazione IRCCS Ca' Granda Ospedale Maggiore Policlinico are acknowledged for the support.
 
-I acknowledge funding support from the Luxembourg National Research Fund (FNR) for project A18/BM/12341006.
+
+**Research funding**:
+
+Funding support from the Luxembourg National Research Fund (FNR) for project A18/BM/12341006 is acknowledged.
