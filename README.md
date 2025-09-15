@@ -43,7 +43,8 @@ If something is not clear, please contact me!
 
 If you use the package, please cite it:
 
-Frigerio Gianfranco, GetFeatistics R-pacakge, (2024), GitHub repository, https://github.com/FrigerioGianfranco/GetFeatistics
+Frigerio G. Streamlining feature elaboration and statistics analysis in metabolomics: the GetFeatistics R-package. ChemRxiv. 2025; https://doi.org/10.26434/chemrxiv-2025-fvdsq
+_This content is a preprint and has not been peer-reviewed_
 
 
 
