@@ -6,7 +6,11 @@ Getting streamlined elaboration of targeted and non-targeted metabolomics data, 
 
 ## First: Install it!
 
-For installing the package, you can simply run this code. Let me know if it doesn't work!
+Before installing, ensure the following are installed:
+- R (version ≥ 4.3.1)
+- Java, with the same architecture as R (64-bit or 32-bit).
+
+Then open R (or RStudio) and run the following in the R console:
 
 ```r
 if (!require("devtools", quietly = TRUE)) {  
@@ -15,6 +19,8 @@ if (!require("devtools", quietly = TRUE)) {
 
 devtools::install_github("FrigerioGianfranco/GetFeatistics", dependencies = TRUE)
 ```
+
+Follow the on-screen instructions to install all dependencies. It may take some time, but when it finishes the package should be fully installed and ready to use.
 
 ## Then, use it!
 

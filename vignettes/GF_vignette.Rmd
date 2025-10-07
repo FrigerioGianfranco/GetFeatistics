@@ -25,7 +25,11 @@ The **GetFeatistics** (GF) package provides several functions useful for the ela
 
 ## Installation
 
-You haven't installed the package yet?! Let's amend for that just by running the following code. Just be prepared that it might take some time if you update all the dependencies.
+Before installing, ensure the following are installed:
+- R (version ≥ 4.3.1)
+- Java (JDK), with the same architecture as R (64-bit or 32-bit).
+
+Then open R (or RStudio) and run the following in the R console:
 
 ```{r, eval=FALSE}
 if (!require("devtools", quietly = TRUE)) {  
@@ -35,8 +39,27 @@ if (!require("devtools", quietly = TRUE)) {
 devtools::install_github("FrigerioGianfranco/GetFeatistics", dependencies = TRUE)
 ```
 
-I hope everything went well! If you had any issue, please contact me.
-After some testing, I noted that there might be an error during the installation if you don't have Java (please install it before!) and if your version of Java (32 bit or 64 bit) doesn't match the version of R (please, check that if the installation doesn't work!).
+Follow the on-screen instructions to install all dependencies. It may take some time, but when it finishes the package should be fully installed and ready to use.
+
+### Troubleshooting
+
+If an error occurs, try again by running R with administrator privileges (right-click R and select Run as administrator). If the error persists, please contact me. Thank you for reporting any issues!
+
+
+Remember that the R architecture (64-bit or 32-bit) must match your Java architecture.
+You can check R’s architecture by running in the R console:
+
+```{r, eval=FALSE}
+R.version$arch
+```
+
+To check Java’s architecture, open Command Prompt and run:
+
+```{r, eval=FALSE}
+java -version
+```
+
+If the architectures do not match, re-install R or Java from the official websites. I recommend using the 64-bit architecture for both.
 
 
 ## Loading the package
