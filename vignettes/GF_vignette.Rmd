@@ -26,8 +26,10 @@ The **GetFeatistics** (GF) package provides several functions useful for the ela
 ## Installation
 
 Before installing, ensure the following are installed:
-- R (version ≥ 4.3.1)
-- Java (JDK), with the same architecture as R (64-bit or 32-bit).
+
+ - R (version ≥ 4.3.1)
+ - Java (JDK), with the same architecture as R (64-bit or 32-bit).
+
 
 Then open R (or RStudio) and run the following in the R console:
 
