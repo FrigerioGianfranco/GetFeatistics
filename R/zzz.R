@@ -41,3 +41,7 @@
   library(utils)
   library(classyfireR)
 }
+
+.onAttach <- function(libname, pkgname) {
+  packageStartupMessage("\nGetFeatistics v", packageVersion("GetFeatistics"), "\n")
+}

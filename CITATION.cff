@@ -1,73 +1,387 @@
-# This CITATION.cff file was generated with cffinit.
-# Visit https://bit.ly/cffinit to generate yours today!
-
+# --------------------------------------------
+# CITATION file created with {cffr} R package
+# See also: https://docs.ropensci.org/cffr/
+# --------------------------------------------
+ 
 cff-version: 1.2.0
-title: GetFeatistics
-message: >-
-  If you use this software, please cite it using the
-  metadata from this file.
+message: 'To cite package "GetFeatistics" in publications use:'
 type: software
+license: GPL-3.0-or-later
+title: 'GetFeatistics: Getting streamlined elaboration of metabolomics data'
+version: 0.3.3.7.2
+doi: 10.26434/chemrxiv-2025-fvdsq
+abstract: Getting streamlined elaboration of targeted and non-targeted metabolomics
+  data, including elaboration of feature tables obtained from tools such as patRoon
+  an MS-Dial, separated QC processing, quantification from targeted experiments, advanced
+  statistics such as multiple regression linear models with mixed effects.
 authors:
-  - given-names: Gianfranco
-    family-names: Frigerio
+- family-names: Frigerio
+  given-names: Gianfranco
+  email: frigerio.gianfranco@hsr.it
+  orcid: https://orcid.org/0000-0002-3538-1443
+preferred-citation:
+  type: article
+  title: 'Streamlining feature elaboration and statistics analysis in metabolomics:
+    the GetFeatistics R-package'
+  authors:
+  - family-names: Frigerio
+    given-names: Gianfranco
     email: frigerio.gianfranco@hsr.it
-    affiliation: >-
-      Center for Omics Sciences (COSR), IRCCS San Raffaele
-      Scientific Institute, Milan, Italy
-    orcid: 'https://orcid.org/0000-0002-3538-1443'
-identifiers:
-  - type: doi
-    value: 10.5281/zenodo.12143934
-repository-code: 'https://github.com/FrigerioGianfranco/GetFeatistics'
-abstract: >
-  Within the metabolomics community, tools such as MS-Dial
-  and R-based algorithms as XCMS are widely implemented to
-  convert raw data to feature tables.
+    orcid: https://orcid.org/0000-0002-3538-1443
+  journal: ChemRxiv
+  year: '2025'
+  doi: 10.26434/chemrxiv-2025-fvdsq
+  url: https://doi.org/10.26434/chemrxiv-2025-fvdsq
+url: https://frigeriogianfranco.github.io/GetFeatistics/
+contact:
+- family-names: Frigerio
+  given-names: Gianfranco
+  email: frigerio.gianfranco@hsr.it
+  orcid: https://orcid.org/0000-0002-3538-1443
+references:
+- type: software
+  title: 'R: A Language and Environment for Statistical Computing'
+  notes: Depends
+  url: https://www.R-project.org/
+  authors:
+  - name: R Core Team
+  institution:
+    name: R Foundation for Statistical Computing
+    address: Vienna, Austria
+  year: '2025'
+  version: '>= 4.3.1'
+- type: software
+  title: tidyverse
+  abstract: 'tidyverse: Easily Install and Load the ''Tidyverse'''
+  notes: Imports
+  url: https://tidyverse.tidyverse.org
+  repository: https://CRAN.R-project.org/package=tidyverse
+  authors:
+  - family-names: Wickham
+    given-names: Hadley
+    email: hadley@rstudio.com
+  year: '2025'
+  doi: 10.32614/CRAN.package.tidyverse
+- type: software
+  title: ggpubr
+  abstract: 'ggpubr: ''ggplot2'' Based Publication Ready Plots'
+  notes: Imports
+  url: https://rpkgs.datanovia.com/ggpubr/
+  repository: https://CRAN.R-project.org/package=ggpubr
+  authors:
+  - family-names: Kassambara
+    given-names: Alboukadel
+    email: alboukadel.kassambara@gmail.com
+  year: '2025'
+  doi: 10.32614/CRAN.package.ggpubr
+- type: software
+  title: ggrepel
+  abstract: 'ggrepel: Automatically Position Non-Overlapping Text Labels with ''ggplot2'''
+  notes: Imports
+  url: https://ggrepel.slowkow.com/
+  repository: https://CRAN.R-project.org/package=ggrepel
+  authors:
+  - family-names: Slowikowski
+    given-names: Kamil
+    email: kslowikowski@gmail.com
+    orcid: https://orcid.org/0000-0002-2843-6370
+  year: '2025'
+  doi: 10.32614/CRAN.package.ggrepel
+- type: software
+  title: lmerTest
+  abstract: 'lmerTest: Tests in Linear Mixed Effects Models'
+  notes: Imports
+  url: https://github.com/runehaubo/lmerTestR
+  repository: https://CRAN.R-project.org/package=lmerTest
+  authors:
+  - family-names: Kuznetsova
+    given-names: Alexandra
+  - family-names: Bruun Brockhoff
+    given-names: Per
+    email: perbb@dtu.dk
+  - family-names: Haubo Bojesen Christensen
+    given-names: Rune
+    email: Rune.Haubo@gmail.com
+  year: '2025'
+  doi: 10.32614/CRAN.package.lmerTest
+- type: software
+  title: AER
+  abstract: 'AER: Applied Econometrics with R'
+  notes: Imports
+  repository: https://CRAN.R-project.org/package=AER
+  authors:
+  - family-names: Kleiber
+    given-names: Christian
+    email: Christian.Kleiber@unibas.ch
+    orcid: https://orcid.org/0000-0002-6781-4733
+  - family-names: Zeileis
+    given-names: Achim
+    email: Achim.Zeileis@R-project.org
+    orcid: https://orcid.org/0000-0003-0918-3766
+  year: '2025'
+  doi: 10.32614/CRAN.package.AER
+- type: software
+  title: MuMIn
+  abstract: 'MuMIn: Multi-Model Inference'
+  notes: Imports
+  repository: https://CRAN.R-project.org/package=MuMIn
+  authors:
+  - family-names: Bartoń
+    given-names: Kamil
+    email: kamil.barton@go2.pl
+    orcid: https://orcid.org/0000-0001-5562-8274
+  year: '2025'
+  doi: 10.32614/CRAN.package.MuMIn
+- type: software
+  title: writexl
+  abstract: 'writexl: Export Data Frames to Excel ''xlsx'' Format'
+  notes: Imports
+  url: https://ropensci.r-universe.dev/writexl
+  repository: https://CRAN.R-project.org/package=writexl
+  authors:
+  - family-names: Ooms
+    given-names: Jeroen
+    email: jeroenooms@gmail.com
+    orcid: https://orcid.org/0000-0002-4035-0289
+  year: '2025'
+  doi: 10.32614/CRAN.package.writexl
+- type: software
+  title: xlsx
+  abstract: 'xlsx: Read, Write, Format Excel 2007 and Excel 97/2000/XP/2003 Files'
+  notes: Imports
+  url: https://github.com/colearendt/xlsx
+  repository: https://CRAN.R-project.org/package=xlsx
+  authors:
+  - family-names: Dragulescu
+    given-names: Adrian
+    email: adrian.dragulescu@gmail.com
+  - family-names: Arendt
+    given-names: Cole
+    email: cole.arendt@outlook.com
+  year: '2025'
+  doi: 10.32614/CRAN.package.xlsx
+- type: software
+  title: gridExtra
+  abstract: 'gridExtra: Miscellaneous Functions for "Grid" Graphics'
+  notes: Imports
+  repository: https://CRAN.R-project.org/package=gridExtra
+  authors:
+  - family-names: Auguie
+    given-names: Baptiste
+    email: baptiste.auguie@gmail.com
+  year: '2025'
+  doi: 10.32614/CRAN.package.gridExtra
+- type: software
+  title: FELLA
+  abstract: 'FELLA: Interpretation and enrichment for metabolomics data'
+  notes: Imports
+  repository: https://bioconductor.org/
+  authors:
+  - family-names: Picart-Armada
+    given-names: Sergio
+    email: sergi.picart@upc.edu
+  - family-names: Fernandez-Albert
+    given-names: Francesc
+    email: francesc.fernandez.albert@upc.edu
+  - family-names: Perera-Lluna
+    given-names: Alexandre
+    email: alexandre.perera@upc.edu
+  year: '2025'
+- type: software
+  title: igraph
+  abstract: 'igraph: Network Analysis and Visualization'
+  notes: Imports
+  url: https://r.igraph.org/
+  repository: https://CRAN.R-project.org/package=igraph
+  authors:
+  - family-names: Csárdi
+    given-names: Gábor
+    email: csardi.gabor@gmail.com
+    orcid: https://orcid.org/0000-0001-7098-9676
+  - family-names: Nepusz
+    given-names: Tamás
+    email: ntamas@gmail.com
+    orcid: https://orcid.org/0000-0002-1451-338X
+  - family-names: Traag
+    given-names: Vincent
+    orcid: https://orcid.org/0000-0003-3170-3879
+  - family-names: Horvát
+    given-names: Szabolcs
+    email: szhorvat@gmail.com
+    orcid: https://orcid.org/0000-0002-3100-523X
+  - family-names: Zanini
+    given-names: Fabio
+    email: fabio.zanini@unsw.edu.au
+    orcid: https://orcid.org/0000-0001-7097-8539
+  - family-names: Noom
+    given-names: Daniel
+  - family-names: Müller
+    given-names: Kirill
+    email: kirill@cynkra.com
+    orcid: https://orcid.org/0000-0002-1416-3412
+  - family-names: Schoch
+    given-names: David
+    email: david.schoch@cynkra.com
+    orcid: https://orcid.org/0000-0003-2952-4812
+  - family-names: Salmon
+    given-names: Maëlle
+    email: maelle@cynkra.com
+    orcid: https://orcid.org/0000-0002-2815-0399
+  year: '2025'
+  doi: 10.32614/CRAN.package.igraph
+- type: software
+  title: pals
+  abstract: 'pals: Color Palettes, Colormaps, and Tools to Evaluate Them'
+  notes: Imports
+  url: https://kwstat.github.io/pals/
+  repository: https://CRAN.R-project.org/package=pals
+  authors:
+  - family-names: Wright
+    given-names: Kevin
+    email: kw.stat@gmail.com
+    orcid: https://orcid.org/0000-0002-0617-8673
+  year: '2025'
+  doi: 10.32614/CRAN.package.pals
+- type: software
+  title: ggdendro
+  abstract: 'ggdendro: Create Dendrograms and Tree Diagrams Using ''ggplot2'''
+  notes: Imports
+  url: https://andrie.github.io/ggdendro/
+  repository: https://CRAN.R-project.org/package=ggdendro
+  authors:
+  - family-names: Vries
+    given-names: Andrie
+    name-particle: de
+    email: apdevries@gmail.com
+  - family-names: Ripley
+    given-names: Brian D.
+  year: '2025'
+  doi: 10.32614/CRAN.package.ggdendro
+- type: software
+  title: ggdendroplot
+  abstract: 'ggdendroplot: Create dendrograms for ggplot2'
+  notes: Imports
+  authors:
+  - family-names: Huber
+    given-names: Nicolas
+  year: '2025'
+- type: software
+  title: ggnewscale
+  abstract: 'ggnewscale: Multiple Fill and Colour Scales in ''ggplot2'''
+  notes: Imports
+  url: https://eliocamp.github.io/ggnewscale/
+  repository: https://CRAN.R-project.org/package=ggnewscale
+  authors:
+  - family-names: Campitelli
+    given-names: Elio
+    email: eliocampitelli@gmail.com
+    orcid: https://orcid.org/0000-0002-7742-9230
+  year: '2025'
+  doi: 10.32614/CRAN.package.ggnewscale
+- type: software
+  title: httr
+  abstract: 'httr: Tools for Working with URLs and HTTP'
+  notes: Imports
+  url: https://httr.r-lib.org/
+  repository: https://CRAN.R-project.org/package=httr
+  authors:
+  - family-names: Wickham
+    given-names: Hadley
+    email: hadley@posit.co
+  year: '2025'
+  doi: 10.32614/CRAN.package.httr
+- type: software
+  title: jsonlite
+  abstract: 'jsonlite: A Simple and Robust JSON Parser and Generator for R'
+  notes: Imports
+  url: https://jeroen.r-universe.dev/jsonlite
+  repository: https://CRAN.R-project.org/package=jsonlite
+  authors:
+  - family-names: Ooms
+    given-names: Jeroen
+    email: jeroenooms@gmail.com
+    orcid: https://orcid.org/0000-0002-4035-0289
+  year: '2025'
+  doi: 10.32614/CRAN.package.jsonlite
+- type: software
+  title: utils
+  abstract: 'R: A Language and Environment for Statistical Computing'
+  notes: Imports
+  authors:
+  - name: R Core Team
+  institution:
+    name: R Foundation for Statistical Computing
+    address: Vienna, Austria
+  year: '2025'
+- type: software
+  title: classyfireR
+  abstract: 'classyfireR: R Interface to the ''ClassyFire'' REST API'
+  notes: Imports
+  url: https://github.com/aberHRML/classyfireR
+  authors:
+  - family-names: Wilson
+    given-names: Tom
+    email: tpw2@aber.ac.uk
+    orcid: https://orcid.org/0000-0003-3112-4682
+  - family-names: Finch
+    given-names: Jasen
+    email: jsf9@aber.ac.uk
+  year: '2025'
+- type: software
+  title: knitr
+  abstract: 'knitr: A General-Purpose Package for Dynamic Report Generation in R'
+  notes: Suggests
+  url: https://yihui.org/knitr/
+  repository: https://CRAN.R-project.org/package=knitr
+  authors:
+  - family-names: Xie
+    given-names: Yihui
+    email: xie@yihui.name
+    orcid: https://orcid.org/0000-0003-0645-5666
+  year: '2025'
+  doi: 10.32614/CRAN.package.knitr
+- type: software
+  title: rmarkdown
+  abstract: 'rmarkdown: Dynamic Documents for R'
+  notes: Suggests
+  url: https://pkgs.rstudio.com/rmarkdown/
+  repository: https://CRAN.R-project.org/package=rmarkdown
+  authors:
+  - family-names: Allaire
+    given-names: JJ
+    email: jj@posit.co
+  - family-names: Xie
+    given-names: Yihui
+    email: xie@yihui.name
+    orcid: https://orcid.org/0000-0003-0645-5666
+  - family-names: Dervieux
+    given-names: Christophe
+    email: cderv@posit.co
+    orcid: https://orcid.org/0000-0003-4474-2498
+  - family-names: McPherson
+    given-names: Jonathan
+    email: jonathan@posit.co
+  - family-names: Luraschi
+    given-names: Javier
+  - family-names: Ushey
+    given-names: Kevin
+    email: kevin@posit.co
+  - family-names: Atkins
+    given-names: Aron
+    email: aron@posit.co
+  - family-names: Wickham
+    given-names: Hadley
+    email: hadley@posit.co
+  - family-names: Cheng
+    given-names: Joe
+    email: joe@posit.co
+  - family-names: Chang
+    given-names: Winston
+    email: winston@posit.co
+  - family-names: Iannone
+    given-names: Richard
+    email: rich@posit.co
+    orcid: https://orcid.org/0000-0003-3925-190X
+  year: '2025'
+  doi: 10.32614/CRAN.package.rmarkdown
 
-  As demonstrated in a previous work, while conducting
-  non-targeted metabolomics studies with defined groups of
-  subjects assessing variations of molecules present at low
-  concentrations (such as metabolites of exogenous
-  compounds) the use of separated pooled quality control
-  (QC) samples can be a promising strategy to both improve
-  the quality of the dataset and preserving potential
-  features deriving from low concentrated molecules.
-  Moreover, in observational epidemiologic studies,
-  controlling for confounding factors is crucial to assess
-  the association of metabolite variations with the
-  biological question of interest; also, for longitudinal
-  studies, linear models with mixed effects are great
-  statistical approach.
-
-  To streamline the data elaboration process of metabolomics
-  studies, the GetFeatistics R-package has been developed.
-  Starting from a table of features, this package
-  encompasses useful functions for the data elaboration of
-  targeted and non-targeted studies. For non-targeted
-  studies, the functions include the assignment to each
-  feature of the identification level given previously
-  defined cut-offs, the search for the presence of known
-  standards, the filtration of the dataset considering
-  pooled QC sample, and also considering separated QC
-  samples. For targeted studies, it calculates absolute
-  concentrations with the option of the use of weighted
-  linear regression curves.
-
-  For statistical analyses, after data transformation and
-  scaling, besides basic statistics such as ANOVA with or
-  without interactions, it performs multiple linear
-  regression models on the entire set of features with
-  multiple covariates that can be passed as fixed or random
-  effects variables. Finally, it generates some data
-  visualization of those models such as volcano plots.
-
-  In conclusion, the GetFeatistics is particularly helpful
-  for streamlining the metabolomics data elaboration of
-  epidemiological studies within the R environment.
-keywords:
-  - R-package
-  - quality controls
-  - multivariate statistics
-  - linear models with mixed effects
-  - epidemiology
-license: GPL-3.0

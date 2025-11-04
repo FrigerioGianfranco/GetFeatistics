@@ -323,7 +323,7 @@ getHeatMap <- function(df, v, s = NULL, f = NULL, dfv = NULL, sv = NULL, fv = NU
     if (rotate_name_columns) {
       the_heatmap_plot <- the_heatmap_plot +
         scale_x_continuous(expand=c(0,0), breaks=hm[which(!duplicated(hm$x)),]$x, labels=hm[which(!duplicated(hm$x)),]$colnames_wanted) +
-        theme(axis.text.x=element_text(angle = 270, vjust = 0.5, hjust = 0.5))
+        theme(axis.text.x=element_text(angle = 270, vjust = 0.5, hjust = 0))
     } else {
       the_heatmap_plot <- the_heatmap_plot +
         scale_x_continuous(expand=c(0,0), breaks=hm[which(!duplicated(hm$x)),]$x, labels=hm[which(!duplicated(hm$x)),]$colnames_wanted) +

@@ -1,0 +1,8 @@
+bibentry(
+  bibtype = "Article",
+  title = "Streamlining feature elaboration and statistics analysis in metabolomics: the GetFeatistics R-package",
+  author =  c(person("Gianfranco", "Frigerio", role = c("aut","cre"))),
+  journal = "ChemRxiv",
+  year = 2025,
+  doi = "10.26434/chemrxiv-2025-fvdsq"
+)
