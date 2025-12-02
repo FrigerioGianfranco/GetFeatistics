@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">GetFeatistics</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.3.7.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.3.7.3</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -61,7 +61,7 @@
 
 
 <dt id="arg-n-last-coloums-to-delete">n_last_coloums_to_delete<a class="anchor" aria-label="anchor" href="#arg-n-last-coloums-to-delete"></a></dt>
-<dd><p>numeric of length 1. Usually in the exported file from MSDIAL, the last columns are for descriptive statistics of the features. Pass here the number of the last columns that you need to remove.</p></dd>
+<dd><p>NULL or a numeric of length 1. Usually in the exported file from MSDIAL, the last columns are for descriptive statistics of the features. Pass here the number of the last columns that you need to remove. If NULL, these removal will be performed automatically. Also if 0, all the columns will be kept and the sample names modified accordingly.</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -78,7 +78,7 @@
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
     </footer></div>

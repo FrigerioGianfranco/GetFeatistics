@@ -1,0 +1,67 @@
+# Get a featINFO table from the patRoon outputs.
+
+Given the featureGroups, components, and MFsummary tables, it creates
+the featINFO table, i.e. the table with the full information for each
+feature.
+
+## Usage
+
+``` r
+get_feat_info_from_patRoon(
+  patRoon_featureGroups = NULL,
+  patRoon_featureGroups_file_name = NULL,
+  patRoon_MFsummary = NULL,
+  patRoon_MFsummary_file_name = NULL,
+  MFsummary_score_columns = c("individualMoNAScore", "score"),
+  add_AnnoLevels = FALSE
+)
+```
+
+## Arguments
+
+- patRoon_featureGroups:
+
+  NULL or a dataframe. Features groups and related intensities obtained
+  after XCMS. This table should contain the feature group names in a
+  column named "group", the retention times a column named "ret", the
+  m/z ratio in a column named "mz", and the intensities in all other
+  columns.
+
+- patRoon_featureGroups_file_name:
+
+  NULL or a character vector of length 1. If patRoon_featureGroups is
+  NULL, this can be used and directly import the table with the .csv or
+  .txt file name passed.
+
+- patRoon_MFsummary:
+
+  NULL or a dataframe obtained from converting as.data.table the output
+  of the function generateCompounds from patRoon. At least the column
+  named "group" and "score" must be present, and if multiple molecules
+  are annotated for each feature group, the one with the top score as
+  provided in the MFsummary_score_columns argument will be considered.
+
+- patRoon_MFsummary_file_name:
+
+  NULL or a character vector of length 1. If patRoon_MFsummary is NULL,
+  this can be used and directly import the table with the .csv or .txt
+  file name passed.
+
+- MFsummary_score_columns:
+
+  character of length 1 or more. The name of the column(s) of
+  patRoon_MFsummary that will be used as prioritization score to assign
+  the candidate. The first provided column will be used at first, if
+  that score is tied, the second provided column will be considered, and
+  so for.
+
+- add_AnnoLevels:
+
+  logical. If TRUE, and if a MFsummary table was loaded with suitable
+  individualMoNAScore, an additional column named "AnnoLevels" will be
+  added, and the annotation levels will be calculated considering the
+  cut-offs reported in https://doi.org/10.1007/s00216-022-04207-z.
+
+## Value
+
+A tibble with the information for each feature.

@@ -20,7 +20,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">GetFeatistics</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.3.7.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.3.7.3</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -58,7 +58,7 @@
                         <h4 data-toc-skip class="author">Gianfranco
 Frigerio</h4>
             
-            <h4 data-toc-skip class="date">2025-04-15</h4>
+            <h4 data-toc-skip class="date">2025-10-07</h4>
       
 
       <div class="d-none name"><code>GF_vignette.Rmd</code></div>
@@ -305,7 +305,7 @@ a list of ggplots that you can either print on R or export using the
 <span></span>
 <span><span class="va">TARGETED_EXAMPLE_CALIBRATION_CURVES</span><span class="op">$</span><span class="va">molecule01</span></span>
 <span><span class="co">#&gt; `geom_smooth()` using formula = 'y ~ x'</span></span></code></pre></div>
-<p><img src="GF_vignette_files/figure-html/unnamed-chunk-13-1.png" width="480"></p>
+<p><img src="GF_vignette_files/figure-html/unnamed-chunk-13-1.png" class="r-plt" width="480"></p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/export_figures.html">export_figures</a></span><span class="op">(</span><span class="va">TARGETED_EXAMPLE_CALIBRATION_CURVES</span>, exprt_fig_type <span class="op">=</span> <span class="st">"pdf"</span><span class="op">)</span></span></code></pre></div>
 <p>All the figures of this package are created as ggplot object, so they
@@ -629,7 +629,7 @@ resembles a Gaussian:</li>
 <div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">DENSITY_PLOTS</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/test_normality_density_plot.html">test_normality_density_plot</a></span><span class="op">(</span>df <span class="op">=</span> <span class="va">EXAMPLE_TABLE_FOR_STATISTICAL_ANALYSES</span>, v <span class="op">=</span> <span class="va">ALL_POTENTIAL_COMPOUNDS</span><span class="op">)</span></span>
 <span><span class="va">DENSITY_PLOTS</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span></code></pre></div>
-<p><img src="GF_vignette_files/figure-html/unnamed-chunk-32-1.png" width="480"></p>
+<p><img src="GF_vignette_files/figure-html/unnamed-chunk-32-1.png" class="r-plt" width="480"></p>
 <ol start="2" style="list-style-type: decimal">
 <li>We could plot a Q–Q plot, anchd check that all points are within the
 grey area of the graph:</li>
@@ -637,7 +637,7 @@ grey area of the graph:</li>
 <div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">QQPLOT</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/test_normality_q_q_plot.html">test_normality_q_q_plot</a></span><span class="op">(</span>df <span class="op">=</span> <span class="va">EXAMPLE_TABLE_FOR_STATISTICAL_ANALYSES</span>, v <span class="op">=</span> <span class="va">ALL_POTENTIAL_COMPOUNDS</span><span class="op">)</span></span>
 <span><span class="va">QQPLOT</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span></code></pre></div>
-<p><img src="GF_vignette_files/figure-html/unnamed-chunk-33-1.png" width="480"></p>
+<p><img src="GF_vignette_files/figure-html/unnamed-chunk-33-1.png" class="r-plt" width="480"></p>
 <ol start="3" style="list-style-type: decimal">
 <li>We could apply Shapiro–Wilk tests: if the <em>P</em>-value is less
 than a defined cut-off (classical 0.05) means that data are not normally
@@ -933,7 +933,7 @@ the documentation with <em>?Volcano_ttest_FC</em> first!</p>
 <span>                                          category <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>                                          col_pal <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span>
 <span><span class="va">Volcano_plot_ttest_FC</span></span></code></pre></div>
-<p><img src="GF_vignette_files/figure-html/unnamed-chunk-41-1.png" width="480"></p>
+<p><img src="GF_vignette_files/figure-html/unnamed-chunk-41-1.png" class="r-plt" width="480"></p>
 <p>We could do also some box-plots already, but I will describe them in
 the next section!</p>
 </div>
@@ -976,7 +976,7 @@ obtained with the following function that generate some boxplots:</p>
 <span>                                 v <span class="op">=</span> <span class="va">ALL_POTENTIAL_COMPOUNDS</span>,</span>
 <span>                                 f <span class="op">=</span> <span class="st">"factor_condition3lev"</span><span class="op">)</span></span>
 <span><span class="va">EXAMPLE_BOX_PLOTS</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span></code></pre></div>
-<p><img src="GF_vignette_files/figure-html/unnamed-chunk-43-1.png" width="480"></p>
+<p><img src="GF_vignette_files/figure-html/unnamed-chunk-43-1.png" class="r-plt" width="480"></p>
 <p>Since it generates a list with a box plot for each variable of
 interest. We could use the <em>export_figures</em> to export them all in
 a single pdf file:</p>
@@ -1197,11 +1197,11 @@ dataframes.</p>
 <span><span class="co">#&gt; <span style="color: #949494;"># ℹ 2 more variables: PC8 &lt;dbl&gt;, PC9 &lt;dbl&gt;</span></span></span>
 <span></span>
 <span><span class="va">PCA_list</span><span class="op">$</span><span class="va">score_plot</span></span></code></pre></div>
-<p><img src="GF_vignette_files/figure-html/unnamed-chunk-51-1.png" width="480"></p>
+<p><img src="GF_vignette_files/figure-html/unnamed-chunk-51-1.png" class="r-plt" width="480"></p>
 <div class="sourceCode" id="cb51"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="va">PCA_list</span><span class="op">$</span><span class="va">loading_plot</span></span></code></pre></div>
-<p><img src="GF_vignette_files/figure-html/unnamed-chunk-51-2.png" width="480"></p>
+<p><img src="GF_vignette_files/figure-html/unnamed-chunk-51-2.png" class="r-plt" width="480"></p>
 <p>Great, now let’s see how to do an heat map with or without cluster
 analysis.</p>
 <ul>
@@ -1262,7 +1262,7 @@ the matching.</li>
 <span>                      col_pal_list <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>factor_condition3lev <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"magenta4"</span>, <span class="st">"skyblue1"</span>, <span class="st">"lightgreen"</span><span class="op">)</span>,</span>
 <span>                                          type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>mol <span class="op">=</span> <span class="st">"pink"</span>, feat <span class="op">=</span> <span class="st">"brown"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">HeatMap</span></span></code></pre></div>
-<p><img src="GF_vignette_files/figure-html/unnamed-chunk-52-1.png" width="480"></p>
+<p><img src="GF_vignette_files/figure-html/unnamed-chunk-52-1.png" class="r-plt" width="480"></p>
 </div>
 <div class="section level3">
 <h3 id="linear-models">3.6. Linear models<a class="anchor" aria-label="anchor" href="#linear-models"></a>
@@ -1386,7 +1386,7 @@ and/or <em>line2_position</em>.</li>
 <span>                                     line2 <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">EXAMPLE_VOLCANO_PLOT_1</span></span></code></pre></div>
-<p><img src="GF_vignette_files/figure-html/unnamed-chunk-55-1.png" width="480"></p>
+<p><img src="GF_vignette_files/figure-html/unnamed-chunk-55-1.png" class="r-plt" width="480"></p>
 <p>As usual, we can easily export it in this way:</p>
 <div class="sourceCode" id="cb56"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/export_figures.html">export_figures</a></span><span class="op">(</span><span class="va">EXAMPLE_VOLCANO_PLOT_1</span>, exprt_fig_type <span class="op">=</span> <span class="st">"png"</span>, plot_sizes <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">14</span>, <span class="fl">14</span><span class="op">)</span>, plot_unit <span class="op">=</span> <span class="st">"in"</span><span class="op">)</span></span></code></pre></div>
@@ -1407,7 +1407,7 @@ the independent variables includes also the group we want to check
 <span>                                     line2 <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">EXAMPLE_VOLCANO_PLOT_2</span></span></code></pre></div>
-<p><img src="GF_vignette_files/figure-html/unnamed-chunk-57-1.png" width="480"></p>
+<p><img src="GF_vignette_files/figure-html/unnamed-chunk-57-1.png" class="r-plt" width="480"></p>
 <ol start="2" style="list-style-type: decimal">
 <li>“lmer”: linear models with mixed effects (random and fixed), using
 the <em>lmer</em> function from the lme4 package. These models are
@@ -1617,7 +1617,7 @@ any issue or bug you might encounter while using this package!</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
     </footer>

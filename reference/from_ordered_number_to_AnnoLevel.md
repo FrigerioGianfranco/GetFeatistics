@@ -1,0 +1,27 @@
+# Get a factor vector of annotation levels from a numeric vector.
+
+Given a numeric vector, it creates a factor vector of annotation levels.
+It's the opposite of from_AnnoLevel_to_ordered_number.
+
+## Usage
+
+``` r
+from_ordered_number_to_AnnoLevel(
+  AnnoLevel_as_ordered_number,
+  ident_levels = c("1", "2a", "2b", "3a", "3b", "3c", "4a", "5")
+)
+```
+
+## Arguments
+
+- AnnoLevel_as_ordered_number:
+
+  a numeric vector, containing annotation levels converted as numeric.
+
+- ident_levels:
+
+  character. The levels of the factor vector to be created.
+
+## Value
+
+A factor vector of annotation levels.
