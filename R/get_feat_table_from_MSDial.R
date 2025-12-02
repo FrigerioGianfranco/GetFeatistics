@@ -6,7 +6,7 @@
 #'
 #' @param MSDIAL_raw_table NULL or a dataframe. Load on R the exported table using write_tsv or write_csv, then directly pass it in this argument. This argument will be ignored if the following one is not NULL.
 #' @param MSDIAL_raw_table_file_name NULL or a character vector of length 1. The name of the .txt file of the MSDIAL exported table to import. It is preferred to use this argument instead of the previous, so the table will be also imported with the correct column types and information.
-#' @param n_last_coloums_to_delete numeric of length 1. Usually in the exported file from MSDIAL, the last columns are for descriptive statistics of the features. Pass here the number of the last columns that you need to remove.
+#' @param n_last_coloums_to_delete NULL or a numeric of length 1. Usually in the exported file from MSDIAL, the last columns are for descriptive statistics of the features. Pass here the number of the last columns that you need to remove. If NULL, these removal will be performed automatically. Also if 0, all the columns will be kept and the sample names modified accordingly.  
 #'
 #'
 #' @return A tibble with the feature intensities.
@@ -29,15 +29,33 @@ get_feat_table_from_MSDial <- function(MSDIAL_raw_table = NULL, MSDIAL_raw_table
   }
   
   check_integer <- function(x) {x == round(x)}
-  if (length(n_last_coloums_to_delete)!=1) {stop("n_last_coloums_to_delete must contain a whole number indicating the number of last column from the table to remove")}
-  if (!check_integer(n_last_coloums_to_delete)) {stop("n_last_coloums_to_delete must contain a whole number indicating the number of last column from the table to remove")}
-  if (is.na(n_last_coloums_to_delete)) {stop("n_last_coloums_to_delete must contain a whole number indicating the number of last column from the table to remove")}
+  if (!is.null(n_last_coloums_to_delete)) {
+    if (length(n_last_coloums_to_delete)!=1) {stop("n_last_coloums_to_delete must be NULL or a whole number indicating the number of last column from the table to remove")}
+    if (!check_integer(n_last_coloums_to_delete)) {stop("n_last_coloums_to_delete must be NULL or a whole number indicating the number of last column from the table to remove")}
+    if (is.na(n_last_coloums_to_delete)) {stop("n_last_coloums_to_delete must be NULL or a whole number indicating the number of last column from the table to remove")}
+    if (n_last_coloums_to_delete<0) {stop("n_last_coloums_to_delete must be NULL or a whole number, zero or greater, indicating the number of last column from the table to remove")}
+  }
+  
   
   MSDIAL_raw_table_selected <- MSDIAL_raw_table[,-c(2:which(colnames(MSDIAL_raw_table)== "Class"))]
+  
+  if (is.null(n_last_coloums_to_delete)) {
+    Average_Stdev_columns <- which(as.character(unlist(MSDIAL_raw_table_selected[3,], use.names = TRUE))%in%c("Average", "Stdev"))
+    n_last_coloums_to_delete <- length(Average_Stdev_columns)
+    if (!identical((ncol(MSDIAL_raw_table_selected)-n_last_coloums_to_delete+1):ncol(MSDIAL_raw_table_selected), Average_Stdev_columns)) {stop("there is a wired unmatch of columns..")}
+  } else if (n_last_coloums_to_delete == 0) {
+    Average_Stdev_columns <- which(as.character(unlist(MSDIAL_raw_table_selected[3,], use.names = TRUE))%in%c("Average", "Stdev"))
+    for (ic in Average_Stdev_columns) {
+      MSDIAL_raw_table_selected[4,ic] <- paste0(pull(MSDIAL_raw_table_selected, ic)[3], "_", pull(MSDIAL_raw_table_selected, ic)[4])
+    }
+  }
+  
   MSDIAL_raw_table_selected_better <- MSDIAL_raw_table_selected
   
-  for (lc in 1:n_last_coloums_to_delete) {
-    MSDIAL_raw_table_selected_better <- MSDIAL_raw_table_selected_better[, -length(colnames(MSDIAL_raw_table_selected_better))]
+  if (n_last_coloums_to_delete!=0) {
+    for (lc in 1:n_last_coloums_to_delete) {
+      MSDIAL_raw_table_selected_better <- MSDIAL_raw_table_selected_better[, -length(colnames(MSDIAL_raw_table_selected_better))]
+    }
   }
   
   the_next_colnames <- as.character(MSDIAL_raw_table_selected_better[4,])

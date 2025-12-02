@@ -15,7 +15,7 @@ get_feat_table_from_MSDial(
 
 \item{MSDIAL_raw_table_file_name}{NULL or a character vector of length 1. The name of the .txt file of the MSDIAL exported table to import. It is preferred to use this argument instead of the previous, so the table will be also imported with the correct column types and information.}
 
-\item{n_last_coloums_to_delete}{numeric of length 1. Usually in the exported file from MSDIAL, the last columns are for descriptive statistics of the features. Pass here the number of the last columns that you need to remove.}
+\item{n_last_coloums_to_delete}{NULL or a numeric of length 1. Usually in the exported file from MSDIAL, the last columns are for descriptive statistics of the features. Pass here the number of the last columns that you need to remove. If NULL, these removal will be performed automatically. Also if 0, all the columns will be kept and the sample names modified accordingly.}
 }
 \value{
 A tibble with the feature intensities.
