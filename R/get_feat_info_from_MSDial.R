@@ -82,7 +82,7 @@ get_feat_info_from_MSDial <- function(MSDIAL_raw_table = NULL, MSDIAL_raw_table_
   MSDIAL_raw_table_selected_better$Alignment_ID <- add_feat(MSDIAL_raw_table_selected_better$Alignment_ID)
   
   for (a in colnames(MSDIAL_raw_table_selected_better)) {
-    if (any(pull(MSDIAL_raw_table_selected_better, a) == "null")) {
+    if (any(pull(MSDIAL_raw_table_selected_better, a) == "null", na.rm = TRUE)) {
       for (i in which(pull(MSDIAL_raw_table_selected_better, a) == "null")) {
         MSDIAL_raw_table_selected_better[i,a] <- NA
       }

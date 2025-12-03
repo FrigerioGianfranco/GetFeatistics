@@ -12,7 +12,7 @@
 #' @return A tibble with the feature intensities.
 #'
 #' @export
-get_feat_table_from_MSDial <- function(MSDIAL_raw_table = NULL, MSDIAL_raw_table_file_name = NULL, n_last_coloums_to_delete = 2) {
+get_feat_table_from_MSDial <- function(MSDIAL_raw_table = NULL, MSDIAL_raw_table_file_name = NULL, n_last_coloums_to_delete = NULL) {
   
   if (!is.null(MSDIAL_raw_table_file_name)) {
     if (length(MSDIAL_raw_table_file_name) != 1) {stop("MSDIAL_raw_table_file_name must be a character vector of length 1")}
