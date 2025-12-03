@@ -11,7 +11,7 @@ intensities of features in each other column.
 get_feat_table_from_MSDial(
   MSDIAL_raw_table = NULL,
   MSDIAL_raw_table_file_name = NULL,
-  n_last_coloums_to_delete = 2
+  n_last_coloums_to_delete = NULL
 )
 ```
 
