@@ -51,12 +51,11 @@ If something is not clear, please contact me!
 
 ## Lastly; Cite it!
 
-If you use the package, please cite it:
+If you use the package, please cite this paper:
 
-Frigerio G. Streamlining feature elaboration and statistics analysis in
-metabolomics: the GetFeatistics R-package. ChemRxiv. 2025;
-<https://doi.org/10.26434/chemrxiv-2025-fvdsq> *This content is a
-preprint and has not been peer-reviewed*
+Frigerio G (2025). “Streamlining feature elaboration and statistics
+analysis in metabolomics: the GetFeatistics R-package.” *Journal of
+Integrative Bioinformatics*. <https://doi.org/10.1515/jib-2025-0047>.
 
 ## Credits
 
