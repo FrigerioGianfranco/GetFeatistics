@@ -8,8 +8,8 @@ message: 'To cite package "GetFeatistics" in publications use:'
 type: software
 license: GPL-3.0-or-later
 title: 'GetFeatistics: Getting streamlined elaboration of metabolomics data'
-version: 0.3.3.7.2
-doi: 10.26434/chemrxiv-2025-fvdsq
+version: '1.0'
+doi: 10.1515/jib-2025-0047
 abstract: Getting streamlined elaboration of targeted and non-targeted metabolomics
   data, including elaboration of feature tables obtained from tools such as patRoon
   an MS-Dial, separated QC processing, quantification from targeted experiments, advanced
@@ -28,10 +28,9 @@ preferred-citation:
     given-names: Gianfranco
     email: frigerio.gianfranco@hsr.it
     orcid: https://orcid.org/0000-0002-3538-1443
-  journal: ChemRxiv
+  journal: Journal of Integrative Bioinformatics
   year: '2025'
-  doi: 10.26434/chemrxiv-2025-fvdsq
-  url: https://doi.org/10.26434/chemrxiv-2025-fvdsq
+  doi: 10.1515/jib-2025-0047
 url: https://frigeriogianfranco.github.io/GetFeatistics/
 contact:
 - family-names: Frigerio
