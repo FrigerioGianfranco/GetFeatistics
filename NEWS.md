@@ -1,3 +1,6 @@
+# GetFeatistics v1.0.1
+- **Fix:** `gentab_P.t.test()` now performs paired t-tests correctly by using the vector interface of `stats::t.test()` (rather than the formula method), preventing errors when `paired = TRUE`.
+
 # GetFeatistics v1.0
 - released along with the paper
 
