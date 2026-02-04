@@ -75,13 +75,15 @@ gentab_P.t.test <- function(df, v, f, paired = FALSE, FDR = FALSE, cutPval = FAL
   
   
   #function for extract P-value from a non paired T-test
-  gett.test.P <- function (v, f) {
-    Pvalue <- t.test(v~f)$p.value
+  gett.test.P <- function (x, y) {
+    Pvalue <- t.test(x, y)$p.value
+    return(Pvalue)
   }
   
   #function for extract P-value from a paired T-test
-  gett.test.P_paired <- function (v, f) {
-    Pvalue <- t.test(v~f, paired=TRUE)$p.value
+  gett.test.P_paired <- function (x, y) {
+    Pvalue <- t.test(x, y, paired=TRUE)$p.value
+    return(Pvalue)
   }
   
   
@@ -90,12 +92,26 @@ gentab_P.t.test <- function(df, v, f, paired = FALSE, FDR = FALSE, cutPval = FAL
   df_fil1_lev2 <- df_fil1[which(pull(df_fil1, f) == levels(pull(df_fil1, f))[2]),]
   
   df_fil2 <- select(df, all_of(v))
+  df_fil2_lev1 <- select(df_fil1_lev1, all_of(v))
+  df_fil2_lev2 <- select(df_fil1_lev2, all_of(v))
   
-  if (paired == FALSE) {Pvalues_t.test <- map_dbl(df_fil2, gett.test.P, pull(df,f))} else if (paired == TRUE) {Pvalues_t.test <- map_dbl(df_fil2, gett.test.P_paired, pull(df,f))}
+  Pvalues_t.test <- double()
+  for (this_v in v) {
+    this_x <- pull(df_fil2_lev1, this_v)
+    this_y <- pull(df_fil2_lev2, this_v)
+    if (paired) {
+      Pvalues_t.test <- c(Pvalues_t.test, gett.test.P_paired(x = this_x, y = this_y))
+    } else {
+      Pvalues_t.test <- c(Pvalues_t.test, gett.test.P(x = this_x, y = this_y))
+    }
+    names(Pvalues_t.test)[length(Pvalues_t.test)] <- this_v
+  }
+  
+  
   if (FDR) {Pvalues_t.test_FDR <- p.adjust(Pvalues_t.test, method ="fdr")}
   
-  df_P <- as.data.frame(Pvalues_t.test)
-  df_P_final <- tibble(variables = rownames(df_P), Pvalues = df_P$Pvalues_t.test)
+  
+  df_P_final <- tibble(variables = names(Pvalues_t.test), Pvalues = Pvalues_t.test)
   P_to_consider <- "Pvalues"
   if (FDR) {
     df_P_final <- mutate(df_P_final, PvaluesFDR = Pvalues_t.test_FDR)
@@ -134,6 +150,7 @@ gentab_P.t.test <- function(df, v, f, paired = FALSE, FDR = FALSE, cutPval = FAL
     }
   }
   
+  names(df_P_final$Pvalues) <- NULL
   if ("PvaluesFDR" %in% colnames(df_P_final)) {
     names(df_P_final$PvaluesFDR) <- NULL
   }
