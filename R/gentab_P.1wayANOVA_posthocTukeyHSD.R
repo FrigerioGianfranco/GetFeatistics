@@ -83,6 +83,11 @@ gentab_P.1wayANOVA_posthocTukeyHSD <- function(DF, v, f, FDR = FALSE, groupdiff 
   if (groupdiff == TRUE) {
     groupdiff_colnames <- str_remove_all(col_Pvalues_comparisons, "_Pvalue")
     final_tab[, groupdiff_colnames] <- as.character(NA)
+    
+    if (FDR == TRUE) {
+      groupdiff_colnames_FDR <- paste0(groupdiff_colnames, "_FDR")
+      final_tab[, groupdiff_colnames_FDR] <- as.character(NA)
+    }
   }
   
   
@@ -100,7 +105,7 @@ gentab_P.1wayANOVA_posthocTukeyHSD <- function(DF, v, f, FDR = FALSE, groupdiff 
     new_row_tab[1,col_Pvalues] <- as.list(c(as.vector(summary(one.way)[[1]][["Pr(>F)"]])[1],
                                             as.vector(Tukey[[f[1]]][,"p adj"])))
     
-    if (groupdiff == TRUE & FDR == FALSE) {
+    if (groupdiff == TRUE) {
       
       tab_Tukey_matrix <- Tukey[[f[1]]]
       tab_Tukey_df <- bind_cols(tibble(comparisons = rownames(tab_Tukey_matrix)),
@@ -158,7 +163,6 @@ gentab_P.1wayANOVA_posthocTukeyHSD <- function(DF, v, f, FDR = FALSE, groupdiff 
   }
   
   
-  
   if (groupdiff == TRUE & FDR == TRUE) {
     for (s in significant_v) {
       one.way <- aov(data = DF, as.formula(paste0(s, " ~ ", f)))
@@ -179,11 +183,11 @@ gentab_P.1wayANOVA_posthocTukeyHSD <- function(DF, v, f, FDR = FALSE, groupdiff 
             if (length(which(pull(tab_Tukey_df, "comparisons") == str_remove_all(str_replace_all(m, "_vs_", "-"), "_PvalueFDR"))) != 1) { stop("something wrong")}
             
             if (pull(tab_Tukey_df, "diff")[which(pull(tab_Tukey_df, "comparisons") == str_remove_all(str_replace_all(m, "_vs_", "-"), "_PvalueFDR"))] > 0) {
-              final_tab[which(final_tab$Dependent == s), paste0(elem1, "_vs_", elem2)] <- paste0(elem1, " > ", elem2)
+              final_tab[which(final_tab$Dependent == s), paste0(elem1, "_vs_", elem2, "_FDR")] <- paste0(elem1, " > ", elem2)
             } else if (pull(tab_Tukey_df, "diff")[which(pull(tab_Tukey_df, "comparisons") == str_remove_all(str_replace_all(m, "_vs_", "-"), "_PvalueFDR"))] < 0) {
-              final_tab[which(final_tab$Dependent == s), paste0(elem1, "_vs_", elem2)] <- paste0(elem2, " > ", elem1)
+              final_tab[which(final_tab$Dependent == s), paste0(elem1, "_vs_", elem2, "_FDR")] <- paste0(elem2, " > ", elem1)
             } else {
-              final_tab[which(final_tab$Dependent == s), paste0(elem1, "_vs_", elem2)] <- paste0(elem1, " = ", elem2)
+              final_tab[which(final_tab$Dependent == s), paste0(elem1, "_vs_", elem2, "_FDR")] <- paste0(elem1, " = ", elem2)
               warning(paste0(s, " it's wired: if it's statistically different, it should not be equal!"))
             }
           }

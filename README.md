@@ -9,6 +9,7 @@ Getting streamlined elaboration of targeted and non-targeted metabolomics data, 
 Before installing, ensure the following are installed:
 - R (version ≥ 4.3.1)
 - Java, with the same architecture as R (64-bit or 32-bit).
+- git
 
 Then open R (or RStudio) and run the following in the R console:
 

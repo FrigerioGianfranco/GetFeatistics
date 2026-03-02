@@ -84,6 +84,11 @@ gentab_P.2wayANOVA_posthocTukeyHSD <- function(DF, v, f, interact = FALSE, FDR =
     if (groupdiff == TRUE) {
       groupdiff_colnames <- str_remove_all(col_Pvalues_comparisons, "_Pvalue")
       final_tab[, groupdiff_colnames] <- as.character(NA)
+      
+      if (FDR == TRUE) {
+        groupdiff_colnames_FDR <- paste0(groupdiff_colnames, "_FDR")
+        final_tab[, groupdiff_colnames_FDR] <- as.character(NA)
+      }
     }
     
     starting_new_row <- final_tab[1,]
@@ -101,7 +106,7 @@ gentab_P.2wayANOVA_posthocTukeyHSD <- function(DF, v, f, interact = FALSE, FDR =
                                               as.vector(Tukey[[f[2]]][,"p adj"])))
       
       
-      if (groupdiff == TRUE & FDR == FALSE) {
+      if (groupdiff == TRUE) {
         
         tab_Tukey_matrix <- rbind(Tukey[[f[1]]], Tukey[[f[2]]])
         tab_Tukey_df <- bind_cols(tibble(comparisons = rownames(tab_Tukey_matrix)),
@@ -175,11 +180,11 @@ gentab_P.2wayANOVA_posthocTukeyHSD <- function(DF, v, f, interact = FALSE, FDR =
               if (length(which(pull(tab_Tukey_df, "comparisons") == str_remove_all(str_replace_all(m, "_vs_", "-"), "_PvalueFDR"))) != 1) { stop("something wrong")}
               
               if (pull(tab_Tukey_df, "diff")[which(pull(tab_Tukey_df, "comparisons") == str_remove_all(str_replace_all(m, "_vs_", "-"), "_PvalueFDR"))] > 0) {
-                final_tab[which(final_tab$Dependent == s), paste0(elem1, "_vs_", elem2)] <- paste0(elem1, " > ", elem2)
+                final_tab[which(final_tab$Dependent == s), paste0(elem1, "_vs_", elem2, "_FDR")] <- paste0(elem1, " > ", elem2)
               } else if (pull(tab_Tukey_df, "diff")[which(pull(tab_Tukey_df, "comparisons") == str_remove_all(str_replace_all(m, "_vs_", "-"), "_PvalueFDR"))] < 0) {
-                final_tab[which(final_tab$Dependent == s), paste0(elem1, "_vs_", elem2)] <- paste0(elem2, " > ", elem1)
+                final_tab[which(final_tab$Dependent == s), paste0(elem1, "_vs_", elem2, "_FDR")] <- paste0(elem2, " > ", elem1)
               } else {
-                final_tab[which(final_tab$Dependent == s), paste0(elem1, "_vs_", elem2)] <- paste0(elem1, " = ", elem2)
+                final_tab[which(final_tab$Dependent == s), paste0(elem1, "_vs_", elem2, "_FDR")] <- paste0(elem1, " = ", elem2)
                 warning(paste0(s, " it's wired: if it's statistically different, it should not be equal!"))
               }
             }
@@ -223,6 +228,11 @@ gentab_P.2wayANOVA_posthocTukeyHSD <- function(DF, v, f, interact = FALSE, FDR =
     if (groupdiff == TRUE) {
       groupdiff_colnames <- str_remove_all(col_Pvalues_comparisons, "_Pvalue")
       final_tab[, groupdiff_colnames] <- as.character(NA)
+      
+      if (FDR == TRUE) {
+        groupdiff_colnames_FDR <- paste0(groupdiff_colnames, "_FDR")
+        final_tab[, groupdiff_colnames_FDR] <- as.character(NA)
+      }
     }
     
     starting_new_row <- final_tab[1,]
@@ -241,7 +251,7 @@ gentab_P.2wayANOVA_posthocTukeyHSD <- function(DF, v, f, interact = FALSE, FDR =
                                               as.vector(Tukey[[paste0(f, collapse = ":")]][,"p adj"])))
       
       
-      if (groupdiff == TRUE & FDR == FALSE) {
+      if (groupdiff == TRUE) {
         
         tab_Tukey_matrix <- rbind(Tukey[[f[1]]], Tukey[[f[2]]], Tukey[[paste0(f, collapse = ":")]])
         tab_Tukey_df <- bind_cols(tibble(comparisons = rownames(tab_Tukey_matrix)),
@@ -296,8 +306,6 @@ gentab_P.2wayANOVA_posthocTukeyHSD <- function(DF, v, f, interact = FALSE, FDR =
       }
     }
     
-    
-    
     if (groupdiff == TRUE & FDR == TRUE) {
       
       for (s in significant_v) {
@@ -319,11 +327,11 @@ gentab_P.2wayANOVA_posthocTukeyHSD <- function(DF, v, f, interact = FALSE, FDR =
               if (length(which(pull(tab_Tukey_df, "comparisons") == str_remove_all(str_replace_all(m, "_vs_", "-"), "_PvalueFDR"))) != 1) { stop("something wrong")}
               
               if (pull(tab_Tukey_df, "diff")[which(pull(tab_Tukey_df, "comparisons") == str_remove_all(str_replace_all(m, "_vs_", "-"), "_PvalueFDR"))] > 0) {
-                final_tab[which(final_tab$Dependent == s), paste0(elem1, "_vs_", elem2)] <- paste0(elem1, " > ", elem2)
+                final_tab[which(final_tab$Dependent == s), paste0(elem1, "_vs_", elem2, "_FDR")] <- paste0(elem1, " > ", elem2)
               } else if (pull(tab_Tukey_df, "diff")[which(pull(tab_Tukey_df, "comparisons") == str_remove_all(str_replace_all(m, "_vs_", "-"), "_PvalueFDR"))] < 0) {
-                final_tab[which(final_tab$Dependent == s), paste0(elem1, "_vs_", elem2)] <- paste0(elem2, " > ", elem1)
+                final_tab[which(final_tab$Dependent == s), paste0(elem1, "_vs_", elem2, "_FDR")] <- paste0(elem2, " > ", elem1)
               } else {
-                final_tab[which(final_tab$Dependent == s), paste0(elem1, "_vs_", elem2)] <- paste0(elem1, " = ", elem2)
+                final_tab[which(final_tab$Dependent == s), paste0(elem1, "_vs_", elem2, "_FDR")] <- paste0(elem1, " = ", elem2)
                 warning(paste0(s, " it's wired: if it's statistically different, it should not be equal!"))
               }
             }

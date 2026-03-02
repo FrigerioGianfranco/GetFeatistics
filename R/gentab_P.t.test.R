@@ -73,14 +73,11 @@ gentab_P.t.test <- function(df, v, f, paired = FALSE, FDR = FALSE, cutPval = FAL
     if (pcutoff>1 | pcutoff<0) {stop("pcutoff must be a single number below or equal to 1")}
   }
   
-  
-  #function for extract P-value from a non paired T-test
   gett.test.P <- function (x, y) {
     Pvalue <- t.test(x, y)$p.value
     return(Pvalue)
   }
   
-  #function for extract P-value from a paired T-test
   gett.test.P_paired <- function (x, y) {
     Pvalue <- t.test(x, y, paired=TRUE)$p.value
     return(Pvalue)
@@ -112,16 +109,19 @@ gentab_P.t.test <- function(df, v, f, paired = FALSE, FDR = FALSE, cutPval = FAL
   
   
   df_P_final <- tibble(variables = names(Pvalues_t.test), Pvalues = Pvalues_t.test)
-  P_to_consider <- "Pvalues"
   if (FDR) {
     df_P_final <- mutate(df_P_final, PvaluesFDR = Pvalues_t.test_FDR)
-    P_to_consider <- "PvaluesFDR"
   }
   
   if(groupdiff == TRUE) {
     df_P_final <- mutate(df_P_final, group_diff = as.character(NA))
-    for(i in 1:length(pull(df_P_final, P_to_consider))) {
-      if (pull(df_P_final, P_to_consider)[i] < pcutoff) {
+    
+    if (FDR) {
+      df_P_final <- mutate(df_P_final, group_diff_FDR = as.character(NA))
+    }
+    
+    for(i in 1:length(pull(df_P_final, "Pvalues"))) {
+      if (pull(df_P_final, "Pvalues")[i] < pcutoff) {
         if (mean(pull(df_fil1_lev1, df_P_final$variables[i])) > mean(pull(df_fil1_lev2, df_P_final$variables[i]))) {
           df_P_final[i, "group_diff"] <- paste0(levels(pull(df_fil1, f))[1], " > ", levels(pull(df_fil1, f))[2])
         } else if (mean(pull(df_fil1_lev1, df_P_final$variables[i])) < mean(pull(df_fil1_lev2, df_P_final$variables[i]))) {
@@ -129,6 +129,19 @@ gentab_P.t.test <- function(df, v, f, paired = FALSE, FDR = FALSE, cutPval = FAL
         } else {
           df_P_final[i, "group_diff"] <- paste0(levels(pull(df_fil1, f))[1], " = ", levels(pull(df_fil1, f))[2])
           warning(paste0("It's wired that it's the same mean, since the p-value is significative, for  ", df_P_final$variables[i]))
+        }
+      }
+      
+      if (FDR) {
+        if (pull(df_P_final, "PvaluesFDR")[i] < pcutoff) {
+          if (mean(pull(df_fil1_lev1, df_P_final$variables[i])) > mean(pull(df_fil1_lev2, df_P_final$variables[i]))) {
+            df_P_final[i, "group_diff_FDR"] <- paste0(levels(pull(df_fil1, f))[1], " > ", levels(pull(df_fil1, f))[2])
+          } else if (mean(pull(df_fil1_lev1, df_P_final$variables[i])) < mean(pull(df_fil1_lev2, df_P_final$variables[i]))) {
+            df_P_final[i, "group_diff_FDR"] <- paste0(levels(pull(df_fil1, f))[2], " > ", levels(pull(df_fil1, f))[1])
+          } else {
+            df_P_final[i, "group_diff_FDR"] <- paste0(levels(pull(df_fil1, f))[1], " = ", levels(pull(df_fil1, f))[2])
+            warning(paste0("It's wired that it's the same mean, since the p-value is significative, for  ", df_P_final$variables[i]))
+          }
         }
       }
     }

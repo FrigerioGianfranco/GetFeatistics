@@ -1,3 +1,7 @@
+# GetFeatistics v1.0.2
+- the requirement of installing git before installing this package has been added in the README and in the vignettes.
+- minor update in `gentab_P.t.test()`, `gentab_P.1wayANOVA_posthocTukeyHSD()`, `gentab_P.2wayANOVA_posthocTukeyHSD()`: if groupdiff is TRUE and FDR is TRUE, the differences between groups are now showed both considering p-values and FDR corrected p-values (before, if FDR was TRUE, they were showed considering exclusively FDR corrected p-values).
+
 # GetFeatistics v1.0.1
 - **Fix:** `gentab_P.t.test()` now performs paired t-tests correctly by using the vector interface of `stats::t.test()` (rather than the formula method), preventing errors when `paired = TRUE`.
 
