@@ -20,6 +20,7 @@ Before installing, ensure the following are installed:
 
 - R (version ≥ 4.3.1)
 - Java (JDK), with the same architecture as R (64-bit or 32-bit).
+- git
 
 Then open R (or RStudio) and run the following in the R console:
 
@@ -846,19 +847,19 @@ EXAMPLE_T_TEST <- gentab_P.t.test(df = EXAMPLE_TABLE_FOR_STATISTICAL_ANALYSES_tr
                                   filter_sign = FALSE)
 
 EXAMPLE_T_TEST
-#> # A tibble: 10 × 4
-#>    variables   Pvalues PvaluesFDR group_diff
-#>    <chr>         <dbl>      <dbl> <chr>     
-#>  1 molecule01 1.85e- 7   4.62e- 7 F2A > F2B 
-#>  2 molecule02 4.24e- 1   7.07e- 1 NA        
-#>  3 molecule03 1.56e- 8   5.20e- 8 F2B > F2A 
-#>  4 molecule04 7.41e- 1   8.85e- 1 NA        
-#>  5 feature002 2.74e-46   2.74e-45 F2B > F2A 
-#>  6 feature003 4.06e- 3   8.13e- 3 F2B > F2A 
-#>  7 feature004 8.22e-17   4.11e-16 F2B > F2A 
-#>  8 feature005 8.85e- 1   8.85e- 1 NA        
-#>  9 feature007 8.00e- 1   8.85e- 1 NA        
-#> 10 feature009 7.22e- 1   8.85e- 1 NA
+#> # A tibble: 10 × 5
+#>    variables   Pvalues PvaluesFDR group_diff group_diff_FDR
+#>    <chr>         <dbl>      <dbl> <chr>      <chr>         
+#>  1 molecule01 1.85e- 7   4.62e- 7 F2A > F2B  F2A > F2B     
+#>  2 molecule02 4.24e- 1   7.07e- 1 NA         NA            
+#>  3 molecule03 1.56e- 8   5.20e- 8 F2B > F2A  F2B > F2A     
+#>  4 molecule04 7.41e- 1   8.85e- 1 NA         NA            
+#>  5 feature002 2.74e-46   2.74e-45 F2B > F2A  F2B > F2A     
+#>  6 feature003 4.06e- 3   8.13e- 3 F2B > F2A  F2B > F2A     
+#>  7 feature004 8.22e-17   4.11e-16 F2B > F2A  F2B > F2A     
+#>  8 feature005 8.85e- 1   8.85e- 1 NA         NA            
+#>  9 feature007 8.00e- 1   8.85e- 1 NA         NA            
+#> 10 feature009 7.22e- 1   8.85e- 1 NA         NA
 ```
 
 We can also perform a Fold Change analysis! Differently from the t-test,
@@ -957,7 +958,7 @@ EXAMPLE_ANOVA_1WAY <-  gentab_P.1wayANOVA_posthocTukeyHSD(DF = EXAMPLE_TABLE_FOR
                                                            cutPval = FALSE)
 glimpse(EXAMPLE_ANOVA_1WAY)
 #> Rows: 10
-#> Columns: 12
+#> Columns: 15
 #> $ Dependent                      <chr> "molecule01", "molecule02", "molecule03…
 #> $ factor_condition3lev_Pvalue    <dbl> 1.215946e-03, 2.574197e-01, 2.153475e-3…
 #> $ F3B_vs_F3A_Pvalue              <dbl> 1.623657e-01, 2.376120e-01, 0.000000e+0…
@@ -970,6 +971,9 @@ glimpse(EXAMPLE_ANOVA_1WAY)
 #> $ F3B_vs_F3A                     <chr> NA, NA, "F3B > F3A", NA, "F3B > F3A", "…
 #> $ F3C_vs_F3A                     <chr> "F3A > F3C", NA, "F3C > F3A", NA, "F3C …
 #> $ F3C_vs_F3B                     <chr> NA, NA, "F3C > F3B", NA, "F3C > F3B", "…
+#> $ F3B_vs_F3A_FDR                 <chr> NA, NA, "F3B > F3A", NA, "F3B > F3A", "…
+#> $ F3C_vs_F3A_FDR                 <chr> "F3A > F3C", NA, "F3C > F3A", NA, "F3C …
+#> $ F3C_vs_F3B_FDR                 <chr> NA, NA, "F3C > F3B", NA, "F3C > F3B", "…
 ```
 
 A nice graphical visualisation of the distribution of the data can be
@@ -1071,7 +1075,7 @@ This is a glimpse of the content of this table:
 ``` r
 glimpse(FINAL_FEAT_INFO_COMBINED_WITH_STATISTICS)
 #> Rows: 10
-#> Columns: 42
+#> Columns: 51
 #> $ featname                       <chr> NA, NA, NA, NA, "feature002", "feature0…
 #> $ rt                             <dbl> NA, NA, NA, NA, 288, 408, 528, 465, 342…
 #> $ mz                             <dbl> NA, NA, NA, NA, 146.0451, 203.0822, 148…
@@ -1114,6 +1118,15 @@ glimpse(FINAL_FEAT_INFO_COMBINED_WITH_STATISTICS)
 #> $ F4C_vs_F4B                     <chr> "F4B > F4C", NA, NA, NA, "F4C > F4B", N…
 #> $ F4D_vs_F4B                     <chr> NA, NA, NA, NA, "F4D > F4B", NA, "F4D >…
 #> $ F4D_vs_F4C                     <chr> NA, NA, NA, NA, "F4C > F4D", NA, "F4D >…
+#> $ F3B_vs_F3A_FDR                 <chr> NA, NA, "F3B > F3A", NA, "F3B > F3A", "…
+#> $ F3C_vs_F3A_FDR                 <chr> "F3A > F3C", NA, "F3C > F3A", NA, "F3C …
+#> $ F3C_vs_F3B_FDR                 <chr> NA, NA, "F3C > F3B", NA, "F3C > F3B", "…
+#> $ F4B_vs_F4A_FDR                 <chr> NA, NA, NA, NA, "F4A > F4B", NA, "F4B >…
+#> $ F4C_vs_F4A_FDR                 <chr> NA, NA, NA, NA, "F4C > F4A", NA, "F4C >…
+#> $ F4D_vs_F4A_FDR                 <chr> NA, NA, NA, NA, NA, NA, "F4D > F4A", NA…
+#> $ F4C_vs_F4B_FDR                 <chr> "F4B > F4C", NA, NA, NA, "F4C > F4B", N…
+#> $ F4D_vs_F4B_FDR                 <chr> NA, NA, NA, NA, "F4D > F4B", NA, "F4D >…
+#> $ F4D_vs_F4C_FDR                 <chr> NA, NA, NA, NA, "F4C > F4D", NA, "F4D >…
 ```
 
 Which we can finally export it this way:

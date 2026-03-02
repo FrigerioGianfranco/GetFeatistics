@@ -1,5 +1,18 @@
 # Changelog
 
+## GetFeatistics v1.0.2
+
+- the requirement of installing git before installing this package has
+  been added in the README and in the vignettes.
+- minor update in
+  [`gentab_P.t.test()`](https://frigeriogianfranco.github.io/GetFeatistics/reference/gentab_P.t.test.md),
+  [`gentab_P.1wayANOVA_posthocTukeyHSD()`](https://frigeriogianfranco.github.io/GetFeatistics/reference/gentab_P.1wayANOVA_posthocTukeyHSD.md),
+  [`gentab_P.2wayANOVA_posthocTukeyHSD()`](https://frigeriogianfranco.github.io/GetFeatistics/reference/gentab_P.2wayANOVA_posthocTukeyHSD.md):
+  if groupdiff is TRUE and FDR is TRUE, the differences between groups
+  are now showed both considering p-values and FDR corrected p-values
+  (before, if FDR was TRUE, they were showed considering exclusively FDR
+  corrected p-values).
+
 ## GetFeatistics v1.0.1
 
 - **Fix:**
