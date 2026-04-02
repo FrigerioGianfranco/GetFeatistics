@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">GetFeatistics</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -45,7 +45,8 @@
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">get_feat_info_from_MSDial</span><span class="op">(</span></span>
 <span>  MSDIAL_raw_table <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  MSDIAL_raw_table_file_name <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  add_AnnoLevels <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span>  add_AnnoLevels <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  add_neutral_mass_calc <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -63,6 +64,10 @@
 
 <dt id="arg-add-annolevels">add_AnnoLevels<a class="anchor" aria-label="anchor" href="#arg-add-annolevels"></a></dt>
 <dd><p>logical. If TRUE, an additional column named "AnnoLevels" will be added, and the annotation levels will be calculated considering the cut-offs reported in https://doi.org/10.1007/s00216-022-04207-z.</p></dd>
+
+
+<dt id="arg-add-neutral-mass-calc">add_neutral_mass_calc<a class="anchor" aria-label="anchor" href="#arg-add-neutral-mass-calc"></a></dt>
+<dd><p>logical. If TRUE, an additional column named "neutral_mass_calc" will be added, containing the calculated neutral mass from the assigned adduct.</p></dd>
 
 </dl></div>
     <div class="section level2">

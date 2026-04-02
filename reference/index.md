@@ -21,6 +21,9 @@
   : Auto-scale values
 - [`build_long_vector_of_colors()`](https://frigeriogianfranco.github.io/GetFeatistics/reference/build_long_vector_of_colors.md)
   : Build a vector with colors.
+- [`calculate_neutral_mass()`](https://frigeriogianfranco.github.io/GetFeatistics/reference/calculate_neutral_mass.md)
+  : Calculate neutral mass considering the observed m/z and the assigned
+  adducts.
 - [`check_if_fix_names_needed()`](https://frigeriogianfranco.github.io/GetFeatistics/reference/check_if_fix_names_needed.md)
   : Check if names can be fixed
 - [`checkmolecules_in_feat_table()`](https://frigeriogianfranco.github.io/GetFeatistics/reference/checkmolecules_in_feat_table.md)

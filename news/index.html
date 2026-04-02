@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">GetFeatistics</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -35,6 +35,11 @@
 
     </div>
 
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="1.1" id="getfeatistics-v11">GetFeatistics v1.1<a class="anchor" aria-label="anchor" href="#getfeatistics-v11"></a></h2>
+<ul><li>Created the new function <code><a href="../reference/calculate_neutral_mass.html">calculate_neutral_mass()</a></code>, that calculates the neutral mass for each given observed m/z and estimated adduct.</li>
+<li>Added the argument <code>add_neutral_mass_calc</code> to the function <code><a href="../reference/get_feat_info_from_MSDial.html">get_feat_info_from_MSDial()</a></code>. If TRUE is passed to it, the function <code><a href="../reference/calculate_neutral_mass.html">calculate_neutral_mass()</a></code> is internally applied and those calculated neutral masses are added in a new column called ‘neutral_mass_calc’.</li>
+</ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="1.0.2" id="getfeatistics-v102">GetFeatistics v1.0.2<a class="anchor" aria-label="anchor" href="#getfeatistics-v102"></a></h2>
 <ul><li>the requirement of installing git before installing this package has been added in the README and in the vignettes.</li>
