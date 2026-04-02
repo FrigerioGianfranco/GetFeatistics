@@ -7,7 +7,8 @@
 get_feat_info_from_MSDial(
   MSDIAL_raw_table = NULL,
   MSDIAL_raw_table_file_name = NULL,
-  add_AnnoLevels = FALSE
+  add_AnnoLevels = FALSE,
+  add_neutral_mass_calc = FALSE
 )
 }
 \arguments{
@@ -16,6 +17,8 @@ get_feat_info_from_MSDial(
 \item{MSDIAL_raw_table_file_name}{NULL or a character vector of length 1. The name of the .txt file of the MSDIAL exported table to import. It is preferred to use this argument instead of the previous, so the table will be also imported with the correct column types and information.}
 
 \item{add_AnnoLevels}{logical. If TRUE, an additional column named "AnnoLevels" will be added, and the annotation levels will be calculated considering the cut-offs reported in https://doi.org/10.1007/s00216-022-04207-z.}
+
+\item{add_neutral_mass_calc}{logical. If TRUE, an additional column named "neutral_mass_calc" will be added, containing the calculated neutral mass from the assigned adduct.}
 }
 \value{
 A tibble with the information for each feature.

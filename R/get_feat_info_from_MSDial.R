@@ -1,5 +1,3 @@
-
-
 #' Get a featINFO table from the MSDIAL export file.
 #'
 #' Given a table exported from MSDIAL (exporting the Area from MS-Dial 5.1.230912), it creates the featINFO table, i.e. the table with the full information on each feature.
@@ -7,11 +5,12 @@
 #' @param MSDIAL_raw_table NULL or a dataframe. Load on R the exported table using write_tsv or write_csv, then directly pass it in this argument. This argument will be ignored if the following one is not NULL.
 #' @param MSDIAL_raw_table_file_name NULL or a character vector of length 1. The name of the .txt file of the MSDIAL exported table to import. It is preferred to use this argument instead of the previous, so the table will be also imported with the correct column types and information.
 #' @param add_AnnoLevels logical. If TRUE, an additional column named "AnnoLevels" will be added, and the annotation levels will be calculated considering the cut-offs reported in https://doi.org/10.1007/s00216-022-04207-z.
+#' @param add_neutral_mass_calc logical. If TRUE, an additional column named "neutral_mass_calc" will be added, containing the calculated neutral mass from the assigned adduct.
 #'
 #' @return A tibble with the information for each feature.
 #'
 #' @export
-get_feat_info_from_MSDial <- function(MSDIAL_raw_table = NULL, MSDIAL_raw_table_file_name = NULL, add_AnnoLevels = FALSE) {
+get_feat_info_from_MSDial <- function(MSDIAL_raw_table = NULL, MSDIAL_raw_table_file_name = NULL, add_AnnoLevels = FALSE, add_neutral_mass_calc = FALSE) {
   
   if (!is.null(MSDIAL_raw_table_file_name)) {
     if (length(MSDIAL_raw_table_file_name) != 1) {stop("MSDIAL_raw_table_file_name must be a character vector of length 1")}
@@ -30,6 +29,10 @@ get_feat_info_from_MSDial <- function(MSDIAL_raw_table = NULL, MSDIAL_raw_table_
   if (length(add_AnnoLevels)!=1) {stop("add_AnnoLevels must be exclusively TRUE or FALSE")}
   if (!is.logical(add_AnnoLevels)) {stop("add_AnnoLevels must be exclusively TRUE or FALSE")}
   if (is.na(add_AnnoLevels)) {stop("add_AnnoLevels must be exclusively TRUE or FALSE")}
+  
+  if (length(add_neutral_mass_calc)!=1) {stop("add_neutral_mass_calc must be exclusively TRUE or FALSE")}
+  if (!is.logical(add_neutral_mass_calc)) {stop("add_neutral_mass_calc must be exclusively TRUE or FALSE")}
+  if (is.na(add_neutral_mass_calc)) {stop("add_neutral_mass_calc must be exclusively TRUE or FALSE")}
   
   
   MSDIAL_raw_table_selected <- MSDIAL_raw_table[,1:which(colnames(MSDIAL_raw_table)== "Class")]
@@ -96,6 +99,29 @@ get_feat_info_from_MSDial <- function(MSDIAL_raw_table = NULL, MSDIAL_raw_table_
   }
   
   feat_info_output <- MSDIAL_raw_table_selected_better
+  
+  if (add_neutral_mass_calc) {
+    if (!"Average_Mz" %in% colnames(feat_info_output)) {
+      warning("'Average_Mz' was not present in the column names, so the neutral masses cannot be calculated")
+    }
+    if (!"Adduct_type" %in% colnames(feat_info_output)) {
+      warning("'Adduct_type' was not present in the column names, so the neutral masses cannot be calculated")
+    }
+    
+    if ("Average_Mz"%in% colnames(feat_info_output) & "Adduct_type" %in% colnames(feat_info_output)) {
+      
+      if ("neutral_mass_calc" %in% colnames(feat_info_output)) {
+        feat_info_output <- select(feat_info_output, -neutral_mass_calc)
+        warning("'neutral_mass_calc' was already present in the column names, note that now it is being replaced")
+      }
+      
+      feat_info_output <- add_column(feat_info_output,
+                                     neutral_mass_calc = rep(NA_real_, nrow(feat_info_output)))
+      
+      feat_info_output$neutral_mass_calc <- calculate_neutral_mass(observed_mz = feat_info_output$Average_Mz,
+                                                                   adduct = feat_info_output$Adduct_type)
+    }
+  }
   
   if (add_AnnoLevels) {
     

@@ -1,6 +1,6 @@
 Package: GetFeatistics
 Title: Getting streamlined elaboration of metabolomics data
-Version: 1.0.2
+Version: 1.1
 Authors@R: 
     person("Gianfranco", "Frigerio", email = "frigerio.gianfranco@hsr.it", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0002-3538-1443"))
@@ -10,7 +10,7 @@ Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.3
 Depends: R (>= 4.3.1)
-Imports: tidyverse, ggpubr, ggrepel, lmerTest, AER, MuMIn, writexl, xlsx, gridExtra, FELLA, igraph, pals, ggdendro, ggdendroplot, ggnewscale, httr, jsonlite, utils, classyfireR
+Imports: tidyverse, ggpubr, ggrepel, lmerTest, AER, MuMIn, writexl, xlsx, gridExtra, FELLA, igraph, pals, ggdendro, ggdendroplot, ggnewscale, httr, jsonlite, utils, classyfireR, MSbox
 Remotes: bioc::FELLA, github::nicolash2/ggdendroplot, github::aberHRML/classyfireR
 Suggests: 
     knitr,

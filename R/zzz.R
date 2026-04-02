@@ -19,6 +19,7 @@
 #' @import jsonlite
 #' @import utils
 #' @import classyfireR
+#' @import MSbox
 
 .onLoad <- function(libname, pkgname) {
   library(tidyverse)
@@ -40,6 +41,7 @@
   library(jsonlite)
   library(utils)
   library(classyfireR)
+  library(MSbox)
 }
 
 .onAttach <- function(libname, pkgname) {
