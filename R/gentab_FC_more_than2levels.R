@@ -132,9 +132,13 @@ gentab_FC_more_than2levels <- function(df, v, f, second_to_first_ratio = TRUE, p
       
     }
     
-    colnames(df_final)[which(colnames(df_final) == "this_new_col_FC")] <- paste0(THIS_LEV1, "_vs_", THIS_LEV2, "_FC")
-    colnames(df_final)[which(colnames(df_final) == "this_new_col_logFC")] <- paste0(THIS_LEV1, "_vs_", THIS_LEV2, "_logFC")
-    
+    if (second_to_first_ratio) {
+      colnames(df_final)[which(colnames(df_final) == "this_new_col_FC")] <- paste0(THIS_LEV2, "_vs_", THIS_LEV1, "_FC")
+      colnames(df_final)[which(colnames(df_final) == "this_new_col_logFC")] <- paste0(THIS_LEV2, "_vs_", THIS_LEV1, "_logFC")
+    } else {
+      colnames(df_final)[which(colnames(df_final) == "this_new_col_FC")] <- paste0(THIS_LEV1, "_vs_", THIS_LEV2, "_FC")
+      colnames(df_final)[which(colnames(df_final) == "this_new_col_logFC")] <- paste0(THIS_LEV1, "_vs_", THIS_LEV2, "_logFC")
+    }
   }
   
   

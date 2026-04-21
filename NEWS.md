@@ -1,3 +1,6 @@
+# GetFeatistics v1.1.1
+- **Fix:** `gentab_FC_more_than2levels()` now correctly report the paired comparison order in the column names (before it just showed the opposite order of the two groups if second_to_first_ratio was TRUE)
+
 # GetFeatistics v1.1
 - Created the new function `calculate_neutral_mass()`, that calculates the neutral mass for each given observed m/z and estimated adduct.
 - Added the argument `add_neutral_mass_calc` to the function `get_feat_info_from_MSDial()`. If TRUE is passed to it, the function `calculate_neutral_mass()` is internally applied and those calculated neutral masses are added in a new column called 'neutral_mass_calc'.
