@@ -1,5 +1,13 @@
 # Changelog
 
+## GetFeatistics v1.1.1
+
+- **Fix:**
+  [`gentab_FC_more_than2levels()`](https://frigeriogianfranco.github.io/GetFeatistics/reference/gentab_FC_more_than2levels.md)
+  now correctly report the paired comparison order in the column names
+  (before it just showed the opposite order of the two groups if
+  second_to_first_ratio was TRUE)
+
 ## GetFeatistics v1.1
 
 - Created the new function
