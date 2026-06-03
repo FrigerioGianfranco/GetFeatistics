@@ -1,3 +1,7 @@
+# GetFeatistics v1.1.2
+- **Fix:** `zero_prefixing()` now correctly reports the number of zeros when the number passed to the 'highest' argument is usually showed with the scientific notation (for example for 100000000 as 'highest', before it reported a reduced numbers of zeros because it was wrongly counting the number of characters in "1e+08". Now that has been fixed)
+
+
 # GetFeatistics v1.1.1
 - **Fix:** `gentab_FC_more_than2levels()` now correctly report the paired comparison order in the column names (before it just showed the opposite order of the two groups if second_to_first_ratio was TRUE)
 

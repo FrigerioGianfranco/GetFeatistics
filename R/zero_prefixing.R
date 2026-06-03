@@ -38,8 +38,7 @@ zero_prefixing <- function(numbers, highest = max(numbers), additional_prefix = 
     }
     
     
-    total_wanted_char <- nchar(floor(abs(highest)))
-    
+    total_wanted_char <- nchar(format(floor(abs(highest)), scientific = FALSE, trim = TRUE))
     output_vector <- as.character(numbers)
     
     for (i in 1:length(output_vector)) {
