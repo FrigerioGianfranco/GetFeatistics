@@ -25,6 +25,7 @@ Before installing, ensure the following are installed:
 Then open R (or RStudio) and run the following in the R console:
 
 ``` r
+
 if (!require("devtools", quietly = TRUE)) {  
   install.packages("devtools")
 }
@@ -47,12 +48,14 @@ architecture. You can check R’s architecture by running in the R
 console:
 
 ``` r
+
 R.version$arch
 ```
 
 To check Java’s architecture, open Command Prompt and run:
 
 ``` r
+
 java -version
 ```
 
@@ -65,6 +68,7 @@ The following line will load the package and all its dependencies in
 your current working environment. Let’s start the fun!
 
 ``` r
+
 library(GetFeatistics)
 ```
 
@@ -74,6 +78,7 @@ In this vignette, we will use some mock data that simulate targeted and
 untargeted metabolomics experiments.
 
 ``` r
+
 create_df_examples()
 #> 
 #>  In the Global Environment, created the object  df_example_generic
@@ -106,6 +111,7 @@ least two tables:
     using the *df_example_targeted*:
 
 ``` r
+
 df_example_targeted
 #> # A tibble: 83 × 7
 #>    samples          molecule01 molecule01_IS molecule02 molecule02_IS molecule03
@@ -136,6 +142,7 @@ df_example_targeted
 Not clear? Have a taste of the *df_example_targeted_legend*:
 
 ``` r
+
 df_example_targeted_legend
 #> # A tibble: 83 × 6
 #>    samples               sample_type molecule01 molecule02 molecule03 molecule04
@@ -173,6 +180,7 @@ df_example_targeted_legend
 Yes, everything as in the *df_example_targeted_compounds_legend*:
 
 ``` r
+
 df_example_targeted_compounds_legend
 #> # A tibble: 4 × 4
 #>   compounds  matched_IS    weighting unit 
@@ -187,6 +195,7 @@ Now that we have all the tables, we just need to pass them as the three
 arguments of the *get_targeted_elaboration* function!
 
 ``` r
+
 TARGETED_EXAMPLE_RESULTS <- get_targeted_elaboration(data_intensity = df_example_targeted,
                                                      data_legend = df_example_targeted_legend,
                                                      compound_legend = df_example_targeted_compounds_legend)
@@ -211,6 +220,7 @@ Amazing! Let’s check for example how the *results_concentrations* table
 looks like:
 
 ``` r
+
 TARGETED_EXAMPLE_RESULTS$results_concentrations
 #> # A tibble: 83 × 6
 #>    samples               sample_type molecule01 molecule02 molecule03 molecule04
@@ -233,6 +243,7 @@ enough, that numeric value is reported in the
 *summary_regression_models* table:
 
 ``` r
+
 TARGETED_EXAMPLE_RESULTS$summary_regression_models
 #> # A tibble: 4 × 5
 #>   parameter     molecule01 molecule02  molecule03 molecule04
@@ -249,6 +260,7 @@ of ggplots that you can either print on R or export using the
 *export_figures* function.
 
 ``` r
+
 TARGETED_EXAMPLE_CALIBRATION_CURVES <- plot_calibration_curves(targeted_elaboration = TARGETED_EXAMPLE_RESULTS)
 
 TARGETED_EXAMPLE_CALIBRATION_CURVES$molecule01
@@ -258,6 +270,7 @@ TARGETED_EXAMPLE_CALIBRATION_CURVES$molecule01
 ![](GF_vignette_files/figure-html/unnamed-chunk-13-1.png)
 
 ``` r
+
 export_figures(TARGETED_EXAMPLE_CALIBRATION_CURVES, exprt_fig_type = "pdf")
 ```
 
@@ -270,12 +283,14 @@ what we will need later for the statistics. Two easy steps.
 1.  Collect the data frame of results of unknown samples in an object:
 
 ``` r
+
 TARGETED_RESULTS_FOR_STATISTICS <- filter(TARGETED_EXAMPLE_RESULTS$results_concentrations, sample_type == "unknown")
 ```
 
 2.  Collect the name of the variables in another distinct object:
 
 ``` r
+
 TARGETED_MOLECULES <- TARGETED_EXAMPLE_RESULTS$compound_legend$compounds
 ```
 
@@ -287,6 +302,7 @@ a table of feature intensities like this (This is just a simple example,
 usually there are many more features!):
 
 ``` r
+
 df_example_feat_intensities
 #> # A tibble: 9 × 78
 #>   featname   QCpooled_tot01 QCpooled_tot02 blank_untargeted01 QCpooled_tot03
@@ -315,6 +331,7 @@ times, m/z, and any other valuable information related to that feature,
 such as this one:
 
 ``` r
+
 df_example_feat_info
 #> # A tibble: 9 × 3
 #>   featname      rt    mz
@@ -338,6 +355,7 @@ functions if you want to know more!)
 
 ``` r
 
+
 FEAT_TABLE_FROM_MSDIAL <- get_feat_table_from_MSDial(MSDIAL_raw_table_file_name = "FILE_AREA_EXPORTED_FROM_MSDIAL.txt",
                                                      n_last_coloums_to_delete = 2)
 
@@ -355,6 +373,7 @@ some examples (check the full documentation to learn how what to pass in
 the arguments):
 
 ``` r
+
 FEAT_TABLE_FROM_PATROON <- get_feat_table_from_patRoon(patRoon_featureGroups = _featureGroups_DATA_FRAME_FROM_patRoon_)
 
 FEAT_INFO_FROM_PATROON <- get_feat_info_from_patRoon(patRoon_featureGroups = _featureGroups_DATA_FRAME_FROM_patRoon_,
@@ -371,6 +390,7 @@ are present in your feature tables. To do so, you need to prepare a
 table like *df_example_melecules_to_search*:
 
 ``` r
+
 df_example_melecules_to_search
 #> # A tibble: 8 × 4
 #>   coumpound        rt    mz   CID
@@ -406,6 +426,7 @@ Then, you can use the function *checkmolecules_in_feat_table* passing:
   molecules will be marked as AnnoLevel “1” in the featINFO table.
 
 ``` r
+
 df_example_feat_info_withLev1 <- checkmolecules_in_feat_table(featmatrix = df_example_feat_intensities,
                                                               featinfo = df_example_feat_info,
                                                               molecules_list = df_example_melecules_to_search,
@@ -456,6 +477,7 @@ First, you need to prepare a table containing the following information:
   <https://doi.org/10.3390/molecules27082580>.
 
 ``` r
+
 df_example_qc_sampletype
 #> # A tibble: 77 × 3
 #>    samples            action  qc_group
@@ -493,6 +515,7 @@ table the features that will not meet the cut-offs:
   at least one of the groups defined in *QC_to_merge* will be kept.
 
 ``` r
+
 UNTARGETED_FEAT_TABLE_QC_FILTERED <- QCs_process(featmatrix = df_example_feat_intensities,
                                                  sampletype = df_example_qc_sampletype,
                                                  sep_QC = TRUE,
@@ -519,6 +542,7 @@ I’d suggest also to filter the featINFO table accordingly, you could run
 something like this:
 
 ``` r
+
 UNTARGETED_FEAT_INFO_QC_FILTERED <- filter(df_example_feat_info_withLev1,
                                            featname %in% UNTARGETED_FEAT_TABLE_QC_FILTERED$featname)
 ```
@@ -530,6 +554,7 @@ the samples as observations (so as rows) and the features as variables
 that transpose our current feature table:
 
 ``` r
+
 UNTARGETED_RESULTS_FOR_STATISTICS <- transpose_feat_table(UNTARGETED_FEAT_TABLE_QC_FILTERED)
 ```
 
@@ -537,6 +562,7 @@ Finally, we also need to collect the feature names in a character vector
 object:
 
 ``` r
+
 FEATURES_CONSIDERED <- colnames(UNTARGETED_RESULTS_FOR_STATISTICS)[-1]
 ```
 
@@ -551,6 +577,7 @@ data from the *df_example_sample_data* which contains three categorical
 variables and two numerical variables.
 
 ``` r
+
 EXAMPLE_TABLE_FOR_STATISTICAL_ANALYSES <- df_example_sample_data %>%
   left_join(TARGETED_RESULTS_FOR_STATISTICS, by = "samples") %>%
   left_join(UNTARGETED_RESULTS_FOR_STATISTICS, by = "samples")
@@ -561,6 +588,7 @@ variables from the targeted analyses with the character vector of the
 feature names.
 
 ``` r
+
 ALL_POTENTIAL_COMPOUNDS <- c(TARGETED_MOLECULES, FEATURES_CONSIDERED)
 ```
 
@@ -584,6 +612,7 @@ such as setting a defined number of digital places, or how to consider
 missing values.
 
 ``` r
+
 EXAMPLE_DESCRIPTIVE_STATISTICS_RESULTS <- gentab_descr(df = EXAMPLE_TABLE_FOR_STATISTICAL_ANALYSES,
                                                        v = ALL_POTENTIAL_COMPOUNDS,
                                                        f = "factor_condition3lev",
@@ -599,6 +628,7 @@ Don’t forget to export it as an external table with the
 of your next publication!
 
 ``` r
+
 export_the_table(EXAMPLE_DESCRIPTIVE_STATISTICS_RESULTS, exprtname = "The_results_of_descriptive_statistics", exprt_type = "xlsx")
 ```
 
@@ -612,6 +642,7 @@ ways:
     resembles a Gaussian:
 
 ``` r
+
 DENSITY_PLOTS <- test_normality_density_plot(df = EXAMPLE_TABLE_FOR_STATISTICAL_ANALYSES, v = ALL_POTENTIAL_COMPOUNDS)
 DENSITY_PLOTS[[1]]
 ```
@@ -622,6 +653,7 @@ DENSITY_PLOTS[[1]]
     grey area of the graph:
 
 ``` r
+
 QQPLOT <- test_normality_q_q_plot(df = EXAMPLE_TABLE_FOR_STATISTICAL_ANALYSES, v = ALL_POTENTIAL_COMPOUNDS)
 QQPLOT[[1]]
 ```
@@ -633,6 +665,7 @@ QQPLOT[[1]]
     distributed:
 
 ``` r
+
 SHAPIRO_TABLE <- test_normality_Shapiro_table(df = EXAMPLE_TABLE_FOR_STATISTICAL_ANALYSES, v = ALL_POTENTIAL_COMPOUNDS, pvalcutoff = 0.05, cutpval = FALSE)
 SHAPIRO_TABLE
 #> # A tibble: 10 × 4
@@ -687,6 +720,7 @@ to prepare the arguments:
 Hopefully running the example will make things clear:
 
 ``` r
+
 EXAMPLE_TABLE_FOR_STATISTICAL_ANALYSES_transf <-  transf_data(df = EXAMPLE_TABLE_FOR_STATISTICAL_ANALYSES,
                                                               v = ALL_POTENTIAL_COMPOUNDS,
                                                               missing_replace = TRUE,
@@ -705,6 +739,7 @@ missing value replaced, “\_ln” for the log-transformation, and
 “paretosc” for the pareto scaling:
 
 ``` r
+
 glimpse(EXAMPLE_TABLE_FOR_STATISTICAL_ANALYSES_transf)
 #> Rows: 52
 #> Columns: 47
@@ -760,6 +795,7 @@ glimpse(EXAMPLE_TABLE_FOR_STATISTICAL_ANALYSES_transf)
 Those name are also saved in different objects:
 
 ``` r
+
 ALL_POTENTIAL_COMPOUNDS_transf_mr
 #>  [1] "molecule01_mr" "molecule02_mr" "molecule03_mr" "molecule04_mr"
 #>  [5] "feature002_mr" "feature003_mr" "feature004_mr" "feature005_mr"
@@ -784,6 +820,7 @@ have only the data of interest, and without those wired suffix, just run
 the function: *clean_transf_colnames*
 
 ``` r
+
 EXAMPLE_TABLE_FOR_STATISTICAL_ANALYSES_transf_cleaned <- clean_transf_colnames(df = EXAMPLE_TABLE_FOR_STATISTICAL_ANALYSES_transf,
                                                                                v = ALL_POTENTIAL_COMPOUNDS,
                                                                                suffix_to_consider = "_mr_ln_paretosc")
@@ -836,6 +873,7 @@ other functions of this package:
   *pcutoff* will be filtered out.
 
 ``` r
+
 EXAMPLE_T_TEST <- gentab_P.t.test(df = EXAMPLE_TABLE_FOR_STATISTICAL_ANALYSES_transf_cleaned,
                                   v = ALL_POTENTIAL_COMPOUNDS,
                                   f = "factor_condition2lev",
@@ -874,6 +912,7 @@ of the group that is specified as the second level of the factor
 compared to the first; the opposite will happen if FALSE.
 
 ``` r
+
 EXAMPLE_TABLE_FOR_STATISTICAL_ANALYSES_missing_repl <-  transf_data(df = EXAMPLE_TABLE_FOR_STATISTICAL_ANALYSES,
                                                                     v = ALL_POTENTIAL_COMPOUNDS,
                                                                     missing_replace = TRUE,
@@ -922,6 +961,7 @@ arguments as default or personalise them, make sure to read the
 documentation with *?Volcano_ttest_FC* first!
 
 ``` r
+
 Volcano_plot_ttest_FC <- Volcano_ttest_FC(ttest_results = EXAMPLE_T_TEST,
                                           FC_results = EXAMPLE_FC,
                                           FDR = TRUE,
@@ -948,6 +988,7 @@ to the *gentab_P.t.test* function, obviously in the third one we need to
 put the name of a categorical variable with three or more levels:
 
 ``` r
+
 EXAMPLE_ANOVA_1WAY <-  gentab_P.1wayANOVA_posthocTukeyHSD(DF = EXAMPLE_TABLE_FOR_STATISTICAL_ANALYSES_transf_cleaned,
                                                            v = ALL_POTENTIAL_COMPOUNDS,
                                                            f = "factor_condition3lev",
@@ -980,6 +1021,7 @@ A nice graphical visualisation of the distribution of the data can be
 obtained with the following function that generate some boxplots:
 
 ``` r
+
 EXAMPLE_BOX_PLOTS <- getBoxplots(df = EXAMPLE_TABLE_FOR_STATISTICAL_ANALYSES_transf_cleaned,
                                  v = ALL_POTENTIAL_COMPOUNDS,
                                  f = "factor_condition3lev")
@@ -993,6 +1035,7 @@ We could use the *export_figures* to export them all in a single pdf
 file:
 
 ``` r
+
 export_figures(EXAMPLE_BOX_PLOTS, exprtname_figures = "All_the_amazing_boxplots", exprt_fig_type = "pdf")
 ```
 
@@ -1002,6 +1045,7 @@ argument *only_on_positive* that you can set to TRUE if you want to be
 sure the FC analysis is performed only on those positive data.
 
 ``` r
+
 EXAMPLE_multiple_FC <- gentab_FC_more_than2levels(df = EXAMPLE_TABLE_FOR_STATISTICAL_ANALYSES_missing_repl_cleaned,
                                                   v = ALL_POTENTIAL_COMPOUNDS,
                                                   f = "factor_condition3lev",
@@ -1028,6 +1072,7 @@ categorical factor in the third argument and if we want interactions in
 the *interact* argument:
 
 ``` r
+
 EXAMPLE_ANOVA_2WAY <-  gentab_P.2wayANOVA_posthocTukeyHSD(DF = EXAMPLE_TABLE_FOR_STATISTICAL_ANALYSES_transf_cleaned,
                                                            v = ALL_POTENTIAL_COMPOUNDS,
                                                            f = c("factor_condition3lev", "factor_condition4lev"),
@@ -1046,6 +1091,7 @@ this package is GetFeatistics (get features + statistics!!)
 You can do that with the *addINFO_to_table* function:
 
 ``` r
+
 FINAL_FEAT_INFO_COMBINED_WITH_STATISTICS <- addINFO_to_table(df1 = EXAMPLE_ANOVA_2WAY,  
                                                              colfeat_df1 = "Dependent",
                                                              dfINFO = UNTARGETED_FEAT_INFO_QC_FILTERED,
@@ -1073,6 +1119,7 @@ course!
 This is a glimpse of the content of this table:
 
 ``` r
+
 glimpse(FINAL_FEAT_INFO_COMBINED_WITH_STATISTICS)
 #> Rows: 10
 #> Columns: 51
@@ -1132,6 +1179,7 @@ glimpse(FINAL_FEAT_INFO_COMBINED_WITH_STATISTICS)
 Which we can finally export it this way:
 
 ``` r
+
 export_the_table(FINAL_FEAT_INFO_COMBINED_WITH_STATISTICS)
 ```
 
@@ -1148,6 +1196,7 @@ indicating whether the compound is a molecule from the targeted analysis
 or a feature from the untargeted experiment.
 
 ``` r
+
 COMPOUNDS_INFO <- tibble(The_compounds = ALL_POTENTIAL_COMPOUNDS,
                            type = factor(ifelse(grepl("feature", ALL_POTENTIAL_COMPOUNDS), "feat", "mol"), levels = c("feat", "mol")))
 ```
@@ -1182,6 +1231,7 @@ and loading plots as ggplot objects, and the values of all principal
 components for the scores and loading attached to the passed dataframes.
 
 ``` r
+
 PCA_list <- getPCA(df = EXAMPLE_TABLE_FOR_STATISTICAL_ANALYSES_transf_cleaned,
                    v = ALL_POTENTIAL_COMPOUNDS,
                    s = NULL,
@@ -1235,6 +1285,7 @@ PCA_list$score_plot
 
 ``` r
 
+
 PCA_list$loading_plot
 ```
 
@@ -1273,6 +1324,7 @@ analysis.
   list as the element passed to *f* and/or *fv* to ensure the matching.
 
 ``` r
+
 HeatMap <- getHeatMap(df = EXAMPLE_TABLE_FOR_STATISTICAL_ANALYSES_transf_cleaned,
                       v = ALL_POTENTIAL_COMPOUNDS,
                       s = "samples",
@@ -1339,6 +1391,7 @@ is to keep only results with a p-value below what we indicate in
 “\<0.001”.
 
 ``` r
+
 EXAMPLE_LINEAR_MODEL <- gentab_lm_long(df = EXAMPLE_TABLE_FOR_STATISTICAL_ANALYSES_transf_cleaned,
                                        dep = ALL_POTENTIAL_COMPOUNDS,
                                        form_ind = "factor_condition2lev + factor_condition3lev + numerical_condition_a + numerical_condition_b",
@@ -1373,6 +1426,7 @@ P-values (usefull for VOlcano plots, see later) - *variation_perc* is
 the calculated variation percentage
 
 ``` r
+
 glimpse(EXAMPLE_LINEAR_MODEL)
 #> Rows: 60
 #> Columns: 13
@@ -1412,6 +1466,7 @@ of all the dependent variables at once:
   *line2_position*.
 
 ``` r
+
 EXAMPLE_VOLCANO_PLOT_1 <- Volcano_lm(tab = EXAMPLE_LINEAR_MODEL,
                                      ind_main = "numerical_condition_a",
                                      x_values = "variation_perc",
@@ -1431,6 +1486,7 @@ EXAMPLE_VOLCANO_PLOT_1
 As usual, we can easily export it in this way:
 
 ``` r
+
 export_figures(EXAMPLE_VOLCANO_PLOT_1, exprt_fig_type = "png", plot_sizes = c(14, 14), plot_unit = "in")
 ```
 
@@ -1440,6 +1496,7 @@ independent variables includes also the group we want to check (compared
 to the reference group):
 
 ``` r
+
 EXAMPLE_VOLCANO_PLOT_2 <- Volcano_lm(tab = EXAMPLE_LINEAR_MODEL,
                                      ind_main = "factor_condition2levF2B",
                                      x_values = "variation_perc",
@@ -1471,6 +1528,7 @@ argument of the *gentab_lm_long* function (as multiple models will be
 fitted, each for each dependent variable passed in the second argument):
 
 ``` r
+
 EXAMPLE_MIXED_LINEAR_MODEL <- gentab_lm_long(df = EXAMPLE_TABLE_FOR_STATISTICAL_ANALYSES_transf_cleaned,
                                              dep = ALL_POTENTIAL_COMPOUNDS,
                                              form_ind = "factor_condition2lev + numerical_condition_a + (1|factor_condition4lev)",
@@ -1496,6 +1554,7 @@ EXAMPLE_MIXED_LINEAR_MODEL <- gentab_lm_long(df = EXAMPLE_TABLE_FOR_STATISTICAL_
     we transformed the data, we should transform these data as well:
 
 ``` r
+
 LOD_molecules_ln_paretosc <- c(molecule01 = (log(10)-mean(log(EXAMPLE_TABLE_FOR_STATISTICAL_ANALYSES$molecule01)))/sqrt(sd(log(EXAMPLE_TABLE_FOR_STATISTICAL_ANALYSES$molecule01))),
                                molecule02 = (log(100)-mean(log(EXAMPLE_TABLE_FOR_STATISTICAL_ANALYSES$molecule02)))/sqrt(sd(log(EXAMPLE_TABLE_FOR_STATISTICAL_ANALYSES$molecule02))),
                                molecule03 = (log(1)-mean(log(EXAMPLE_TABLE_FOR_STATISTICAL_ANALYSES$molecule03)))/sqrt(sd(log(EXAMPLE_TABLE_FOR_STATISTICAL_ANALYSES$molecule03))),
@@ -1553,6 +1612,7 @@ And it can take quite some time if you have hundreds of compounds to
 fetch!
 
 ``` r
+
 FINAL_FEAT_INFO_COMBINED_WITH_STATISTICS_WITH_KEGG <- add_ChemData_to_featINFO(featINFO = FINAL_FEAT_INFO_COMBINED_WITH_STATISTICS,
                                                                                name_column_id = "CID",
                                                                                idtype = "CID",
@@ -1576,6 +1636,7 @@ need to do that in the function *do_FELLA_enrichment_analysis*:
   those object and file names.
 
 ``` r
+
 do_FELLA_enrichment_analysis(organism_code = "hsa",
                              KEGG_codes = FINAL_FEAT_INFO_COMBINED_WITH_STATISTICS_WITH_KEGG$KEGG,
                              path_databases = "C:/databases/FELLA/",

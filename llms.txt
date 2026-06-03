@@ -16,6 +16,7 @@ Before installing, ensure the following are installed: - R (version ≥
 Then open R (or RStudio) and run the following in the R console:
 
 ``` r
+
 if (!require("devtools", quietly = TRUE)) {  
   install.packages("devtools")
 }
@@ -32,6 +33,7 @@ installed and ready to use.
 Just type:
 
 ``` r
+
 library(GetFeatistics)
 ```
 
