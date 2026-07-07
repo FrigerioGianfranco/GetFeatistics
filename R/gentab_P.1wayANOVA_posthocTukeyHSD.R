@@ -19,6 +19,7 @@ gentab_P.1wayANOVA_posthocTukeyHSD <- function(DF, v, f, FDR = FALSE, groupdiff 
   if (!is.data.frame(DF)) {stop("DF must be a data frame!")}
   if (!is.character(v)) {stop("v must be a character")}
   if (any(is.na(v))) {stop("v must not contain mising values")}
+  if (any(duplicated(v))) {stop("v must not contain duplicated")}
   if (!all(v %in% colnames(DF))) {stop("the names you indicate in v must correspond to names of columns in DF")}
   if (!all(map_lgl(DF[,v], is.numeric))) {stop("in DF, the columns chosed with v must contain numerical values")}
   if (any(map_lgl(DF[,v], ~ any(is.na(.x))))) {stop("in DF, the columns chosen with v must not contain missing values")}
@@ -31,8 +32,54 @@ gentab_P.1wayANOVA_posthocTukeyHSD <- function(DF, v, f, FDR = FALSE, groupdiff 
   if (any(is.na(pull(DF, f)))) {stop("in DF, the column chosen with f must not contain missing values")}
   
   f_and_v  <- c(f, v)
-  if (any(check_if_fix_names_needed(f_and_v))) {warning(paste0("Some coloumn names contain a special character or start with a number. Please, consider using the function fix_names before applying the current function. These are the names with issues: ",
-                                                               paste0("'", paste0(f_and_v[which(check_if_fix_names_needed(f_and_v))], collapse = "', '"), "'")))}
+  if (any(duplicated(colnames(DF[,which(colnames(DF)%in%f_and_v)])))) {stop("The used colnames of DF must not contain duplicated")}
+  if (any(check_if_fix_names_needed(f_and_v))) {
+    f_and_v_need_fix <- TRUE
+  } else {
+    f_and_v_need_fix <- FALSE
+  }
+  
+  if (f_and_v_need_fix) {
+    v_original <- v
+    v_fixed <- fix_names(v)
+    if (any(duplicated(v_fixed))) {
+      v_fixed <- fix_duplicated(v_fixed)
+    }
+    if (any(v_fixed%in%colnames(DF[,which(!colnames(DF)%in%v)]))) {
+      for (i_vd in which(v_fixed%in%colnames(DF[,which(!colnames(DF)%in%v)]))) {
+        number_to_add <- 1L
+        repeat {
+          number_to_add <- number_to_add + 1L
+          v_fixed[i_vd] <- paste0(v_fixed[i_vd], "_", number_to_add)
+          if (!v_fixed[i_vd]%in%colnames(DF[,which(!colnames(DF)%in%v)])) {
+            break
+          }
+        }
+      }
+    }
+    if (any(duplicated(v_fixed))) {
+      v_fixed <- fix_duplicated(v_fixed)
+    }
+    v <- v_fixed
+    f_original <- f
+    f_fixed <- fix_names(f)
+    if (f_fixed%in%colnames(DF[,which(!colnames(DF)==f)])) {
+      number_to_add <- 1L
+      repeat {
+        number_to_add <- number_to_add + 1L
+        f_fixed <- paste0(f_fixed, "_", number_to_add)
+        if (!f_fixed%in%colnames(DF[,which(!colnames(DF)==f)])) {
+          break
+        }
+      }
+    }
+    f <- f_fixed
+    
+    for (i_v in seq(length(v_original))) {
+      colnames(DF)[which(colnames(DF)==v_original[i_v])] <- v_fixed[i_v]
+    }
+    colnames(DF)[which(colnames(DF)%in%f_original)] <- f_fixed
+  }
   
   
   if (length(FDR)!=1) {stop("FDR must be exclusively TRUE or FALSE")}
@@ -209,6 +256,12 @@ gentab_P.1wayANOVA_posthocTukeyHSD <- function(DF, v, f, FDR = FALSE, groupdiff 
       for (e in col_PvaluesFDR) {
         final_tab[,e] <- map_chr(pull(final_tab, e), cutP)
       }
+    }
+  }
+  
+  if (f_and_v_need_fix) {
+    for (i_v in seq(length(v_original))) {
+      final_tab$Dependent[which(final_tab$Dependent==v_fixed[i_v])] <- v_original[i_v]
     }
   }
   

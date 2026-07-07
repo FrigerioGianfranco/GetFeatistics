@@ -41,6 +41,7 @@ getPCA <- function(df, v, s = NULL, f = NULL, dfv = NULL, sv = NULL, fv = NULL, 
   
   if (!is.character(v)) {stop("v must be a character")}
   if (any(is.na(v))) {stop("v must not contain mising values")}
+  if (any(duplicated(v))) {stop("v must not contain duplicated")}
   if (!all(v %in% colnames(df))) {stop("the names you indicate in v must correspond to names of columns in df")}
   if (!all(map_lgl(df[,v], is.numeric))) {stop("in df, the columns chosed with v must contain numerical values")}
   

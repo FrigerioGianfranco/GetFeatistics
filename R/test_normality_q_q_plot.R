@@ -16,10 +16,6 @@ test_normality_q_q_plot <- function(df, v) {
   if (mean(map_lgl(select(df, all_of(v)), is.numeric)) != 1) {stop("all coloumn passed in v must be numeric!")}
   
   
-  if (any(check_if_fix_names_needed(v))) {warning(paste0("Some coloumn names contain a special character or start with a number. Please, consider using the function fix_names before applying the current function. These are the names with issues: ",
-                                                         paste0("'", paste0(v[which(check_if_fix_names_needed(v))], collapse = "', '"), "'")))}
-  
-  
   q_q_plots_list <- vector(mode = "list", length = length(v))
   
   for (i in 1:length(v)) {

@@ -22,7 +22,7 @@ gentab_P.2wayANOVA_posthocTukeyHSD <- function(DF, v, f, interact = FALSE, FDR =
   if (!is.character(v)) {stop("v must be a character")}
   if (length(v) == 0) {stop("v must contain at least one element!")}
   if (any(is.na(v))) {stop("v must not contain mising values")}
-  if (any(duplicated(v))) {stop("v must not contain duplicates")}
+  if (any(duplicated(v))) {stop("v must not contain duplicated")}
   if (!all(v %in% colnames(DF))) {stop("the names you indicate in v must correspond to names of columns in DF")}
   if (!all(map_lgl(DF[,v], is.numeric))) {stop("in DF, the columns chosed with v must contain numerical values")}
   if (any(map_lgl(DF[,v], ~ any(is.na(.x))))) {stop("in DF, the columns chosen with v must not contain missing values")}
@@ -30,14 +30,72 @@ gentab_P.2wayANOVA_posthocTukeyHSD <- function(DF, v, f, interact = FALSE, FDR =
   if (!is.character(f)) {stop("f must be a character")}
   if (length(f) != 2) {stop("f must contain the names of two coloumn of DF")}
   if (any(is.na(f))) {stop("f must not contain mising values")}
+  if (any(duplicated(f))) {stop("f must not contain duplicated")}
   if (!all(f %in% colnames(DF))) {stop("the names you indicate in f must correspond to names of columns in DF")}
   if (!all(map_lgl(DF[,f], is.factor))) {stop("in the df, the columns chosen with f must contain factor variables")}
   if (any(map_lgl(DF[,f], ~ any(is.na(.x))))) {stop("in the df, the columns chosen with f must not contain missing values")}
   if (any(levels(pull(DF, f[1])) %in% levels(pull(DF, f[2]))) | any(levels(pull(DF, f[2])) %in% levels(pull(DF, f[1])))) {stop("please, use different names for the factor levels of the two factors")}
   
   f_and_v  <- c(f, v)
-  if (any(check_if_fix_names_needed(f_and_v))) {warning(paste0("Some coloumn names contain a special character or start with a number. Please, consider using the function fix_names before applying the current function. These are the names with issues: ",
-                                                               paste0("'", paste0(f_and_v[which(check_if_fix_names_needed(f_and_v))], collapse = "', '"), "'")))}
+  if (any(duplicated(colnames(DF[,which(colnames(DF)%in%f_and_v)])))) {stop("The used colnames of DF must not contain duplicated")}
+  if (any(check_if_fix_names_needed(f_and_v))) {
+    f_and_v_need_fix <- TRUE
+  } else {
+    f_and_v_need_fix <- FALSE
+  }
+  
+  if (f_and_v_need_fix) {
+    v_original <- v
+    v_fixed <- fix_names(v)
+    if (any(duplicated(v_fixed))) {
+      v_fixed <- fix_duplicated(v_fixed)
+    }
+    if (any(v_fixed%in%colnames(DF[,which(!colnames(DF)%in%v)]))) {
+      for (i_vd in which(v_fixed%in%colnames(DF[,which(!colnames(DF)%in%v)]))) {
+        number_to_add <- 1L
+        repeat {
+          number_to_add <- number_to_add + 1L
+          v_fixed[i_vd] <- paste0(v_fixed[i_vd], "_", number_to_add)
+          if (!v_fixed[i_vd]%in%colnames(DF[,which(!colnames(DF)%in%v)])) {
+            break
+          }
+        }
+      }
+    }
+    if (any(duplicated(v_fixed))) {
+      v_fixed <- fix_duplicated(v_fixed)
+    }
+    v <- v_fixed
+   
+    f_original <- f
+    f_fixed <- fix_names(f)
+    if (any(duplicated(f_fixed))) {
+      f_fixed <- fix_duplicated(f_fixed)
+    }
+    if (any(f_fixed%in%colnames(DF[,which(!colnames(DF)%in%f)]))) {
+      for (i_fd in which(f_fixed%in%colnames(DF[,which(!colnames(DF)%in%f)]))) {
+        number_to_add <- 1L
+        repeat {
+          number_to_add <- number_to_add + 1L
+          f_fixed[i_fd] <- paste0(f_fixed[i_fd], "_", number_to_add)
+          if (!f_fixed[i_fd]%in%colnames(DF[,which(!colnames(DF)%in%f)])) {
+            break
+          }
+        }
+      }
+    }
+    if (any(duplicated(f_fixed))) {
+      f_fixed <- fix_duplicated(f_fixed)
+    }
+    f <- f_fixed
+    
+    for (i_v in seq(length(v_original))) {
+      colnames(DF)[which(colnames(DF)==v_original[i_v])] <- v_fixed[i_v]
+    }
+    for (i_f in seq(length(f_original))) {
+      colnames(DF)[which(colnames(DF)==f_original[i_f])] <- f_fixed[i_f]
+    }
+  }
   
   if (length(interact)!=1) {stop("interact must be exclusively TRUE or FALSE")} else if (!is.logical(interact)) {stop("interact must be exclusively TRUE or FALSE")} else if (is.na(interact)) {stop("interact must be exclusively TRUE or FALSE")}
   if (length(FDR)!=1) {stop("FDR must be exclusively TRUE or FALSE")} else if (!is.logical(FDR)) {stop("FDR must be exclusively TRUE or FALSE")} else if (is.na(FDR)) {stop("FDR must be exclusively TRUE or FALSE")}
@@ -354,6 +412,12 @@ gentab_P.2wayANOVA_posthocTukeyHSD <- function(DF, v, f, interact = FALSE, FDR =
       for (cln in col_PvaluesFDR) {
         final_tab[, cln] <- map_chr(pull(final_tab, cln), cutP)
       }
+    }
+  }
+  
+  if (f_and_v_need_fix) {
+    for (i_v in seq(length(v_original))) {
+      final_tab$Dependent[which(final_tab$Dependent==v_fixed[i_v])] <- v_original[i_v]
     }
   }
   

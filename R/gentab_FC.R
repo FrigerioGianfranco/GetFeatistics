@@ -14,7 +14,7 @@
 #' @param filter_sign logical. If TRUE, the table will be filtered and only those that passed the FCcutoff will be retained.
 #' @param FCcutoff numeric of length 1. If filter_sign is TRUE, the value of the FCcutoff to consider a feature difference as significant.
 #'
-#' @return A tibble the results of the Fold Change analysis
+#' @return A tibble with the results of the Fold Change analysis
 #'
 #' @export
 gentab_FC <- function(df, v, f, second_to_first_ratio = TRUE, paired = FALSE, are_log_transf = FALSE, log_base = 2, filter_sign = FALSE, FCcutoff = 2) {
@@ -31,15 +31,60 @@ gentab_FC <- function(df, v, f, second_to_first_ratio = TRUE, paired = FALSE, ar
   
   if (!is.character(v)) {stop("v must be a vector containing the names of the coloumns with data that you want to apply the Fold Change analysis to")}
   if (any(is.na(v))) {stop("v must be a vector containing the names of the coloumns with data that you want to apply the Fold Change analysis to")}
+  if (any(duplicated(v))) {stop("v must not contain duplicated")}
   if (!all(v %in% colnames(df))) {stop("v must be a vector containing the names of the coloumns with data that you want to apply the Fold Change analysis to")}
   if (mean(map_lgl(select(df, all_of(v)), is.numeric)) != 1) {stop("all coloumn passed with v must be numeric!")}
   if (any(map_lgl(select(df, all_of(v)), ~ any(is.na(.))))) {stop("there are some missing values in the data")}
   
-  
-  
   f_and_v  <- c(f, v)
-  if (any(check_if_fix_names_needed(f_and_v))) {warning(paste0("Some coloumn names contain a special character or start with a number. Please, consider using the function fix_names before applying the current function. These are the names with issues: ",
-                                                               paste0("'", paste0(f_and_v[which(check_if_fix_names_needed(f_and_v))], collapse = "', '"), "'")))}
+  if (any(duplicated(colnames(df[,which(colnames(df)%in%f_and_v)])))) {stop("The used colnames of df must not contain duplicated")}
+  if (any(check_if_fix_names_needed(f_and_v))) {
+    f_and_v_need_fix <- TRUE
+  } else {
+    f_and_v_need_fix <- FALSE
+  }
+  
+  if (f_and_v_need_fix) {
+    v_original <- v
+    v_fixed <- fix_names(v)
+    if (any(duplicated(v_fixed))) {
+      v_fixed <- fix_duplicated(v_fixed)
+    }
+    if (any(v_fixed%in%colnames(df[,which(!colnames(df)%in%v)]))) {
+      for (i_vd in which(v_fixed%in%colnames(df[,which(!colnames(df)%in%v)]))) {
+        number_to_add <- 1L
+        repeat {
+          number_to_add <- number_to_add + 1L
+          v_fixed[i_vd] <- paste0(v_fixed[i_vd], "_", number_to_add)
+          if (!v_fixed[i_vd]%in%colnames(df[,which(!colnames(df)%in%v)])) {
+            break
+          }
+        }
+      }
+    }
+    if (any(duplicated(v_fixed))) {
+      v_fixed <- fix_duplicated(v_fixed)
+    }
+    v <- v_fixed
+    f_original <- f
+    f_fixed <- fix_names(f)
+    if (f_fixed%in%colnames(df[,which(!colnames(df)==f)])) {
+      number_to_add <- 1L
+      repeat {
+        number_to_add <- number_to_add + 1L
+        f_fixed <- paste0(f_fixed, "_", number_to_add)
+        if (!f_fixed%in%colnames(df[,which(!colnames(df)==f)])) {
+          break
+        }
+      }
+    }
+    f <- f_fixed
+    
+    for (i_v in seq(length(v_original))) {
+      colnames(df)[which(colnames(df)==v_original[i_v])] <- v_fixed[i_v]
+    }
+    colnames(df)[which(colnames(df)%in%f_original)] <- f_fixed
+  }
   
   if (length(second_to_first_ratio)!=1) {stop("second_to_first_ratio must be exclusively TRUE or FALSE")}
   if (!is.logical(second_to_first_ratio)) {stop("second_to_first_ratio must be exclusively TRUE or FALSE")}
@@ -190,6 +235,14 @@ gentab_FC <- function(df, v, f, second_to_first_ratio = TRUE, paired = FALSE, ar
   } else {
     df_final <- df_FCresults
   }
+  
+  
+  if (f_and_v_need_fix) {
+    for (i_v in seq(length(v_original))) {
+      df_final$variables[which(df_final$variables==v_fixed[i_v])] <- v_original[i_v]
+    }
+  }
+  
   
   return(df_final)
   

@@ -20,21 +20,106 @@
 gentab_descr <- function(df, v, f = NA, type = "mean", ROUND = FALSE, dig = NA, unit_mes = NA, missing = "only if >0") {
   
   if (!is.data.frame(df)) {stop("df must be a data frame!")}
+  if (!is.character(v)) {stop("v must be a character")}
+  if (any(is.na(v))) {stop("v must not contain missing values")}
   if (!all(v %in% colnames(df))) {stop("v must be a vector containing the names of the coloumns in df that you want to apply the descriptive statistics")}
   if (!all((map_lgl(select(df, all_of(v)), is.numeric)))) {stop("all coloumns of df passed with v must be numeric!")}
+  if (any(duplicated(v))) {stop("v must not contain duplicated")}
+  if (any(duplicated(colnames(df[,which(colnames(df)%in%v)])))) {stop("The used colnames of df must not contain duplicated")}
+  
   
   if (length(f) !=1) {stop("f must be a character of lenght 1 or a missing value")}
+  if (!is.character(f)) {stop("f must be a character")}
   if (!is.na(f)) {
     if (!f%in%colnames(df)) {stop("f must be the name of the coloumn that you want to consider as factor variable")}
     if (!is.factor(pull(df,f))) {stop("f must be the column name in df of a factor variable!")}
     
     f_and_v  <- c(f, v)
-    if (any(check_if_fix_names_needed(f_and_v))) {warning(paste0("Some coloumn names contain a special character or start with a number. Please, consider using the function fix_names before applying the current function. These are the names with issues: ",
-                                                                 paste0("'", paste0(f_and_v[which(check_if_fix_names_needed(f_and_v))], collapse = "', '"), "'")))}
+    if (any(duplicated(colnames(df[,which(colnames(df)%in%f_and_v)])))) {stop("The used colnames of df must not contain duplicated")}
+    if (any(check_if_fix_names_needed(f_and_v))) {
+      f_and_v_need_fix <- TRUE
+    } else {
+      f_and_v_need_fix <- FALSE
+    }
+    v_need_fix <- FALSE
   } else {
-    if (any(check_if_fix_names_needed(v))) {warning(paste0("Some coloumn names contain a special character or start with a number. Please, consider using the function fix_names before applying the current function. These are the names with issues: ",
-                                                           paste0("'", paste0(v[which(check_if_fix_names_needed(v))], collapse = "', '"), "'")))}
+    if (any(check_if_fix_names_needed(v))) {
+      v_need_fix <- TRUE
+    } else {
+      v_need_fix <- FALSE
+    }
+    f_and_v_need_fix <- FALSE
   }
+  
+  if (f_and_v_need_fix) {
+    v_original <- v
+    v_fixed <- fix_names(v)
+    if (any(duplicated(v_fixed))) {
+      v_fixed <- fix_duplicated(v_fixed)
+    }
+    if (any(v_fixed%in%colnames(df[,which(!colnames(df)%in%v)]))) {
+      for (i_vd in which(v_fixed%in%colnames(df[,which(!colnames(df)%in%v)]))) {
+        number_to_add <- 1L
+        repeat {
+          number_to_add <- number_to_add + 1L
+          v_fixed[i_vd] <- paste0(v_fixed[i_vd], "_", number_to_add)
+          if (!v_fixed[i_vd]%in%colnames(df[,which(!colnames(df)%in%v)])) {
+            break
+          }
+        }
+      }
+    }
+    if (any(duplicated(v_fixed))) {
+      v_fixed <- fix_duplicated(v_fixed)
+    }
+    v <- v_fixed
+    f_original <- f
+    f_fixed <- fix_names(f)
+    if (f_fixed%in%colnames(df[,which(!colnames(df)==f)])) {
+      number_to_add <- 1L
+      repeat {
+        number_to_add <- number_to_add + 1L
+        f_fixed <- paste0(f_fixed, "_", number_to_add)
+        if (!f_fixed%in%colnames(df[,which(!colnames(df)==f)])) {
+          break
+        }
+      }
+    }
+    f <- f_fixed
+    
+    for (i_v in seq(length(v_original))) {
+      colnames(df)[which(colnames(df)==v_original[i_v])] <- v_fixed[i_v]
+    }
+    colnames(df)[which(colnames(df)==f_original)] <- f_fixed
+  }
+  if (v_need_fix) {
+    v_original <- v
+    v_fixed <- fix_names(v)
+    if (any(duplicated(v_fixed))) {
+      v_fixed <- fix_duplicated(v_fixed)
+    }
+    if (any(v_fixed%in%colnames(df[,which(!colnames(df)%in%v)]))) {
+      for (i_vd in which(v_fixed%in%colnames(df[,which(!colnames(df)%in%v)]))) {
+        number_to_add <- 1L
+        repeat {
+          number_to_add <- number_to_add + 1L
+          v_fixed[i_vd] <- paste0(v_fixed[i_vd], "_", number_to_add)
+          if (!v_fixed[i_vd]%in%colnames(df[,which(!colnames(df)%in%v)])) {
+            break
+          }
+        }
+      }
+    }
+    if (any(duplicated(v_fixed))) {
+      v_fixed <- fix_duplicated(v_fixed)
+    }
+    v <- v_fixed
+    
+    for (i_v in seq(length(v_original))) {
+      colnames(df)[which(colnames(df)==v_original[i_v])] <- v_fixed[i_v]
+    }
+  }
+  
   
   if (!is.character(type)) {stop('type must be a character of length 1 containing one of the following: "mean", "mean SD", "median", "median (min; max)", "median (5th; 95th percentile)", or "median (25th; 75th percentile)"')}
   if (length(type) != 1) {stop('type must be a character of length 1 containing one of the following: "mean", "mean SD", "median", "median (min; max)", "median (5th; 95th percentile)", or "median (25th; 75th percentile)"')}
@@ -161,8 +246,13 @@ gentab_descr <- function(df, v, f = NA, type = "mean", ROUND = FALSE, dig = NA, 
     }
   }
   
-  return(Tabfinal_df)
+  if (f_and_v_need_fix | v_need_fix) {
+    for (i_v in seq(length(v_original))) {
+      Tabfinal_df$Variables[which(Tabfinal_df$Variables==v_fixed[i_v])] <- v_original[i_v]
+    }
+  }
   
+  return(Tabfinal_df)
 }
 
 

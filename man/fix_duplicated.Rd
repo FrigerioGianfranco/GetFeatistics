@@ -22,7 +22,7 @@ fix_duplicated(
 
 \item{start_with_zero}{logical. If TRUE, the first number added for solving the duplicated will be 0, if FALSE will be 1.}
 
-\item{exclude_the_first}{logical. If TRUE, the suffix will not be added only from the second duplicated on.}
+\item{exclude_the_first}{logical. If TRUE, the suffix will be added only from the second duplicated on.}
 
 \item{NA_as_character}{logical. If FALSE, the missing values will not be affected by this function, if TRUE, any missing values duplicated will be considered as a character "NA".}
 }

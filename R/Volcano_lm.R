@@ -33,9 +33,6 @@ Volcano_lm <- function(tab, ind_main, x_values = "variation_perc", y_values = "n
   if (!is.character(ind_main)) {stop("ind_main must be a character of lenght 1, indipendent variable you want to show in the Volcano.")}
   if (!ind_main%in%tab$Independent) {stop('ind_main must be the indipendent variable you want to show in the Volcano. If it is a factor variable, also reports the level; e.g.: if the variable is "Sex" and the level is "Female", you must pass here "SexFemale"')}
   
-  if (any(check_if_fix_names_needed(ind_main))) {warning(paste0("Some coloumn names contain a special character or start with a number. Please, consider using the function fix_names before applying the current function. These are the names with issues: ",
-                                                                paste0("'", paste0(ind_main[which(check_if_fix_names_needed(ind_main))], collapse = "', '"), "'")))}
-  
   if (length(x_values)!=1) {stop("x_values must be a character of lenght 1, and it should be a column in tab containing the values to pass as x-values")}
   if (is.na(x_values)) {stop("x_values must be a character of lenght 1, and it should be a column in tab containing the values to pass as x-values")}
   if (!is.character(x_values)) {stop("x_values must be a character of lenght 1, and it should be a column in tab containing the values to pass as x-values")}

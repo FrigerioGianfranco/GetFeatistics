@@ -33,6 +33,7 @@ getHeatMap <- function(df, v, s = NULL, f = NULL, dfv = NULL, sv = NULL, fv = NU
   
   if (!is.character(v)) {stop("v must be a character")}
   if (any(is.na(v))) {stop("v must not contain mising values")}
+  if (any(duplicated(v))) {stop("v must not contain duplicated")}
   if (!all(v %in% colnames(df))) {stop("the names you indicate in v must correspond to names of columns in df")}
   if (!all(map_lgl(df[,v], is.numeric))) {stop("in df, the columns chosed with v must contain numerical values")}
   
@@ -46,6 +47,7 @@ getHeatMap <- function(df, v, s = NULL, f = NULL, dfv = NULL, sv = NULL, fv = NU
   if (!is.null(f)) {
     if (!is.character(f)) {stop("if not NULL, f must be a character")}
     if (any(is.na(f))) {stop("if not NULL, f must not contain mising values")}
+    if (any(duplicated(f))) {stop("if not NULL, f must not contain duplicated")}
     if (!all(f %in% colnames(df))) {stop("if not NULL, the names you indicate in f must correspond to names of columns in df")}
     if (any(c("rownames_in_use", "rownames_wanted", "colnames_in_use", "colnames_wanted", "rowid", "variable")%in%f)) {stop('f must not contain any of the following: "rownames_in_use", "rownames_wanted", "colnames_in_use", "colnames_wanted", "rowid", "variable". \n Please change column names, thank you!')}
   }
@@ -79,6 +81,7 @@ getHeatMap <- function(df, v, s = NULL, f = NULL, dfv = NULL, sv = NULL, fv = NU
     if (!is.null(fv)) {
       if (!is.character(fv)) {stop("if not NULL, fv must be a character")}
       if (any(is.na(fv))) {stop("if not NULL, fv must not contain mising values")}
+      if (any(duplicated(fv))) {stop("if not NULL, fv must not contain duplicated")}
       if (!all(fv %in% colnames(dfv))) {stop("if not NULL, the names you indicate in fv must correspond to names of columns in dfv")}
       if (any(c("rownames_in_use", "rownames_wanted", "colnames_in_use", "colnames_wanted", "rowid", "variable")%in%fv)) {stop('fv must not contain any of the following: "rownames_in_use", "rownames_wanted", "colnames_in_use", "colnames_wanted", "rowid", "variable". \n Please change column names, thank you!')}
       if (!is.null(f)) {

@@ -36,7 +36,7 @@ gentab_FC(
 \item{FCcutoff}{numeric of length 1. If filter_sign is TRUE, the value of the FCcutoff to consider a feature difference as significant.}
 }
 \value{
-A tibble the results of the Fold Change analysis
+A tibble with the results of the Fold Change analysis
 }
 \description{
 Given a dataframe and a set of numerical variables of that dataframe, it performs fold changes analysis to each desired variable and creates a new table.

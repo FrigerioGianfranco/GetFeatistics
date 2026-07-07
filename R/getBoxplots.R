@@ -18,6 +18,7 @@ getBoxplots <- function(df, v, f, col_pal = NULL) {
   if (!is.data.frame(df)) {stop("df must be a data frame!")}
   if (!is.character(v)) {stop("v must be a character")}
   if (any(is.na(v))) {stop("v must not contain mising values")}
+  if (any(duplicated(v))) {stop("v must not contain duplicated")}
   if (!all(v %in% colnames(df))) {stop("the names you indicate in v must correspond to names of columns in df")}
   if (!all(map_lgl(df[,v], is.numeric))) {stop("in df, the columns chosed with v must contain numerical values")}
   
@@ -27,6 +28,8 @@ getBoxplots <- function(df, v, f, col_pal = NULL) {
   if (!f %in% colnames(df)) {stop("the name you indicate in f must correspond to name of a column in df")}
   if (!is.factor(pull(df, f))) {stop("in df, the column chosen with f must contain a factor variable")}
   if (any(is.na(pull(df, f)))) {stop("in df, the column chosen with f must not contain missing values")}
+  
+  
   
   if (!is.null(col_pal)) {
     if (!is.character(col_pal)) {stop("col_pal must be a character vector")}

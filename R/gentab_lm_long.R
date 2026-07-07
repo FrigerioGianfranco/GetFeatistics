@@ -28,11 +28,44 @@ gentab_lm_long <- function(df, dep, form_ind, mdl = "lm", left_cens = NULL, righ
   if (any(is.na(dep))) {stop("dep must not contain mising values")}
   if (any(duplicated(dep))) {stop("dep must not contain duplicates")}
   if (!all(dep %in% colnames(df))) {stop("the names you indicate in dep must correspond to names of columns in df")}
+  if (any(duplicated(colnames(df[,which(colnames(df)%in%dep)])))) {stop("The colnames chosen with dep must not contain duplicated")}
   
   #if (any(map_lgl(df[,dep], ~ any(is.na(.x))))) {stop("in df, the columns chosen with dep must not contain missing values")}
   #if (any(map_lgl(df[,dep], ~ any(.x == 0)))) {warning("There are some zeros in the data, isn't it better to replace them with NAs?")}
   
+  if (any(check_if_fix_names_needed(dep))) {
+    dep_need_fix <- TRUE
+  } else {
+    dep_need_fix <- FALSE
+  }
   
+  if (dep_need_fix) {
+    dep_original <- dep
+    dep_fixed <- fix_names(dep)
+    if (any(duplicated(dep_fixed))) {
+      dep_fixed <- fix_duplicated(dep_fixed)
+    }
+    if (any(dep_fixed%in%colnames(df[,which(!colnames(df)%in%dep)]))) {
+      for (i_depd in which(dep_fixed%in%colnames(df[,which(!colnames(df)%in%dep)]))) {
+        number_to_add <- 1L
+        repeat {
+          number_to_add <- number_to_add + 1L
+          dep_fixed[i_depd] <- paste0(dep_fixed[i_depd], "_", number_to_add)
+          if (!dep_fixed[i_depd]%in%colnames(df[,which(!colnames(df)%in%dep)])) {
+            break
+          }
+        }
+      }
+    }
+    if (any(duplicated(dep_fixed))) {
+      dep_fixed <- fix_duplicated(dep_fixed)
+    }
+    dep <- dep_fixed
+    
+    for (i_dep in seq(length(dep_original))) {
+      colnames(df)[which(colnames(df)==dep_original[i_dep])] <- dep_fixed[i_dep]
+    }
+  }
   
   if (length(form_ind)!=1) {stop("form_ind must be a character of lenght 1, containing the formula of the linear model after the ~")}
   if (is.na(form_ind))  {stop("form_ind must be a character of lenght 1, containing the formula of the linear model after the ~, not a missing value")}
@@ -391,6 +424,12 @@ gentab_lm_long <- function(df, dep, form_ind, mdl = "lm", left_cens = NULL, righ
     TAB_FINAL2[, "Pvalue"] <- map_chr(pull(TAB_FINAL2, "Pvalue"), cutP)
   } else if (cutPval == TRUE & FDR == FALSE) {
     TAB_FINAL2[, "Pvalue"] <- map_chr(pull(TAB_FINAL2, "Pvalue"), cutP)
+  }
+  
+  if (dep_need_fix) {
+    for (i_dep in seq(length(dep_original))) {
+      TAB_FINAL2$Dependent[which(TAB_FINAL2$Dependent==dep_fixed[i_dep])] <- dep_original[i_dep]
+    }
   }
   
   return(TAB_FINAL2)

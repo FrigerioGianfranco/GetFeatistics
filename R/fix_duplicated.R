@@ -7,7 +7,7 @@
 #' @param zeros logical. Should leading zero be added?
 #' @param define_highest_for_zeros NULL or an numeric integer of length 1. If zeros is TRUE, you can decide the highest number to define the number of zeros. If this argument is NULL, the highest number will be defined based on the highest number of duplicated.
 #' @param start_with_zero logical. If TRUE, the first number added for solving the duplicated will be 0, if FALSE will be 1.
-#' @param exclude_the_first logical. If TRUE, the suffix will not be added only from the second duplicated on.
+#' @param exclude_the_first logical. If TRUE, the suffix will be added only from the second duplicated on.
 #' @param NA_as_character logical. If FALSE, the missing values will not be affected by this function, if TRUE, any missing values duplicated will be considered as a character "NA".
 #'
 #' @return a single character with duplicated solved, thus with only unique elements.
