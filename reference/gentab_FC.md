@@ -71,4 +71,4 @@ gentab_FC(
 
 ## Value
 
-A tibble the results of the Fold Change analysis
+A tibble with the results of the Fold Change analysis

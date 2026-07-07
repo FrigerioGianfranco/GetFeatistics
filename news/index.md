@@ -1,5 +1,13 @@
 # Changelog
 
+## GetFeatistics v1.2
+
+- **Fix:** several functions in which the names of metabolites (usually
+  the argument v or dep) needed to be passed already fixed (for example
+  with no special characters) can now be passed as they are (the fix is
+  performed inside the functions and then the names are back to normal
+  just before exporting the results).
+
 ## GetFeatistics v1.1.2
 
 - **Fix:**

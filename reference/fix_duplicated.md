@@ -39,7 +39,7 @@ fix_duplicated(
 
 - exclude_the_first:
 
-  logical. If TRUE, the suffix will not be added only from the second
+  logical. If TRUE, the suffix will be added only from the second
   duplicated on.
 
 - NA_as_character:
