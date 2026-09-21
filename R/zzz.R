@@ -20,6 +20,7 @@
 #' @import utils
 #' @import classyfireR
 #' @import MSbox
+#' @import emmeans
 
 .onLoad <- function(libname, pkgname) {
   library(tidyverse)
@@ -42,6 +43,7 @@
   library(utils)
   library(classyfireR)
   library(MSbox)
+  library(emmeans)
 }
 
 .onAttach <- function(libname, pkgname) {

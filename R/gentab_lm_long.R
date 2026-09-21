@@ -12,16 +12,17 @@
 #' @param right_cens NULL or a named numeric vector. If mdl is "tobit", indicate here the right-censored values (e.g.: the upper limit of detection values). In particular, this argument should be set to NULL (no right-censored values) or a named numeric vector whose names must correspond to variables passed in dep.
 #' @param var_perc logical. Besides the beta slopes, do you also want to know the variation percentage? (if so, please, ensure your data are log-transformormed and scaled; consider using the function data_transf of the present package to do this). The variation percentage is calculated as follow: (((base^beta)-1)*100).
 #' @param base numerical of length one. If var_perc is TRUE, it is the base of the logarithm used to log-transform the dependent variables.
-#' @param FDR logical. If TRUE, after performing the ANOVA, it also correct p-values across the different variables with a false discovery rate multiple comparison correction (method "fdr" of the function p.adjust).
+#' @param FDR logical. If TRUE, P-values are corrected across the different dependent variables using the false discovery rate method ("fdr") of p.adjust, separately for each independent-variable coefficient or contrast.
 #' @param filter_sign  logical. If TRUE, the table will be filtered and only the p-values lower than the value specified in pcutoff will be considered.
 #' @param pcutoff a numeric of length 1, must be between 0 and 1. If filter_sign is TRUE, cut-off value of the p-values.
 #' @param cutPval logical. If TRUE, it cut the p-values using the cutP function of the present package.
+#' @param allpairs logical. If TRUE, all pairwise contrasts are calculated for all categorical fixed-effect variables included in form_ind.
+#' @param pairwise_adjust character of length one. The multiple-comparison adjustment method applied to inference for pairwise contrasts, including P-values and, where applicable, confidence intervals. Default is "none".
 #'
-#'
-#' @return A tibble the results of the t-tests.
+#' @return A tibble the results of the regression models.
 #'
 #' @export
-gentab_lm_long <- function(df, dep, form_ind, mdl = "lm", left_cens = NULL, right_cens = NULL, var_perc = FALSE, base = exp(1), FDR = FALSE, filter_sign = FALSE, pcutoff = 0.05, cutPval = FALSE) {
+gentab_lm_long <- function(df, dep, form_ind, mdl = "lm", left_cens = NULL, right_cens = NULL, var_perc = FALSE, base = exp(1), FDR = FALSE, filter_sign = FALSE, pcutoff = 0.05, cutPval = FALSE, allpairs = FALSE, pairwise_adjust = "none") {
   if (!is.data.frame(df)) {stop("df must be a data frame!")}
   if (!is.character(dep)) {stop("dep must be a character")}
   if (length(dep) == 0) {stop("dep must contain at least one element!")}
@@ -29,9 +30,21 @@ gentab_lm_long <- function(df, dep, form_ind, mdl = "lm", left_cens = NULL, righ
   if (any(duplicated(dep))) {stop("dep must not contain duplicates")}
   if (!all(dep %in% colnames(df))) {stop("the names you indicate in dep must correspond to names of columns in df")}
   if (any(duplicated(colnames(df[,which(colnames(df)%in%dep)])))) {stop("The colnames chosen with dep must not contain duplicated")}
+  DEP_NUMERIC <- map_lgl(dep, ~ is.numeric(df[[.x]]))
+  if (!all(DEP_NUMERIC)) {
+    NON_NUMERIC_DEP <- dep[!DEP_NUMERIC]
+    stop(paste0("All variables included in dep must be numeric. The following variables are not numeric: ",
+                paste(NON_NUMERIC_DEP, collapse = ", ")))
+  }
+  
   
   #if (any(map_lgl(df[,dep], ~ any(is.na(.x))))) {stop("in df, the columns chosen with dep must not contain missing values")}
   #if (any(map_lgl(df[,dep], ~ any(.x == 0)))) {warning("There are some zeros in the data, isn't it better to replace them with NAs?")}
+  
+  if (length(mdl) != 1) {stop('mdl must be one of the following: "lm", "lmer", or "tobit"')}
+  if (is.na(mdl)) {stop('mdl must be one of the following: "lm", "lmer", or "tobit"')}
+  if (!is.character(mdl)) {stop('mdl must be one of the following: "lm", "lmer", or "tobit"')}
+  if (!mdl%in%c("lm", "lmer", "tobit")) {stop('mdl must be one of the following: "lm", "lmer", or "tobit"')}
   
   if (any(check_if_fix_names_needed(dep))) {
     dep_need_fix <- TRUE
@@ -64,6 +77,16 @@ gentab_lm_long <- function(df, dep, form_ind, mdl = "lm", left_cens = NULL, righ
     
     for (i_dep in seq(length(dep_original))) {
       colnames(df)[which(colnames(df)==dep_original[i_dep])] <- dep_fixed[i_dep]
+      
+      if (mdl == "tobit") {
+        if (!is.null(left_cens) & !is.null(names(left_cens))) {
+          names(left_cens)[names(left_cens) == dep_original[i_dep]] <- dep_fixed[i_dep]
+        }
+        
+        if (!is.null(right_cens) & !is.null(names(right_cens))) {
+          names(right_cens)[names(right_cens) == dep_original[i_dep]] <- dep_fixed[i_dep]
+        }
+      }
     }
   }
   
@@ -74,10 +97,6 @@ gentab_lm_long <- function(df, dep, form_ind, mdl = "lm", left_cens = NULL, righ
   if (any(check_if_fix_names_needed(dep))) {warning(paste0("Some coloumn names contain a special character or start with a number. Please, consider using the function fix_names before applying the current function. These are the names with issues: ",
                                                            paste0("'", paste0(dep[which(check_if_fix_names_needed(dep))], collapse = "', '"), "'")))}
   
-  if (length(mdl) != 1) {stop('mdl must be one of the following: "lm", "lmer", or "tobit"')}
-  if (is.na(mdl)) {stop('mdl must be one of the following: "lm", "lmer", or "tobit"')}
-  if (!is.character(mdl)) {stop('mdl must be one of the following: "lm", "lmer", or "tobit"')}
-  if (!mdl%in%c("lm", "lmer", "tobit")) {stop('mdl must be one of the following: "lm", "lmer", or "tobit"')}
   
   if (mdl == "tobit") {
     if (!is.null(left_cens)) {
@@ -102,9 +121,9 @@ gentab_lm_long <- function(df, dep, form_ind, mdl = "lm", left_cens = NULL, righ
   if (!is.logical(var_perc)) {stop("var_perc must be exclusively TRUE or FALSE")}
   
   if (var_perc) {
-    if (length(base)!=1) {"base must be a numeric of length 1"}
-    if (is.na(base)) {"base must be a numeric of length 1, and not a missing value"}
-    if (!is.numeric(base)) {"base must be a numeric of length 1"}
+    if (length(base)!=1) {stop("base must be a numeric of length 1")}
+    if (is.na(base)) {stop("base must be a numeric of length 1, and not a missing value")}
+    if (!is.numeric(base)) {stop("base must be a numeric of length 1")}
   }
   
   if (length(FDR)!=1) {stop("FDR must be exclusively TRUE or FALSE")}
@@ -126,6 +145,220 @@ gentab_lm_long <- function(df, dep, form_ind, mdl = "lm", left_cens = NULL, righ
   if (is.na(cutPval)) {stop("cutPval must be exclusively TRUE or FALSE")}
   if (!is.logical(cutPval)) {stop("cutPval must be exclusively TRUE or FALSE")}
   
+  if (length(allpairs)!=1) {stop("allpairs must be exclusively TRUE or FALSE")}
+  if (is.na(allpairs)) {stop("allpairs must be exclusively TRUE or FALSE")}
+  if (!is.logical(allpairs)) {stop("allpairs must be exclusively TRUE or FALSE")}
+  
+  if (allpairs) {
+    
+    pairwise_adjust_CHOICES <- c("none", "tukey", "holm", "hochberg", "hommel", "bonferroni",
+                                 "BH", "BY", "fdr", "sidak", "scheffe", "mvt")
+    
+    if (length(pairwise_adjust) != 1) {
+      stop(paste0('pairwise_adjust must be one of "', paste(pairwise_adjust_CHOICES, collapse = '", "'), '"'))
+    }
+    
+    if (!is.character(pairwise_adjust)) {
+      stop(paste0('pairwise_adjust must be one of "', paste(pairwise_adjust_CHOICES, collapse = '", "'), '"'))
+    }
+    
+    if (is.na(pairwise_adjust)) {
+      stop(paste0('pairwise_adjust must be one of "', paste(pairwise_adjust_CHOICES, collapse = '", "'), '"'))
+    }
+    
+    PADJUST_MATCH <- match(tolower(pairwise_adjust),
+                           tolower(pairwise_adjust_CHOICES))
+    
+    if (is.na(PADJUST_MATCH)) {
+      stop(paste0('pairwise_adjust must be one of "', paste(pairwise_adjust_CHOICES, collapse = '", "'), '"'))
+    }
+    
+    pairwise_adjust <- pairwise_adjust_CHOICES[PADJUST_MATCH]
+  }
+  
+  
+  
+  
+  FORM_IND <- as.formula(paste0("~ ", form_ind))
+  
+  ALL_VARS <- all.vars(FORM_IND)
+  
+  if (!all(ALL_VARS %in% colnames(df))) {
+    
+    MISSING_VARS <- ALL_VARS[!ALL_VARS %in% colnames(df)]
+    
+    stop(paste0("All variables included in form_ind must correspond to columns in df. ",
+                "The following variables were not found in df: ",
+                paste(MISSING_VARS, collapse = ", ")))
+  }
+  
+  VALID_TYPES <- map_lgl(ALL_VARS,
+                         ~ is.numeric(df[[.x]]) | is.factor(df[[.x]]))
+  
+  if (!all(VALID_TYPES)) {
+    
+    INVALID_VARS <- ALL_VARS[!VALID_TYPES]
+    
+    stop(paste0("All variables included in form_ind must be numeric or factors. ",
+                "The following variables are neither numeric nor factors: ",
+                paste(INVALID_VARS, collapse = ", ")))
+  }
+  
+  
+  if (mdl == "lmer") {
+    FORM_IND_FIXED <- lme4::nobars(FORM_IND)
+  } else {
+    FORM_IND_FIXED <- FORM_IND
+  }
+  
+  FIXED_VARS <- all.vars(FORM_IND_FIXED)
+  
+  CATEGORICAL_VARS <- FIXED_VARS[map_lgl(
+    FIXED_VARS,
+    ~ is.factor(df[[.x]]))]
+  
+  TERM_LABELS_FIXED <- attr(terms(FORM_IND_FIXED),
+                            "term.labels")
+  
+  if (allpairs) {
+    
+    for (this_var in CATEGORICAL_VARS) {
+      
+      INTERACTION_TERMS <- TERM_LABELS_FIXED[map_lgl(TERM_LABELS_FIXED,
+                                                     ~ {THIS_TERM_VARS <- all.vars(as.formula(paste0("~ ", .x)))
+                                                     this_var %in% THIS_TERM_VARS & length(THIS_TERM_VARS) > 1})]
+      
+      if (length(INTERACTION_TERMS) > 0) {
+        
+        INTERACTING_VARS <- unique(unlist(map(INTERACTION_TERMS,
+                                              ~ setdiff(all.vars(as.formula(paste0("~ ", .x))),
+                                                        this_var))))
+        
+        INTERACTING_VARS <- INTERACTING_VARS[INTERACTING_VARS %in% colnames(df)]
+        
+        CONTINUOUS_INTERACTING_VARS <- INTERACTING_VARS[!map_lgl(INTERACTING_VARS, 
+                                                                 ~ is.factor(df[[.x]]))]
+        
+        if (length(CONTINUOUS_INTERACTING_VARS) > 0) {
+          stop(paste0("The categorical variable '", this_var, "' interacts with the continuous variable(s): ", paste(CONTINUOUS_INTERACTING_VARS, collapse = ", "),
+                      ". Pairwise comparisons depend on the value of the continuous interacting variable, so they cannot be automatically calculated with allpairs = TRUE."))
+        }
+      }
+    }
+  }
+  
+  remove_allpairs_coefficients <- function(FIT, TAB_TEMP) {
+    
+    MM <- model.matrix(FIT)
+    ASSIGN <- attr(MM, "assign")
+    
+    if (inherits(FIT, "merMod")) {
+      TERMS_FIT <- terms(FIT, fixed.only = TRUE)
+    } else {
+      TERMS_FIT <- terms(FIT)
+    }
+    
+    TERM_LABELS <- attr(TERMS_FIT, "term.labels")
+    
+    TERMS_TO_REMOVE <- unique(unlist(map(CATEGORICAL_VARS,
+                                         function(this_var) {which(map_lgl(TERM_LABELS,
+                                                                           function(x) {this_var %in% all.vars(as.formula(paste0("~ ", x)))}))})))
+    
+    COEFF_TO_REMOVE <- colnames(MM)[ASSIGN %in% TERMS_TO_REMOVE]
+    
+    TAB_TEMP <- filter(TAB_TEMP, !Independent %in% COEFF_TO_REMOVE)
+    
+    return(TAB_TEMP)
+  }
+  
+  
+  get_allpairs <- function(FIT) {
+    
+    TAB_PAIRS <- tibble(Independent = character(),
+                        beta = double(),
+                        beta_95confint_lower = double(),
+                        beta_95confint_upper = double(),
+                        SE = double(),
+                        Pvalue = double())
+    
+    for (this_var in CATEGORICAL_VARS) {
+      
+      INTERACTION_TERMS <- TERM_LABELS_FIXED[map_lgl(TERM_LABELS_FIXED,
+                                                     function(x) {THIS_TERM_VARS <- all.vars(as.formula(paste0("~ ", x)))
+                                                     this_var %in% THIS_TERM_VARS & length(THIS_TERM_VARS) > 1})]
+      
+      if (length(INTERACTION_TERMS) == 0) {
+        
+        INTERACTING_VARS <- character()
+        
+      } else {
+        
+        INTERACTING_VARS <- unique(unlist(map(INTERACTION_TERMS,
+                                              function(x) {setdiff(all.vars(as.formula(paste0("~ ", x))),
+                                                                   this_var)})))
+        
+        INTERACTING_VARS <- INTERACTING_VARS[INTERACTING_VARS %in% CATEGORICAL_VARS]
+      }
+      
+      if (length(INTERACTING_VARS) == 0) {
+        
+        EMM <- emmeans::emmeans(FIT,
+                                specs = this_var)
+        
+      } else {
+        
+        EMM <- emmeans::emmeans(FIT,
+                                specs = this_var,
+                                by = INTERACTING_VARS)
+      }
+      
+      
+      PAIRS <- as.data.frame(summary(graphics::pairs(EMM, reverse = TRUE),
+                                     infer = c(TRUE, TRUE),
+                                     adjust = pairwise_adjust))
+      
+      LOWER_COL <- intersect(c("lower.CL", "asymp.LCL"), colnames(PAIRS))[1]
+      
+      UPPER_COL <- intersect(c("upper.CL", "asymp.UCL"), colnames(PAIRS))[1]
+      
+      PAIR_NAME <- sub(" - ", " vs ", PAIRS$contrast, fixed = TRUE)
+      
+      if (length(INTERACTING_VARS) == 0) {
+        
+        INDEPENDENT_NAME <- paste0(this_var,
+                                   ": ",
+                                   PAIR_NAME)
+        
+      } else {
+        
+        CONDITION_NAME <- pmap_chr(PAIRS[, INTERACTING_VARS, drop = FALSE],
+                                   function(...) {x <- map_chr(list(...), as.character)
+                                   paste(
+                                     paste0(INTERACTING_VARS, "=", x),
+                                     collapse = ", ")})
+        
+        
+        INDEPENDENT_NAME <- paste0(this_var,
+                                   ": ",
+                                   PAIR_NAME,
+                                   " | ",
+                                   CONDITION_NAME)
+      }
+      
+      
+      TAB_THIS_PAIR <- tibble(Independent = INDEPENDENT_NAME,
+                              beta = PAIRS$estimate,
+                              beta_95confint_lower = PAIRS[[LOWER_COL]],
+                              beta_95confint_upper = PAIRS[[UPPER_COL]],
+                              SE = PAIRS$SE,
+                              Pvalue = PAIRS$p.value)
+      
+      TAB_PAIRS <- rbind(TAB_PAIRS,
+                         TAB_THIS_PAIR)
+    }
+    
+    return(TAB_PAIRS)
+  }
   
   
   if (mdl == "lm") {
@@ -197,6 +430,23 @@ gentab_lm_long <- function(df, dep, form_ind, mdl = "lm", left_cens = NULL, righ
             TAB_TEMP[which(TAB_TEMP$Independent == vrb), "beta_95confint_upper"] <- CONFINT_FIT[THIS_ROW_INDEX_CONFINT_FIT, "97.5 %"]
           }
         }
+      }
+      
+      if (allpairs == TRUE & length(CATEGORICAL_VARS) > 0) {
+        
+        TAB_TEMP <- remove_allpairs_coefficients(FIT,
+                                                 TAB_TEMP)
+        
+        TAB_PAIRS <- get_allpairs(FIT)
+        
+        TAB_PAIRS$Dependent <- a
+        TAB_PAIRS$N_observations <- nobs(FIT)
+        TAB_PAIRS$adj_R_sqrd <- SUMMARY_FIT$adj.r.squared
+        
+        TAB_PAIRS <- TAB_PAIRS[, names(TAB_TEMP)]
+        
+        TAB_TEMP <- rbind(TAB_TEMP,
+                          TAB_PAIRS)
       }
       
       TAB_FINAL1 <- rbind(TAB_FINAL1, TAB_TEMP)
@@ -291,6 +541,27 @@ gentab_lm_long <- function(df, dep, form_ind, mdl = "lm", left_cens = NULL, righ
                          beta_95confint_upper = CONFINT_TBFIT[,"97.5 %"],
                          SE = COEFF_TBFIT[,"Std. Error"],
                          Pvalue = COEFF_TBFIT[,"Pr(>|z|)"])
+      
+      if (allpairs == TRUE & length(CATEGORICAL_VARS) > 0) {
+        
+        TAB_TEMP <- remove_allpairs_coefficients(TBFIT,
+                                                 TAB_TEMP)
+        
+        TAB_PAIRS <- get_allpairs(TBFIT)
+        
+        TAB_PAIRS$Dependent <- a
+        TAB_PAIRS$N_observations <- SUMMARY_TBFIT[["n"]]["Total"]
+        TAB_PAIRS$N_left_censored <- SUMMARY_TBFIT[["n"]]["Left-censored"]
+        TAB_PAIRS$N_uncensored <- SUMMARY_TBFIT[["n"]]["Uncensored"]
+        TAB_PAIRS$N_right_censored <- SUMMARY_TBFIT[["n"]]["Right-censored"]
+        
+        TAB_PAIRS <- TAB_PAIRS[, names(TAB_TEMP)]
+        
+        TAB_TEMP <- rbind(TAB_TEMP,
+                          TAB_PAIRS)
+      }
+      
+      
       TAB_FINAL1 <- rbind(TAB_FINAL1, TAB_TEMP)
     }
     
@@ -352,6 +623,8 @@ gentab_lm_long <- function(df, dep, form_ind, mdl = "lm", left_cens = NULL, righ
       
       if(length(SUMMARY_FIT[["ngrps"]]) != 1) {stop("you would need to update this forumla to include more than one random effect")}
       
+      R2_FIT <- r.squaredGLMM(FIT)
+      
       TAB_TEMP <- tibble(Dependent = rep(a, length(SUMMARY_FIT[["coefficients"]][,"Estimate"])),
                          Independent = names(SUMMARY_FIT[["coefficients"]][,"Estimate"]),
                          N_observations = rep(nobs(FIT), length(SUMMARY_FIT[["coefficients"]][,"Estimate"])),
@@ -360,9 +633,28 @@ gentab_lm_long <- function(df, dep, form_ind, mdl = "lm", left_cens = NULL, righ
                          beta_95confint_lower = CONFINT_FIT[rownames(SUMMARY_FIT[["coefficients"]]),"2.5 %"],
                          beta_95confint_upper = CONFINT_FIT[rownames(SUMMARY_FIT[["coefficients"]]),"97.5 %"],
                          SE = SUMMARY_FIT[["coefficients"]][,"Std. Error"],
-                         adj_R_sqrd_marginal = rep(r.squaredGLMM(FIT)[,"R2m"], length(SUMMARY_FIT[["coefficients"]][,"Estimate"])),
-                         adj_R_sqrd_conditional = rep(r.squaredGLMM(FIT)[,"R2c"], length(SUMMARY_FIT[["coefficients"]][,"Estimate"])),
+                         adj_R_sqrd_marginal = rep(R2_FIT[,"R2m"], length(SUMMARY_FIT[["coefficients"]][,"Estimate"])),
+                         adj_R_sqrd_conditional = rep(R2_FIT[,"R2c"], length(SUMMARY_FIT[["coefficients"]][,"Estimate"])),
                          Pvalue = SUMMARY_FIT[["coefficients"]][,"Pr(>|t|)"])
+      
+      if (allpairs == TRUE & length(CATEGORICAL_VARS) > 0) {
+        
+        TAB_TEMP <- remove_allpairs_coefficients(FIT,
+                                                 TAB_TEMP)
+        
+        TAB_PAIRS <- get_allpairs(FIT)
+        
+        TAB_PAIRS$Dependent <- a
+        TAB_PAIRS$N_observations <- nobs(FIT)
+        TAB_PAIRS$N_groups <- SUMMARY_FIT[["ngrps"]]
+        TAB_PAIRS$adj_R_sqrd_marginal <- R2_FIT[,"R2m"]
+        TAB_PAIRS$adj_R_sqrd_conditional <- R2_FIT[,"R2c"]
+        
+        TAB_PAIRS <- TAB_PAIRS[, names(TAB_TEMP)]
+        
+        TAB_TEMP <- rbind(TAB_TEMP,
+                          TAB_PAIRS)
+      }
       
       TAB_FINAL1 <- rbind(TAB_FINAL1, TAB_TEMP)
     }

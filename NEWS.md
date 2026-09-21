@@ -1,3 +1,8 @@
+# GetFeatistics v1.3
+- added the arguments `allpairs` and `pairwise_adjust` to `gentab_lm_long()` to allow pairwise comparisons for categorical variables passed as fixed effects.
+- **Fix:** `gentab_lm_long()` fixed some checking issues.
+
+
 # GetFeatistics v1.2
 - **Fix:** several functions in which the names of metabolites (usually the argument v or dep) needed to be passed already fixed (for example with no special characters) can now be passed as they are (the fix is performed inside the functions and then the names are back to normal just before exporting the results).
 
