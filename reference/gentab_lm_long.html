@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">GetFeatistics</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.3</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.3.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -54,7 +54,9 @@
 <span>  FDR <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  filter_sign <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  pcutoff <span class="op">=</span> <span class="fl">0.05</span>,</span>
-<span>  cutPval <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span>  cutPval <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  allpairs <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  pairwise_adjust <span class="op">=</span> <span class="st">"none"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -95,7 +97,7 @@
 
 
 <dt id="arg-fdr">FDR<a class="anchor" aria-label="anchor" href="#arg-fdr"></a></dt>
-<dd><p>logical. If TRUE, after performing the ANOVA, it also correct p-values across the different variables with a false discovery rate multiple comparison correction (method "fdr" of the function p.adjust).</p></dd>
+<dd><p>logical. If TRUE, P-values are corrected across the different dependent variables using the false discovery rate method ("fdr") of p.adjust, separately for each independent-variable coefficient or contrast.</p></dd>
 
 
 <dt id="arg-filter-sign">filter_sign<a class="anchor" aria-label="anchor" href="#arg-filter-sign"></a></dt>
@@ -109,10 +111,18 @@
 <dt id="arg-cutpval">cutPval<a class="anchor" aria-label="anchor" href="#arg-cutpval"></a></dt>
 <dd><p>logical. If TRUE, it cut the p-values using the cutP function of the present package.</p></dd>
 
+
+<dt id="arg-allpairs">allpairs<a class="anchor" aria-label="anchor" href="#arg-allpairs"></a></dt>
+<dd><p>logical. If TRUE, pairwise contrasts are calculated for categorical fixed-effect variables. Marginal pairwise contrasts are returned for categorical variables included as standalone fixed-effect terms; for variables involved in categorical interactions, conditional pairwise contrasts are also returned; and pairwise interaction contrasts are returned for categorical interaction terms.</p></dd>
+
+
+<dt id="arg-pairwise-adjust">pairwise_adjust<a class="anchor" aria-label="anchor" href="#arg-pairwise-adjust"></a></dt>
+<dd><p>character of length one. The multiple-comparison adjustment method applied to inference for pairwise contrasts, including P-values and, where applicable, confidence intervals. Default is "none".</p></dd>
+
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>A tibble the results of the t-tests.</p>
+    <p>A tibble the results of the regression models.</p>
     </div>
 
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

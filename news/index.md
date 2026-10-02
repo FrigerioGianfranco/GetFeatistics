@@ -1,5 +1,17 @@
 # Changelog
 
+## GetFeatistics v1.3.1
+
+- **Fix:**
+  [`gentab_lm_long()`](https://frigeriogianfranco.github.io/GetFeatistics/reference/gentab_lm_long.md):
+  fixed how it handles interactions.
+- **Fix:**
+  [`gentab_P.t.test()`](https://frigeriogianfranco.github.io/GetFeatistics/reference/gentab_P.t.test.md),
+  [`gentab_P.1wayANOVA_posthocTukeyHSD()`](https://frigeriogianfranco.github.io/GetFeatistics/reference/gentab_P.1wayANOVA_posthocTukeyHSD.md),
+  [`gentab_P.2wayANOVA_posthocTukeyHSD()`](https://frigeriogianfranco.github.io/GetFeatistics/reference/gentab_P.2wayANOVA_posthocTukeyHSD.md):
+  added a further error message to prevent an unrecognisable error due
+  to handling of levels with ‘-’.
+
 ## GetFeatistics v1.3
 
 - added the arguments `allpairs` and `pairwise_adjust` to
