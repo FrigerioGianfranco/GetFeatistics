@@ -1,3 +1,8 @@
+# GetFeatistics v1.3.1
+- **Fix:** `gentab_lm_long()`: fixed how it handles interactions.
+- **Fix:** `gentab_P.t.test()`, `gentab_P.1wayANOVA_posthocTukeyHSD()`, `gentab_P.2wayANOVA_posthocTukeyHSD()`: added a further error message to prevent an unrecognisable error due to handling of levels with '-'.
+
+
 # GetFeatistics v1.3
 - added the arguments `allpairs` and `pairwise_adjust` to `gentab_lm_long()` to allow pairwise comparisons for categorical variables passed as fixed effects.
 - **Fix:** `gentab_lm_long()` fixed some checking issues.

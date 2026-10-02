@@ -81,6 +81,15 @@ gentab_P.1wayANOVA_posthocTukeyHSD <- function(DF, v, f, FDR = FALSE, groupdiff 
     colnames(DF)[which(colnames(DF)%in%f_original)] <- f_fixed
   }
   
+  if (any(grepl("-", levels(pull(DF, f))))) {
+    groups_with_hypn <- levels(pull(DF, f))[which(grepl("-", levels(pull(DF, f))))]
+    if (length(groups_with_hypn)==1) {
+      stop(paste0("The levels of f must not contain '-'.\n The levels with problem is the following:\n  ", groups_with_hypn))
+    } else {
+      stop(paste0("The levels of f must not contain '-'.\n The levels with problems are the following:\n  ", paste0(groups_with_hypn, collapse = "\n  ")))
+    }
+  }
+    
   
   if (length(FDR)!=1) {stop("FDR must be exclusively TRUE or FALSE")}
   if (!is.logical(FDR)) {stop("FDR must be exclusively TRUE or FALSE")}

@@ -16,7 +16,7 @@
 #' @param filter_sign  logical. If TRUE, the table will be filtered and only the p-values lower than the value specified in pcutoff will be considered.
 #' @param pcutoff a numeric of length 1, must be between 0 and 1. If filter_sign is TRUE, cut-off value of the p-values.
 #' @param cutPval logical. If TRUE, it cut the p-values using the cutP function of the present package.
-#' @param allpairs logical. If TRUE, all pairwise contrasts are calculated for all categorical fixed-effect variables included in form_ind.
+#' @param allpairs logical. If TRUE, pairwise contrasts are calculated for categorical fixed-effect variables. Marginal pairwise contrasts are returned for categorical variables included as standalone fixed-effect terms; for variables involved in categorical interactions, conditional pairwise contrasts are also returned; and pairwise interaction contrasts are returned for categorical interaction terms.
 #' @param pairwise_adjust character of length one. The multiple-comparison adjustment method applied to inference for pairwise contrasts, including P-values and, where applicable, confidence intervals. Default is "none".
 #'
 #' @return A tibble the results of the regression models.
@@ -281,81 +281,192 @@ gentab_lm_long <- function(df, dep, form_ind, mdl = "lm", left_cens = NULL, righ
                         SE = double(),
                         Pvalue = double())
     
-    for (this_var in CATEGORICAL_VARS) {
-      
-      INTERACTION_TERMS <- TERM_LABELS_FIXED[map_lgl(TERM_LABELS_FIXED,
-                                                     function(x) {THIS_TERM_VARS <- all.vars(as.formula(paste0("~ ", x)))
-                                                     this_var %in% THIS_TERM_VARS & length(THIS_TERM_VARS) > 1})]
-      
-      if (length(INTERACTION_TERMS) == 0) {
-        
-        INTERACTING_VARS <- character()
-        
-      } else {
-        
-        INTERACTING_VARS <- unique(unlist(map(INTERACTION_TERMS,
-                                              function(x) {setdiff(all.vars(as.formula(paste0("~ ", x))),
-                                                                   this_var)})))
-        
-        INTERACTING_VARS <- INTERACTING_VARS[INTERACTING_VARS %in% CATEGORICAL_VARS]
-      }
-      
-      if (length(INTERACTING_VARS) == 0) {
-        
-        EMM <- emmeans::emmeans(FIT,
-                                specs = this_var)
-        
-      } else {
-        
-        EMM <- emmeans::emmeans(FIT,
-                                specs = this_var,
-                                by = INTERACTING_VARS)
-      }
-      
+    get_pair_table <- function(EMM,
+                               this_var,
+                               INTERACTING_VARS = character()) {
       
       PAIRS <- as.data.frame(summary(graphics::pairs(EMM, reverse = TRUE),
                                      infer = c(TRUE, TRUE),
                                      adjust = pairwise_adjust))
       
-      LOWER_COL <- intersect(c("lower.CL", "asymp.LCL"), colnames(PAIRS))[1]
+      LOWER_COL <- intersect(c("lower.CL", "asymp.LCL"),
+                             colnames(PAIRS))[1]
       
-      UPPER_COL <- intersect(c("upper.CL", "asymp.UCL"), colnames(PAIRS))[1]
+      UPPER_COL <- intersect(c("upper.CL", "asymp.UCL"),
+                             colnames(PAIRS))[1]
       
-      PAIR_NAME <- sub(" - ", " vs ", PAIRS$contrast, fixed = TRUE)
+      PAIR_NAME <- sub(" - ",
+                       " vs ",
+                       PAIRS$contrast,
+                       fixed = TRUE)
       
       if (length(INTERACTING_VARS) == 0) {
         
-        INDEPENDENT_NAME <- paste0(this_var,
-                                   ": ",
-                                   PAIR_NAME)
+        INDEPENDENT_NAME <- paste0(this_var, ": ", PAIR_NAME)
         
       } else {
         
         CONDITION_NAME <- pmap_chr(PAIRS[, INTERACTING_VARS, drop = FALSE],
-                                   function(...) {x <- map_chr(list(...), as.character)
-                                   paste(
-                                     paste0(INTERACTING_VARS, "=", x),
-                                     collapse = ", ")})
-        
+                                   function(...) {
+                                     x <- map_chr(list(...), as.character)
+                                     
+                                     paste(paste0(INTERACTING_VARS, "=", x), collapse = ", ")})
         
         INDEPENDENT_NAME <- paste0(this_var,
                                    ": ",
                                    PAIR_NAME,
                                    " | ",
                                    CONDITION_NAME)
+        
+      }
+      
+      return(tibble(Independent = INDEPENDENT_NAME,
+                    beta = PAIRS$estimate,
+                    beta_95confint_lower = PAIRS[[LOWER_COL]],
+                    beta_95confint_upper = PAIRS[[UPPER_COL]],
+                    SE = PAIRS$SE,
+                    Pvalue = PAIRS$p.value))
+      
+    }
+    
+    for (this_var in CATEGORICAL_VARS) {
+      
+      
+      HAS_MAIN_EFFECT <- any(map_lgl(TERM_LABELS_FIXED,
+                                     function(x) {
+                                       THIS_TERM_VARS <- all.vars(as.formula(paste0("~ ", x)))
+                                       length(THIS_TERM_VARS) == 1 && identical(THIS_TERM_VARS, this_var)
+                                     }))
+      
+      if (HAS_MAIN_EFFECT) {
+        
+        EMM_MARGINAL <- emmeans::emmeans(FIT,
+                                         specs = this_var)
+        
+        TAB_THIS_PAIR <- get_pair_table(EMM = EMM_MARGINAL,
+                                        this_var = this_var)
+        
+        TAB_PAIRS <- rbind(TAB_PAIRS,
+                           TAB_THIS_PAIR)
+      }
+      
+      INTERACTION_TERMS <- TERM_LABELS_FIXED[map_lgl(TERM_LABELS_FIXED,
+                                                     function(x) {
+                                                       THIS_TERM_VARS <- all.vars(as.formula(paste0("~ ", x)))
+                                                       this_var %in% THIS_TERM_VARS && length(THIS_TERM_VARS) > 1
+                                                     })]
+      
+      
+      if (length(INTERACTION_TERMS) > 0) {
+        
+        INTERACTING_VARS <- unique(unlist(map(INTERACTION_TERMS,
+                                              function(x) {
+                                                setdiff(all.vars(as.formula(paste0("~ ", x))),
+                                                        this_var)})))
+        
+        INTERACTING_VARS <- INTERACTING_VARS[INTERACTING_VARS %in% CATEGORICAL_VARS]
+        
+        if (length(INTERACTING_VARS) > 0) {
+          
+          EMM_CONDITIONAL <- emmeans::emmeans(FIT,
+                                              specs = this_var,
+                                              by = INTERACTING_VARS)
+          
+          TAB_THIS_PAIR <- get_pair_table(EMM = EMM_CONDITIONAL,
+                                          this_var = this_var,
+                                          INTERACTING_VARS = INTERACTING_VARS)
+          
+          TAB_PAIRS <- rbind(TAB_PAIRS,
+                             TAB_THIS_PAIR)
+        }
+      }
+    }
+    
+    CATEGORICAL_INTERACTION_TERMS <- TERM_LABELS_FIXED[map_lgl(TERM_LABELS_FIXED,
+                                                               function(x) {
+                                                                 THIS_TERM_VARS <- all.vars(as.formula(paste0("~ ", x)))
+                                                                 
+                                                                 length(THIS_TERM_VARS) > 1 && all(THIS_TERM_VARS %in% CATEGORICAL_VARS)
+                                                               })]
+    
+    
+    for (this_term in CATEGORICAL_INTERACTION_TERMS) {
+      
+      INTERACTION_VARS <- all.vars(as.formula(paste0("~ ", this_term)))
+      
+      EMM_INTERACTION <- emmeans::emmeans(FIT,
+                                          specs = INTERACTION_VARS)
+      
+      INTERACTION_METHOD <- setNames(rep("revpairwise", length(INTERACTION_VARS)),
+                                     INTERACTION_VARS)
+      
+      INTERACTION_PAIRS <- emmeans::contrast(EMM_INTERACTION,
+                                             interaction = INTERACTION_METHOD,
+                                             by = NULL)
+      
+      INTERACTION_PAIRS <- as.data.frame(summary(INTERACTION_PAIRS,
+                                                 infer = c(TRUE, TRUE),
+                                                 adjust = pairwise_adjust))
+      
+      
+      LOWER_COL <- intersect(c("lower.CL", "asymp.LCL"),
+                             colnames(INTERACTION_PAIRS))[1]
+      
+      UPPER_COL <- intersect(c("upper.CL", "asymp.UCL"),
+                             colnames(INTERACTION_PAIRS))[1]
+      
+      INTERACTION_LABEL_COLS <- paste0(INTERACTION_VARS, "_revpairwise")
+      
+      
+      if (!all(INTERACTION_LABEL_COLS %in% colnames(INTERACTION_PAIRS))) {
+        
+        STANDARD_COLUMNS <- c("estimate",
+                              "SE",
+                              "df",
+                              "t.ratio",
+                              "z.ratio",
+                              "p.value",
+                              "lower.CL",
+                              "upper.CL",
+                              "asymp.LCL",
+                              "asymp.UCL",
+                              "null")
+        
+        INTERACTION_LABEL_COLS <- setdiff(colnames(INTERACTION_PAIRS), STANDARD_COLUMNS)
       }
       
       
-      TAB_THIS_PAIR <- tibble(Independent = INDEPENDENT_NAME,
-                              beta = PAIRS$estimate,
-                              beta_95confint_lower = PAIRS[[LOWER_COL]],
-                              beta_95confint_upper = PAIRS[[UPPER_COL]],
-                              SE = PAIRS$SE,
-                              Pvalue = PAIRS$p.value)
+      if (length(INTERACTION_LABEL_COLS) != length(INTERACTION_VARS)) {
+        
+        stop("Unexpected structure of the interaction contrasts returned by emmeans.")
+      }
+      
+      
+      INTERACTION_NAME <- pmap_chr(INTERACTION_PAIRS[, INTERACTION_LABEL_COLS, drop = FALSE],
+                                   function(...) {
+                                     
+                                     x <- map_chr(list(...),
+                                                  as.character)
+                                     
+                                     x <- map_chr(x, ~ sub(" - ", " vs ", .x, fixed = TRUE))
+                                     
+                                     paste0("(", paste(x, collapse = ") x ("), ")")})
+      
+      
+      TAB_THIS_INTERACTION <- tibble(Independent = paste0(paste(INTERACTION_VARS, collapse = ":"),
+                                                          " interaction: ",
+                                                          INTERACTION_NAME),
+                                     beta = INTERACTION_PAIRS$estimate,
+                                     beta_95confint_lower = INTERACTION_PAIRS[[LOWER_COL]],
+                                     beta_95confint_upper = INTERACTION_PAIRS[[UPPER_COL]],
+                                     SE = INTERACTION_PAIRS$SE,
+                                     Pvalue = INTERACTION_PAIRS$p.value)
+      
       
       TAB_PAIRS <- rbind(TAB_PAIRS,
-                         TAB_THIS_PAIR)
+                         TAB_THIS_INTERACTION)
     }
+    
     
     return(TAB_PAIRS)
   }

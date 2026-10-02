@@ -95,6 +95,14 @@ gentab_P.t.test <- function(df, v, f, paired = FALSE, FDR = FALSE, cutPval = FAL
     if (length_vect_fact1 != length_vect_fact2) {stop("You cannot perform a paired t-test on groups that don't have the same number of observations")}
   }
   
+  if (any(grepl("-", levels(pull(df,f))))) {
+    groups_with_hypn <- levels(pull(df,f))[which(grepl("-", levels(pull(df,f))))]
+    if (length(groups_with_hypn)==1) {
+      stop(paste0("The levels of f must not contain '-'.\n The levels with problem is the following:\n  ", groups_with_hypn))
+    } else {
+      stop(paste0("The levels of f must not contain '-'.\n The levels with problems are the following:\n  ", paste0(groups_with_hypn, collapse = "\n  ")))
+    }
+  }
   
   if (length(FDR)!=1) {stop("FDR must be exclusively TRUE or FALSE")}
   if (!is.logical(FDR)) {stop("FDR must be exclusively TRUE or FALSE")}

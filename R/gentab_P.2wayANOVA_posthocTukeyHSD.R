@@ -97,6 +97,23 @@ gentab_P.2wayANOVA_posthocTukeyHSD <- function(DF, v, f, interact = FALSE, FDR =
     }
   }
   
+  if (any(grepl("-", levels(pull(DF, f[1]))))) {
+    groups_with_hypn <- levels(pull(DF, f[1]))[which(grepl("-", levels(pull(DF, f[1]))))]
+    if (length(groups_with_hypn)==1) {
+      stop(paste0("The levels of the first element of f must not contain '-'.\n The levels with problem is the following:\n  ", groups_with_hypn))
+    } else {
+      stop(paste0("The levels of the first element of f must not contain '-'.\n The levels with problems are the following:\n  ", paste0(groups_with_hypn, collapse = "\n  ")))
+    }
+  }
+  if (any(grepl("-", levels(pull(DF, f[2]))))) {
+    groups_with_hypn <- levels(pull(DF, f[2]))[which(grepl("-", levels(pull(DF, f[2]))))]
+    if (length(groups_with_hypn)==1) {
+      stop(paste0("The levels of the second element of f must not contain '-'.\n The levels with problem is the following:\n  ", groups_with_hypn))
+    } else {
+      stop(paste0("The levels of the second element of f must not contain '-'.\n The levels with problems are the following:\n  ", paste0(groups_with_hypn, collapse = "\n  ")))
+    }
+  }
+  
   if (length(interact)!=1) {stop("interact must be exclusively TRUE or FALSE")} else if (!is.logical(interact)) {stop("interact must be exclusively TRUE or FALSE")} else if (is.na(interact)) {stop("interact must be exclusively TRUE or FALSE")}
   if (length(FDR)!=1) {stop("FDR must be exclusively TRUE or FALSE")} else if (!is.logical(FDR)) {stop("FDR must be exclusively TRUE or FALSE")} else if (is.na(FDR)) {stop("FDR must be exclusively TRUE or FALSE")}
   if (length(groupdiff)!=1) {stop("groupdiff must be exclusively TRUE or FALSE")} else if (!is.logical(groupdiff)) {stop("groupdiff must be exclusively TRUE or FALSE")} else if (is.na(groupdiff)) {stop("groupdiff must be exclusively TRUE or FALSE")}

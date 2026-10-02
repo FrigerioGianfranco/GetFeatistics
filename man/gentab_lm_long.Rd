@@ -16,7 +16,9 @@ gentab_lm_long(
   FDR = FALSE,
   filter_sign = FALSE,
   pcutoff = 0.05,
-  cutPval = FALSE
+  cutPval = FALSE,
+  allpairs = FALSE,
+  pairwise_adjust = "none"
 )
 }
 \arguments{
@@ -36,16 +38,20 @@ gentab_lm_long(
 
 \item{base}{numerical of length one. If var_perc is TRUE, it is the base of the logarithm used to log-transform the dependent variables.}
 
-\item{FDR}{logical. If TRUE, after performing the ANOVA, it also correct p-values across the different variables with a false discovery rate multiple comparison correction (method "fdr" of the function p.adjust).}
+\item{FDR}{logical. If TRUE, P-values are corrected across the different dependent variables using the false discovery rate method ("fdr") of p.adjust, separately for each independent-variable coefficient or contrast.}
 
 \item{filter_sign}{logical. If TRUE, the table will be filtered and only the p-values lower than the value specified in pcutoff will be considered.}
 
 \item{pcutoff}{a numeric of length 1, must be between 0 and 1. If filter_sign is TRUE, cut-off value of the p-values.}
 
 \item{cutPval}{logical. If TRUE, it cut the p-values using the cutP function of the present package.}
+
+\item{allpairs}{logical. If TRUE, pairwise contrasts are calculated for categorical fixed-effect variables. Marginal pairwise contrasts are returned for categorical variables included as standalone fixed-effect terms; for variables involved in categorical interactions, conditional pairwise contrasts are also returned; and pairwise interaction contrasts are returned for categorical interaction terms.}
+
+\item{pairwise_adjust}{character of length one. The multiple-comparison adjustment method applied to inference for pairwise contrasts, including P-values and, where applicable, confidence intervals. Default is "none".}
 }
 \value{
-A tibble the results of the t-tests.
+A tibble the results of the regression models.
 }
 \description{
 Given a dataframe and a set of dependent and independent variables from that dataframe, it generates a linear regression model for each single dependent variable and creates a new table with all slopes and p-values.
