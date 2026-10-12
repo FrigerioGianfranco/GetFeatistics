@@ -1,8 +1,4 @@
 # GetFeatistics v1.3.1
-- **Fix:** `gentab_P.t.test()`: edited the column names of the output, from "Pvalues" to "Pvalue", for consistency with `gentab_P.1wayANOVA_posthocTukeyHSD()` and `gentab_P.2wayANOVA_posthocTukeyHSD()`.
-
-
-# GetFeatistics v1.3.1
 - **Fix:** `gentab_lm_long()`: fixed how it handles interactions.
 - **Fix:** `gentab_P.t.test()`, `gentab_P.1wayANOVA_posthocTukeyHSD()`, `gentab_P.2wayANOVA_posthocTukeyHSD()`: added a further error message to prevent an unrecognisable error due to handling of levels with '-'.
 
