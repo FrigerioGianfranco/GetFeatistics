@@ -147,25 +147,25 @@ gentab_P.t.test <- function(df, v, f, paired = FALSE, FDR = FALSE, cutPval = FAL
   df_fil2_lev1 <- select(df_fil1_lev1, all_of(v))
   df_fil2_lev2 <- select(df_fil1_lev2, all_of(v))
   
-  Pvalues_t.test <- double()
+  Pvalue_t.test <- double()
   for (this_v in v) {
     this_x <- pull(df_fil2_lev1, this_v)
     this_y <- pull(df_fil2_lev2, this_v)
     if (paired) {
-      Pvalues_t.test <- c(Pvalues_t.test, gett.test.P_paired(x = this_x, y = this_y))
+      Pvalue_t.test <- c(Pvalue_t.test, gett.test.P_paired(x = this_x, y = this_y))
     } else {
-      Pvalues_t.test <- c(Pvalues_t.test, gett.test.P(x = this_x, y = this_y))
+      Pvalue_t.test <- c(Pvalue_t.test, gett.test.P(x = this_x, y = this_y))
     }
-    names(Pvalues_t.test)[length(Pvalues_t.test)] <- this_v
+    names(Pvalue_t.test)[length(Pvalue_t.test)] <- this_v
   }
   
   
-  if (FDR) {Pvalues_t.test_FDR <- p.adjust(Pvalues_t.test, method ="fdr")}
+  if (FDR) {Pvalue_t.test_FDR <- p.adjust(Pvalue_t.test, method ="fdr")}
   
   
-  df_P_final <- tibble(variables = names(Pvalues_t.test), Pvalues = Pvalues_t.test)
+  df_P_final <- tibble(variables = names(Pvalue_t.test), Pvalue = Pvalue_t.test)
   if (FDR) {
-    df_P_final <- mutate(df_P_final, PvaluesFDR = Pvalues_t.test_FDR)
+    df_P_final <- mutate(df_P_final, PvalueFDR = Pvalue_t.test_FDR)
   }
   
   if(groupdiff == TRUE) {
@@ -175,8 +175,8 @@ gentab_P.t.test <- function(df, v, f, paired = FALSE, FDR = FALSE, cutPval = FAL
       df_P_final <- mutate(df_P_final, group_diff_FDR = as.character(NA))
     }
     
-    for(i in 1:length(pull(df_P_final, "Pvalues"))) {
-      if (pull(df_P_final, "Pvalues")[i] < pcutoff) {
+    for(i in 1:length(pull(df_P_final, "Pvalue"))) {
+      if (pull(df_P_final, "Pvalue")[i] < pcutoff) {
         if (mean(pull(df_fil1_lev1, df_P_final$variables[i])) > mean(pull(df_fil1_lev2, df_P_final$variables[i]))) {
           df_P_final[i, "group_diff"] <- paste0(levels(pull(df_fil1, f))[1], " > ", levels(pull(df_fil1, f))[2])
         } else if (mean(pull(df_fil1_lev1, df_P_final$variables[i])) < mean(pull(df_fil1_lev2, df_P_final$variables[i]))) {
@@ -188,7 +188,7 @@ gentab_P.t.test <- function(df, v, f, paired = FALSE, FDR = FALSE, cutPval = FAL
       }
       
       if (FDR) {
-        if (pull(df_P_final, "PvaluesFDR")[i] < pcutoff) {
+        if (pull(df_P_final, "PvalueFDR")[i] < pcutoff) {
           if (mean(pull(df_fil1_lev1, df_P_final$variables[i])) > mean(pull(df_fil1_lev2, df_P_final$variables[i]))) {
             df_P_final[i, "group_diff_FDR"] <- paste0(levels(pull(df_fil1, f))[1], " > ", levels(pull(df_fil1, f))[2])
           } else if (mean(pull(df_fil1_lev1, df_P_final$variables[i])) < mean(pull(df_fil1_lev2, df_P_final$variables[i]))) {
@@ -205,22 +205,22 @@ gentab_P.t.test <- function(df, v, f, paired = FALSE, FDR = FALSE, cutPval = FAL
   
   if (filter_sign == TRUE) {
     if (FDR == FALSE) {
-      df_P_final <- filter(df_P_final, Pvalues < pcutoff)
+      df_P_final <- filter(df_P_final, Pvalue < pcutoff)
     } else if (FDR) {
-      df_P_final <- filter(df_P_final, PvaluesFDR < pcutoff)
+      df_P_final <- filter(df_P_final, PvalueFDR < pcutoff)
     }
   }
   
   if (cutPval == TRUE) {
-    df_P_final$Pvalues <- map_chr(df_P_final$Pvalues, cutP)
+    df_P_final$Pvalue <- map_chr(df_P_final$Pvalue, cutP)
     if (FDR) {
-      df_P_final$PvaluesFDR <- map_chr(df_P_final$PvaluesFDR, cutP)
+      df_P_final$PvalueFDR <- map_chr(df_P_final$PvalueFDR, cutP)
     }
   }
   
-  names(df_P_final$Pvalues) <- NULL
-  if ("PvaluesFDR" %in% colnames(df_P_final)) {
-    names(df_P_final$PvaluesFDR) <- NULL
+  names(df_P_final$Pvalue) <- NULL
+  if ("PvalueFDR" %in% colnames(df_P_final)) {
+    names(df_P_final$PvalueFDR) <- NULL
   }
   
   if (f_and_v_need_fix) {
