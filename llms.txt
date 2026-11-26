@@ -17,11 +17,11 @@ Then open R (or RStudio) and run the following in the R console:
 
 ``` r
 
-if (!require("devtools", quietly = TRUE)) {  
-  install.packages("devtools")
+if (!requireNamespace("pak", quietly = TRUE)) {
+  install.packages("pak")
 }
 
-devtools::install_github("FrigerioGianfranco/GetFeatistics", dependencies = TRUE)
+pak::pkg_install("FrigerioGianfranco/GetFeatistics", dependencies = TRUE)
 ```
 
 Follow the on-screen instructions to install all dependencies. It may
