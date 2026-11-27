@@ -1,6 +1,6 @@
 Package: GetFeatistics
 Title: Getting streamlined elaboration of metabolomics data
-Version: 1.3.2
+Version: 1.3.3
 Authors@R: 
     person("Gianfranco", "Frigerio", email = "frigerio.gianfranco@hsr.it", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0002-3538-1443"))
@@ -16,4 +16,4 @@ Suggests:
     rmarkdown
 VignetteBuilder: knitr
 URL: https://frigeriogianfranco.github.io/GetFeatistics/
-Config/roxygen2/version: 8.1.0
+Config/roxygen2/version: 8.1.1

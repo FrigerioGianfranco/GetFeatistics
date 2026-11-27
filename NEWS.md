@@ -1,3 +1,12 @@
+
+# GetFeatistics v1.3.3
+- in `calculate_neutral_mass()`, added the possibility of calculating neutral mass also for multimeric adducts (e.g. "[2M+H]+" and "[3M+H]+"), returning the neutral mass of the monomer.
+
+
+# GetFeatistics v1.3.2
+- in the README, suggested the use of ‘pak::pkg_install()’ instead of ‘devtools::install_github()’ for installing this package.
+
+
 # GetFeatistics v1.3.1
 - **Fix:** `gentab_lm_long()`: fixed how it handles interactions.
 - **Fix:** `gentab_P.t.test()`, `gentab_P.1wayANOVA_posthocTukeyHSD()`, `gentab_P.2wayANOVA_posthocTukeyHSD()`: added a further error message to prevent an unrecognisable error due to handling of levels with '-'.

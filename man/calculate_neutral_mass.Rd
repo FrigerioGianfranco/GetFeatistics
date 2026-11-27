@@ -33,6 +33,7 @@ Given mass-to-charge ratio measurement(s) and given adduct estimation(s), it cal
 # "[M+Cl]-"
 # "[M+FA-H]-"
 # "[M+HCOO]-"
+# "[2M+H]+"
 
 
 calculate_neutral_mass(observed_mz = c(174.14748, 240.84195, 460.3591, 245.22432),
