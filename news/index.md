@@ -1,5 +1,18 @@
 # Changelog
 
+## GetFeatistics v1.3.3
+
+- in
+  [`calculate_neutral_mass()`](https://frigeriogianfranco.github.io/GetFeatistics/reference/calculate_neutral_mass.md),
+  added the possibility of calculating neutral mass also for multimeric
+  adducts (e.g. “\[2M+H\]+” and “\[3M+H\]+”), returning the neutral mass
+  of the monomer.
+
+## GetFeatistics v1.3.2
+
+- in the README, suggested the use of ‘pak::pkg_install()’ instead of
+  ‘devtools::install_github()’ for installing this package.
+
 ## GetFeatistics v1.3.1
 
 - **Fix:**
